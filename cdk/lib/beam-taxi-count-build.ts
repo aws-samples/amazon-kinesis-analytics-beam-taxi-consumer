@@ -2,9 +2,9 @@ import cdk = require('@aws-cdk/cdk');
 import s3 = require('@aws-cdk/aws-s3');
 import codepipeline = require('@aws-cdk/aws-codepipeline');
 import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
-import codecommit = require('@aws-cdk/aws-codecommit');
 import codebuild = require('@aws-cdk/aws-codebuild');
 import { BuildSpec } from '@aws-cdk/aws-codebuild';
+import { CfnParameter, SecretValue } from '@aws-cdk/cdk';
 
 export interface BeamBuildPipelineProps {
   bucket: s3.Bucket,
@@ -16,15 +16,23 @@ export class BeamBuildPipeline extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: BeamBuildPipelineProps) {
     super(scope, id);
 
-    const repo = codecommit.Repository.fromRepositoryArn(this, 'CodeCommitRepository', `arn:aws:codecommit:${props.region}:${props.accountId}:AwsSaBeamTaxiCount`);
+    const oauthToken = SecretValue.cfnParameter(
+      new CfnParameter(this, 'GithubOauthToken', {
+        type: 'String',
+        noEcho: true,
+        description: `Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens`
+      })
+    );
     
     const sourceOutput = new codepipeline.Artifact();
 
-    const sourceAction = new codepipeline_actions.CodeCommitSourceAction({
+    const sourceAction = new codepipeline_actions.GitHubSourceAction({
       actionName: 'SourceAction',
-      repository: repo,
-      branch: 'mainline',
-      output: sourceOutput
+      repo: 'amazon-kinesis-analytics-beam-taxi-consumer',
+      owner: 'aws-samples',
+      oauthToken: oauthToken,
+      branch: 'master',
+      output: sourceOutput,
     });
 
     const project = new codebuild.Project(this, 'MyProject', {
@@ -38,15 +46,13 @@ export class BeamBuildPipeline extends cdk.Construct {
         phases: {
           build: {
             commands: [
-              'cd beam-taxi-count-* || :',
               'mvn clean package -B'
             ]
           }
         },
         artifacts: {
           files: [
-            'target/beam-taxi-count-*.jar',
-            'beam-taxi-count-*/target/beam-taxi-count-*.jar'
+            'target/beam-taxi-count-*.jar'
           ],
           discard: true
         }

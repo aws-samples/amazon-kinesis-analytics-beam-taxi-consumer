@@ -16,14 +16,14 @@ export class KinesisReplay extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: KinesisReplayProps) {
     super(scope, id);
 
-    new CfnStack(this, 'KinesisReplayBuild', {
+    const replayBuildStack = new CfnStack(this, 'KinesisReplayBuild', {
         templateUrl: 'https://s3.amazonaws.com/aws-bigdata-blog/artifacts/kinesis-analytics-taxi-consumer/cfn-templates/kinesis-replay-build-pipeline.yml',
         parameters: {
             ExternalArtifactBucket: props.bucket.bucketName
         }
     });
-    
-    const kinesisReplayCopyCommand = `aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-replay-*.jar' 's3://${props.bucket.bucketName}/' .`
+
+    const kinesisReplayCopyCommand = replayBuildStack.getAtt('Outputs.KinesisReplayCopyCommand').toString;
 
     const vpc = Vpc.fromLookup(this, 'VPC', {
         isDefault: true
@@ -64,10 +64,10 @@ export class KinesisReplay extends cdk.Construct {
         instanceType: 'c5.2xlarge',
         networkInterfaces: [
             {
-            deviceIndex: '0',
-            associatePublicIpAddress: true,
-            deleteOnTermination: true,
-            groupSet: [sg.securityGroupId]
+                deviceIndex: '0',
+                associatePublicIpAddress: true,
+                deleteOnTermination: true,
+                groupSet: [sg.securityGroupId]
             }
         ],
         iamInstanceProfile: instanceProfile.instanceProfileName,

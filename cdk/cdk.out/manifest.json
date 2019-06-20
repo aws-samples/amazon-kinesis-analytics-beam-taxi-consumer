@@ -13,7 +13,11 @@
             "type": "aws:cdk:logicalId",
             "data": "Bucket83908E77",
             "trace": [
+<<<<<<< HEAD
               "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:896:22)",
+=======
+              "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:786:22)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:25:20)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -30,14 +34,23 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineCodeCommitRepositoryBeamBuildBuildPipelineMyPipeline829BE5B5EventRule9B31F7B1",
             "trace": [
+<<<<<<< HEAD
               "new Rule (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events/lib/rule.ts:96:22)",
+=======
+              "new Rule (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events/lib/rule.ts:95:22)",
+>>>>>>> broken
               "Import.onEvent (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:121:18)",
               "Import.onStateChange (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:135:23)",
               "Import.onReferenceUpdated (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:157:23)",
               "Import.onCommit (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:203:23)",
               "CodeCommitSourceAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/codecommit/source-action.ts:60:29)",
+<<<<<<< HEAD
               "CodeCommitSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
               "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+=======
+              "CodeCommitSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:351:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:355:21)",
+>>>>>>> broken
               "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
               "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
               "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
@@ -60,8 +73,13 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineMyProjectRole125EEC7D",
             "trace": [
+<<<<<<< HEAD
               "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
               "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:635:31)",
+=======
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:200:18)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:625:31)",
+>>>>>>> broken
               "new BeamBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:30:21)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:30:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
@@ -79,10 +97,17 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineMyProjectRoleDefaultPolicy552B3FF9",
             "trace": [
+<<<<<<< HEAD
               "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
               "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
               "Project.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:196:17)",
               "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:716:10)",
+=======
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:95:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:234:28)",
+              "Project.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:731:17)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:714:10)",
+>>>>>>> broken
               "new BeamBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:30:21)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:30:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
@@ -100,7 +125,11 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineMyProject8E5DCF75",
             "trace": [
+<<<<<<< HEAD
               "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:682:22)",
+=======
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:694:22)",
+>>>>>>> broken
               "new BeamBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:30:21)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:30:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
@@ -119,7 +148,11 @@
             "data": "BuildPipelineMyPipelineArtifactsBucketEncryptionKeyB3AA5559",
             "trace": [
               "new Key (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-kms/lib/key.ts:220:22)",
+<<<<<<< HEAD
               "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:229:29)",
+=======
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:230:29)",
+>>>>>>> broken
               "new BeamBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:75:5)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:30:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
@@ -137,8 +170,13 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineMyPipelineArtifactsBucket3D27994C",
             "trace": [
+<<<<<<< HEAD
               "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:896:22)",
               "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:230:21)",
+=======
+              "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:786:22)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:231:21)",
+>>>>>>> broken
               "new BeamBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:75:5)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:30:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
@@ -156,7 +194,11 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineMyPipelineRoleE50F2E50",
             "trace": [
+<<<<<<< HEAD
               "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+=======
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:200:18)",
+>>>>>>> broken
               "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:240:31)",
               "new BeamBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:75:5)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:30:7)",
@@ -175,12 +217,21 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineMyPipelineRoleDefaultPolicy4F39C66E",
             "trace": [
+<<<<<<< HEAD
               "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
               "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
               "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
               "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:102:26)",
               "Bucket.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:524:23)",
               "Bucket.grantReadWrite (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:462:17)",
+=======
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:95:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:234:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:130:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:102:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:511:27)",
+              "Bucket.grantReadWrite (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:461:17)",
+>>>>>>> broken
               "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:256:25)",
               "new BeamBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:75:5)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:30:7)",
@@ -217,17 +268,29 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineMyPipelineEventsRole3185765D",
             "trace": [
+<<<<<<< HEAD
               "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
               "Object.singletonEventRole (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events-targets/lib/util.ts:15:16)",
               "CodePipeline.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events-targets/lib/codepipeline.ts:17:13)",
               "Rule.addTarget (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events/lib/rule.ts:124:32)",
+=======
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:200:18)",
+              "Object.singletonEventRole (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events-targets/lib/util.ts:15:16)",
+              "CodePipeline.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events-targets/lib/codepipeline.ts:17:13)",
+              "Rule.addTarget (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events/lib/rule.ts:123:32)",
+>>>>>>> broken
               "Import.onEvent (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:126:10)",
               "Import.onStateChange (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:135:23)",
               "Import.onReferenceUpdated (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:157:23)",
               "Import.onCommit (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:203:23)",
               "CodeCommitSourceAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/codecommit/source-action.ts:60:29)",
+<<<<<<< HEAD
               "CodeCommitSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
               "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+=======
+              "CodeCommitSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:351:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:355:21)",
+>>>>>>> broken
               "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
               "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
               "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
@@ -250,19 +313,33 @@
             "type": "aws:cdk:logicalId",
             "data": "BuildPipelineMyPipelineEventsRoleDefaultPolicyF9F1400A",
             "trace": [
+<<<<<<< HEAD
               "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
               "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
               "Array.forEach (<anonymous>)",
               "Object.singletonEventRole (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events-targets/lib/util.ts:19:20)",
               "CodePipeline.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events-targets/lib/codepipeline.ts:17:13)",
               "Rule.addTarget (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events/lib/rule.ts:124:32)",
+=======
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:95:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:234:28)",
+              "Array.forEach (<anonymous>)",
+              "Object.singletonEventRole (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events-targets/lib/util.ts:19:20)",
+              "CodePipeline.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events-targets/lib/codepipeline.ts:17:13)",
+              "Rule.addTarget (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-events/lib/rule.ts:123:32)",
+>>>>>>> broken
               "Import.onEvent (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:126:10)",
               "Import.onStateChange (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:135:23)",
               "Import.onReferenceUpdated (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:157:23)",
               "Import.onCommit (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codecommit/lib/repository.ts:203:23)",
               "CodeCommitSourceAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/codecommit/source-action.ts:60:29)",
+<<<<<<< HEAD
               "CodeCommitSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
               "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+=======
+              "CodeCommitSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:351:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:355:21)",
+>>>>>>> broken
               "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
               "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
               "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
@@ -302,7 +379,11 @@
             "type": "aws:cdk:logicalId",
             "data": "S3Bucket",
             "trace": [
+<<<<<<< HEAD
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:88:5)",
+=======
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:89:5)",
+>>>>>>> broken
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
               "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
@@ -327,7 +408,11 @@
             "type": "aws:cdk:logicalId",
             "data": "Bucket83908E77",
             "trace": [
+<<<<<<< HEAD
               "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:896:22)",
+=======
+              "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:786:22)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:25:20)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -344,8 +429,13 @@
             "type": "aws:cdk:logicalId",
             "data": "EnrichEventsLambdaServiceRoleD32248A6",
             "trace": [
+<<<<<<< HEAD
               "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
               "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:402:31)",
+=======
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:200:18)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:407:31)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:38:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -362,7 +452,11 @@
             "type": "aws:cdk:logicalId",
             "data": "EnrichEventsLambda23B68032",
             "trace": [
+<<<<<<< HEAD
               "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:419:35)",
+=======
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:424:22)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:38:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -387,9 +481,15 @@
               "artifactHashParameter": "EnrichEventsLambdaCodeArtifactHash9FC59981"
             },
             "trace": [
+<<<<<<< HEAD
               "new Asset (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:158:15)",
               "AssetCode.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/code.ts:144:20)",
               "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:443:16)",
+=======
+              "new Asset (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/assets/lib/asset.ts:177:15)",
+              "AssetCode.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/code.ts:179:20)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:449:16)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:38:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -406,9 +506,15 @@
             "type": "aws:cdk:logicalId",
             "data": "EnrichEventsLambdaCodeS3Bucket3494CCC5",
             "trace": [
+<<<<<<< HEAD
               "new Asset (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:117:25)",
               "AssetCode.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/code.ts:144:20)",
               "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:443:16)",
+=======
+              "new Asset (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/assets/lib/asset.ts:136:25)",
+              "AssetCode.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/code.ts:179:20)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:449:16)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:38:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -425,9 +531,15 @@
             "type": "aws:cdk:logicalId",
             "data": "EnrichEventsLambdaCodeS3VersionKey737A8EF4",
             "trace": [
+<<<<<<< HEAD
               "new Asset (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:122:22)",
               "AssetCode.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/code.ts:144:20)",
               "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:443:16)",
+=======
+              "new Asset (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/assets/lib/asset.ts:141:22)",
+              "AssetCode.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/code.ts:179:20)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:449:16)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:38:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -444,9 +556,15 @@
             "type": "aws:cdk:logicalId",
             "data": "EnrichEventsLambdaCodeArtifactHash9FC59981",
             "trace": [
+<<<<<<< HEAD
               "new Asset (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:127:23)",
               "AssetCode.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/code.ts:144:20)",
               "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:443:16)",
+=======
+              "new Asset (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/assets/lib/asset.ts:146:23)",
+              "AssetCode.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/code.ts:179:20)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:449:16)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:38:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -498,7 +616,11 @@
             "type": "aws:cdk:logicalId",
             "data": "KinesisReplayInfrastructureReplayRole501258B1",
             "trace": [
+<<<<<<< HEAD
               "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+=======
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:200:18)",
+>>>>>>> broken
               "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:42:18)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:45:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
@@ -516,11 +638,19 @@
             "type": "aws:cdk:logicalId",
             "data": "KinesisReplayInfrastructureReplayRoleDefaultPolicy351423BD",
             "trace": [
+<<<<<<< HEAD
               "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
               "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
               "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
               "Function.grantPutMetricData (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-cloudwatch/lib/metric.ts:103:22)",
               "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:49:23)",
+=======
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:95:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:234:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:130:61)",
+              "Function.grantPutMetricData (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-cloudwatch/lib/metric.ts:91:22)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:47:23)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:45:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -537,7 +667,11 @@
             "type": "aws:cdk:logicalId",
             "data": "KinesisReplayInfrastructureInstanceProfile4256A29E",
             "trace": [
+<<<<<<< HEAD
               "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:57:29)",
+=======
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:52:29)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:45:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -554,7 +688,11 @@
             "type": "aws:cdk:logicalId",
             "data": "KinesisReplayInfrastructureReplayInstance5A978C92",
             "trace": [
+<<<<<<< HEAD
               "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:61:22)",
+=======
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:56:22)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:45:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -571,7 +709,11 @@
             "type": "aws:cdk:logicalId",
             "data": "KinesisReplayInfrastructureKinesisReplayInstance97EC36CE",
             "trace": [
+<<<<<<< HEAD
               "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:90:5)",
+=======
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:85:5)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:45:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -588,7 +730,11 @@
             "type": "aws:cdk:logicalId",
             "data": "KinesisReplayInfrastructureKinesisReplayCopyCommand4B2641D2",
             "trace": [
+<<<<<<< HEAD
               "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:91:5)",
+=======
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:86:5)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:45:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -623,7 +769,11 @@
             "type": "aws:cdk:logicalId",
             "data": "EmrInfrastructureReplayRole45BC559F",
             "trace": [
+<<<<<<< HEAD
               "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+=======
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:200:18)",
+>>>>>>> broken
               "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:29:22)",
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:50:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
@@ -641,7 +791,11 @@
             "type": "aws:cdk:logicalId",
             "data": "EmrInfrastructureInstanceProfileA9CB34C5",
             "trace": [
+<<<<<<< HEAD
               "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:36:25)",
+=======
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:34:25)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:50:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -658,7 +812,11 @@
             "type": "aws:cdk:logicalId",
             "data": "EmrInfrastructureEmrClusterE950A629",
             "trace": [
+<<<<<<< HEAD
               "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:42:25)",
+=======
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:40:25)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:50:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -675,7 +833,11 @@
             "type": "aws:cdk:logicalId",
             "data": "EmrInfrastructureSshEmrClusterEC3E33DC",
             "trace": [
+<<<<<<< HEAD
               "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:80:9)",
+=======
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:78:9)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:50:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -692,7 +854,11 @@
             "type": "aws:cdk:logicalId",
             "data": "EmrInfrastructureStartFlinkRuntime2BE04C38",
             "trace": [
+<<<<<<< HEAD
               "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:81:9)",
+=======
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:79:9)",
+>>>>>>> broken
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:50:7)",
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
@@ -741,7 +907,11 @@
             "type": "aws:cdk:logicalId",
             "data": "S3Bucket",
             "trace": [
+<<<<<<< HEAD
               "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:88:5)",
+=======
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:89:5)",
+>>>>>>> broken
               "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:15:1)",
               "Module._compile (internal/modules/cjs/loader.js:774:30)",
               "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
