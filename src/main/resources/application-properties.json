@@ -1,0 +1,12 @@
+[
+  {
+    "PropertyGroupId": "BeamApplicationProperties",
+    "PropertyMap": {
+      "Source": "kinesis",
+      "InputStreamName": "...",
+      "InputS3Pattern": "...",
+      "AwsRegion": "eu-west-1",
+      "OutputBoroughs": "true"
+    }
+  }
+]

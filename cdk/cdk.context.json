@@ -1,0 +1,39 @@
+{
+  "vpc-provider:account=399220903411:filter.isDefault=true:region=eu-west-1": {
+    "vpcId": "vpc-fc78da99",
+    "availabilityZones": [
+      "eu-west-1a",
+      "eu-west-1b",
+      "eu-west-1c"
+    ],
+    "publicSubnetIds": [
+      "subnet-3b6fb762",
+      "subnet-a97be5cc",
+      "subnet-41ec6a36"
+    ],
+    "publicSubnetNames": [
+      "Public"
+    ]
+  },
+  "ssm:account=399220903411:parameterName=/aws/service/ami-amazon-linux-latest/amzn-ami-hvm-x86_64-gp2:region=eu-west-1": "ami-08935252a36e25f85",
+  "ssm:account=399220903411:parameterName=/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2:region=eu-west-1": "ami-07683a44e80cd32c5",
+  "vpc-provider:account=399220903411:filter.isDefault=true:region=us-west-2": {
+    "vpcId": "vpc-9df04ff8",
+    "availabilityZones": [
+      "us-west-2a",
+      "us-west-2b",
+      "us-west-2c",
+      "us-west-2d"
+    ],
+    "publicSubnetIds": [
+      "subnet-6444ee13",
+      "subnet-214eda44",
+      "subnet-50c60e09",
+      "subnet-e133c8ca"
+    ],
+    "publicSubnetNames": [
+      "Public"
+    ]
+  },
+  "ssm:account=399220903411:parameterName=/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2:region=us-west-2": "ami-061392db613a6357b"
+}
