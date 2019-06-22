@@ -162,7 +162,18 @@
           "Version": "2012-10-17"
         },
         "ManagedPolicyArns": [
-          "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonS3ReadOnlyAccess"
+              ]
+            ]
+          }
         ]
       },
       "Metadata": {
@@ -244,9 +255,6 @@
     "KinesisReplayInfrastructureReplayInstance5A978C92": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
-        "IamInstanceProfile": {
-          "Ref": "KinesisReplayInfrastructureInstanceProfile4256A29E"
-        },
         "ImageId": "ami-07683a44e80cd32c5",
         "InstanceType": "c5.2xlarge",
         "KeyName": "shausma-eu-west-1",
@@ -266,7 +274,7 @@
             ]
           }
         ],
-        "UserData": "IyEvYmluL2Jhc2ggLXgKICAgICAgICAgICAgCiAgICAgICAgICAgIHl1bSB1cGRhdGUgLXkKICAgICAgICAgICAgeXVtIGluc3RhbGwgLXkgdG11eAoKICAgICAgICAgICAgIyBpbnN0YWxsIEphdmEgMTEKICAgICAgICAgICAgYW1hem9uLWxpbnV4LWV4dHJhcyBlbmFibGUgamF2YS1vcGVuamRrMTEKICAgICAgICAgICAgeXVtIGluc3RhbGwgLXkgamF2YS0xMS1vcGVuamRrCgogICAgICAgICAgICAjIGNvcHkgdGhlIHJlcGxheSBKYXZhIGFwcCBmcm9tIHMzCiAgICAgICAgICAgICMgc3UgZWMyLXVzZXIgLWwgLWMgImF3cyBzMyBjcCAtLXJlY3Vyc2l2ZSAtLWV4Y2x1ZGUgJyonIC0taW5jbHVkZSAnYW1hem9uLWtpbmVzaXMtcmVwbGF5LSouamFyJyAnczM6Ly8ke1Rva2VuW1Jlc291cmNlLlJlZi4xMjddfS8nIC4i"
+        "UserData": "IyEvYmluL2Jhc2ggLXgKICAgICAgICAgICAgCiAgICAgICAgICAgIHl1bSB1cGRhdGUgLXkKICAgICAgICAgICAgeXVtIGluc3RhbGwgLXkgdG11eAoKICAgICAgICAgICAgIyBpbnN0YWxsIEphdmEgMTEKICAgICAgICAgICAgYW1hem9uLWxpbnV4LWV4dHJhcyBlbmFibGUgamF2YS1vcGVuamRrMTEKICAgICAgICAgICAgeXVtIGluc3RhbGwgLXkgamF2YS0xMS1vcGVuamRrCgogICAgICAgICAgICAjIGNvcHkgdGhlIHJlcGxheSBKYXZhIGFwcCBmcm9tIHMzCiAgICAgICAgICAgICMgc3UgZWMyLXVzZXIgLWwgLWMgImF3cyBzMyBjcCAtLXJlY3Vyc2l2ZSAtLWV4Y2x1ZGUgJyonIC0taW5jbHVkZSAnYW1hem9uLWtpbmVzaXMtcmVwbGF5LSouamFyJyAnczM6Ly8ke1Rva2VuW05hbWUuMTAzXX0vJyAuIg=="
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount/KinesisReplayInfrastructure/ReplayInstance"
@@ -314,7 +322,18 @@
           "Version": "2012-10-17"
         },
         "ManagedPolicyArns": [
-          "arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role"
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role"
+              ]
+            ]
+          }
         ]
       },
       "Metadata": {
@@ -458,7 +477,18 @@
       "Value": "java -jar amazon-kinesis-replay-*.jar -streamRegion eu-west-1 -bucketName shausma-nyc-tlc -objectPrefix yellow-trip-data/taxi-trips-2018-odd.json/ -bucketRegion eu-west-1 -speedup 1440 -streamName beam-summit"
     },
     "StartFlinkApplication": {
-      "Value": "flink run -p 32 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://shausma-beam-summit/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=eu-west-1 --source=s3 --outputBoroughs=true"
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "flink run -p 32 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://",
+            {
+              "Ref": "Bucket83908E77"
+            },
+            "/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=eu-west-1 --source=s3 --outputBoroughs=true"
+          ]
+        ]
+      }
     },
     "S3Bucket": {
       "Value": {

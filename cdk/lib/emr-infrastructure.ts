@@ -28,7 +28,9 @@ export class EmrInfrastructure extends cdk.Construct {
 
         const role = new iam.Role(this, 'ReplayRole', {
             assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
-            managedPolicyArns: ['arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role']
+            managedPolicies: [
+                iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AmazonElasticMapReduceforEC2Role')
+            ]
         });
 
         const profile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
@@ -64,7 +66,7 @@ export class EmrInfrastructure extends cdk.Construct {
             serviceRole : 'EMR_DefaultRole',
             releaseLabel: 'emr-5.20.0',
             visibleToAllUsers: true,
-            jobFlowRole: profile.instanceProfileName,
+            jobFlowRole: profile.refAsString,
             configurations: [
                 {
                     classification: 'emrfs-site',
@@ -75,7 +77,7 @@ export class EmrInfrastructure extends cdk.Construct {
             ]
         });
 
-        new cdk.CfnOutput(this, 'SshEmrCluster', { value: `ssh -C -D 8157 hadoop@${cluster.clusterMasterPublicDns}` });
+        new cdk.CfnOutput(this, 'SshEmrCluster', { value: `ssh -C -D 8157 hadoop@${cluster.attrMasterPublicDns}` });
         new cdk.CfnOutput(this, 'StartFlinkRuntime', { value: 'flink-yarn-session -n 2 -s 16 -tm 64GB -d' });
     }
 }

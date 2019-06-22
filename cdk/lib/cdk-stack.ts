@@ -30,13 +30,13 @@ export class CdkStack extends cdk.Stack {
       new BeamBuildPipeline(this, 'BuildPipeline', {
         bucket: bucket,
         region: 'us-west-2',
-        accountId: this.accountId
+        accountId: this.account
       });
     }
 
     if (props.infrastructure) {
       new lambda.Function(this, 'EnrichEventsLambda', {
-        runtime: lambda.Runtime.NodeJS810,
+        runtime: lambda.Runtime.Nodejs810,
         code: lambda.Code.asset('lambda'),
         timeout: 300,
         handler: 'add-approximate-arrival-time.handler'

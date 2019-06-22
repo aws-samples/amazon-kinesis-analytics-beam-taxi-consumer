@@ -4,6 +4,7 @@ import codepipeline = require('@aws-cdk/aws-codepipeline');
 import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 import codecommit = require('@aws-cdk/aws-codecommit');
 import codebuild = require('@aws-cdk/aws-codebuild');
+import { BuildSpec } from '@aws-cdk/aws-codebuild';
 
 export interface BeamBuildPipelineProps {
   bucket: s3.Bucket,
@@ -26,14 +27,13 @@ export class BeamBuildPipeline extends cdk.Construct {
       output: sourceOutput
     });
 
-
     const project = new codebuild.Project(this, 'MyProject', {
-      source: new codebuild.CodePipelineSource(),
-      artifacts: new codebuild.CodePipelineBuildArtifacts(),
+//      source: new codebuild.CodePipelineSource(),
+//      artifacts: new codebuild.CodePipelineBuildArtifacts(),
       environment: {
         buildImage: codebuild.LinuxBuildImage.UBUNTU_14_04_OPEN_JDK_11
       },
-      buildSpec: {
+      buildSpec: BuildSpec.fromObject({
         version: '0.2',
         phases: {
           build: {
@@ -50,7 +50,7 @@ export class BeamBuildPipeline extends cdk.Construct {
           ],
           discard: true
         }
-      }
+      })
     });
 
 
@@ -60,7 +60,7 @@ export class BeamBuildPipeline extends cdk.Construct {
       actionName: 'BuildAction',
       project,
       input: sourceOutput,
-      output: buildOutput
+      outputs: [buildOutput]
     });
 
 
@@ -75,15 +75,15 @@ export class BeamBuildPipeline extends cdk.Construct {
     new codepipeline.Pipeline(this, 'MyPipeline', {
       stages: [
         {
-          name: 'Source',
+          stageName: 'Source',
           actions: [sourceAction],
         },
         {
-          name: 'Build',
+          stageName: 'Build',
           actions: [buildAction],
         },
         {
-          name: 'Copy',
+          stageName: 'Copy',
           actions: [copyAction]
         }
       ],

@@ -68,7 +68,7 @@
                 ]
               ]
             },
-            "Id": "MyPipeline",
+            "Id": "BeamBuildBuildPipelineMyPipeline829BE5B5",
             "RoleArn": {
               "Fn::GetAtt": [
                 "BuildPipelineMyPipelineEventsRole3185765D",
@@ -233,7 +233,7 @@
       "Type": "AWS::CodeBuild::Project",
       "Properties": {
         "Artifacts": {
-          "Type": "CODEPIPELINE"
+          "Type": "NO_ARTIFACTS"
         },
         "Environment": {
           "ComputeType": "BUILD_GENERAL1_SMALL",
@@ -249,7 +249,7 @@
         },
         "Source": {
           "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd beam-taxi-count-* || :\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/beam-taxi-count-*.jar\",\n      \"beam-taxi-count-*/target/beam-taxi-count-*.jar\"\n    ],\n    \"discard\": true\n  }\n}",
-          "Type": "CODEPIPELINE"
+          "Type": "NO_SOURCE"
         }
       },
       "Metadata": {

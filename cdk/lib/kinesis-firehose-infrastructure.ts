@@ -18,7 +18,9 @@ export class FirehoseInfrastructure extends cdk.Construct {
       
         const firehoseRole = new iam.Role(this, 'FirehoseRole', {
             assumedBy: new iam.ServicePrincipal('firehose.amazonaws.com'),
-            managedPolicyArns: ['arn:aws:iam::aws:policy/AdministratorAccess']
+            managedPolicies: [
+                iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess ')
+            ]
         });
     
         new kdf.CfnDeliveryStream(this, 'FirehoseDeliveryStream', {

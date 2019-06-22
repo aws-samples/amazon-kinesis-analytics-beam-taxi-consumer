@@ -39,10 +39,10 @@ export class KinesisAnalyticsJava extends cdk.Construct {
         logGroup.grantWrite(role);
         logGroup.grant(role, "logs:DescribeLogStreams");
         role.addToPolicy(
-            new iam.PolicyStatement()
-                .allow()
-                .addAction('logs:DescribeLogGroups')
-                .addResource(`arn:aws:logs:${props.region}:${props.accountId}:log-group:*`)
+            new iam.PolicyStatement({
+                actions: ['logs:DescribeLogGroups'],
+                resources: [`arn:aws:logs:${props.region}:${props.accountId}:log-group:*`]
+            })
         );
 
         const bucket = Bucket.fromBucketName(this, 'TclBucket', 'nyc-tlc');

@@ -41,13 +41,18 @@ export class KinesisReplay extends cdk.Construct {
 
     const role = new iam.Role(this, 'ReplayRole', {
         assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
-        managedPolicyArns: ['arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess']
+        managedPolicies: [
+            iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3ReadOnlyAccess')
+        ]
     });
 
     cloudwatch.Metric.grantPutMetricData(role);
     props.bucket.grantRead(role);
 
-    role.addToPolicy(new iam.PolicyStatement().addAction('kinesis:*').allow().addAllResources());
+    role.addToPolicy(new iam.PolicyStatement({
+        actions: ['kinesis:*'],
+        resources: ['*']
+    }));
 
     const instanceProfile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
         roles: [role.roleName]
@@ -82,7 +87,7 @@ export class KinesisReplay extends cdk.Construct {
         )
     });
     
-    new cdk.CfnOutput(this, 'KinesisReplayInstance', { value: `ssh -C ec2-user@${instance.instancePublicDnsName}` });
+    new cdk.CfnOutput(this, 'KinesisReplayInstance', { value: `ssh -C ec2-user@${instance.attrPublicDnsName}` });
     new cdk.CfnOutput(this, 'KinesisReplayCopyCommand', { value: `${kinesisReplayCopyCommand}` });
   }
 }

@@ -32,13 +32,13 @@ export class BeamDashboard extends cloudwatch.Dashboard {
           statistic: 'sum'
         });  
     
-        this.add(new cloudwatch.GraphWidget({
+        this.addWidgets(new cloudwatch.GraphWidget({
           left: [iteratorAge],
           right: [incomingRecords],
           width: 24
         }));
     
-        this.add(new cloudwatch.GraphWidget({
+        this.addWidgets(new cloudwatch.GraphWidget({
           left: [
             new Metric({
               namespace: 'Beam',
@@ -64,13 +64,13 @@ export class BeamDashboard extends cloudwatch.Dashboard {
           statistic: statistic
         });
     
-        this.add(new cloudwatch.GraphWidget({
+        this.addWidgets(new cloudwatch.GraphWidget({
           left: ['Bronx', 'Brooklyn', 'Queens', 'Staten Island'].map(toMetric('max')),
           right: ['Manhattan', 'Unknown'].map(toMetric('max')),
           width: 24
         }));
     
-        this.add(new cloudwatch.GraphWidget({
+        this.addWidgets(new cloudwatch.GraphWidget({
           left: ['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'].map(toMetric('samplecount')),
           width: 24
         }));    
