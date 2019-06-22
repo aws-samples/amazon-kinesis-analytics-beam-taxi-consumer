@@ -19,10 +19,13 @@ export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
-    const keyName = new cdk.CfnParameter(this, 'GithubOauthToken', {
-      type: 'String',
-      description: `Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens`
+    /*
+    const keyName = new cdk.CfnParameter(this, 'KeyName', {
+      type: 'AWS::EC2::KeyPair::KeyName'
     }).valueAsString;
+    */
+
+   const keyName = this.node.tryGetContext("keyName");
 
     const bucket = new s3.Bucket(this, 'Bucket', {
       versioned: true
@@ -39,7 +42,7 @@ export class CdkStack extends cdk.Stack {
     if (props.demoInfrastructure || props.completeInfrastructure) {
       const enrichEvents = new lambda.Function(this, 'EnrichEventsLambda', {
         runtime: lambda.Runtime.Nodejs810,
-        code: lambda.Code.asset('lambda'),
+        code: lambda.Code.asset('lambda'),   //change to inline
         timeout: 300,
         handler: 'add-approximate-arrival-time.handler'
       });

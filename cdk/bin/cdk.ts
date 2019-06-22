@@ -5,9 +5,6 @@ import { CdkStack } from '../lib/cdk-stack';
 
 const app = new cdk.App();
 
-new CdkStack(app, 'BeamTaxiCount', {  
-    env: {
-        region: "eu-west-1"
-    },
-    build: true
+new CdkStack(app, 'BeamTaxiCount', {
+    demoInfrastructure: true
 });

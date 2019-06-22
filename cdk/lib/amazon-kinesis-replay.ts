@@ -23,7 +23,7 @@ export class KinesisReplay extends cdk.Construct {
         }
     });
 
-    const kinesisReplayCopyCommand = replayBuildStack.getAtt('Outputs.KinesisReplayCopyCommand').toString;
+    const kinesisReplayCopyCommand = replayBuildStack.getAtt('Outputs.KinesisReplayCopyCommand');
 
     const vpc = Vpc.fromLookup(this, 'VPC', {
         isDefault: true

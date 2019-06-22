@@ -4,7 +4,7 @@ import codepipeline = require('@aws-cdk/aws-codepipeline');
 import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 import codebuild = require('@aws-cdk/aws-codebuild');
 import { BuildSpec } from '@aws-cdk/aws-codebuild';
-import { CfnParameter, SecretValue } from '@aws-cdk/cdk';
+import { SecretValue } from '@aws-cdk/cdk';
 
 export interface BeamBuildPipelineProps {
   bucket: s3.Bucket,
@@ -16,6 +16,7 @@ export class BeamBuildPipeline extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: BeamBuildPipelineProps) {
     super(scope, id);
 
+    /*
     const oauthToken = SecretValue.cfnParameter(
       new CfnParameter(this, 'GithubOauthToken', {
         type: 'String',
@@ -23,6 +24,13 @@ export class BeamBuildPipeline extends cdk.Construct {
         description: `Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens`
       })
     );
+    */
+
+    const secretId = this.node.tryGetContext('secretId');
+
+    const oauthToken = SecretValue.secretsManager(secretId, {
+      jsonField: 'api-key'
+    });
     
     const sourceOutput = new codepipeline.Artifact();
 
@@ -36,8 +44,6 @@ export class BeamBuildPipeline extends cdk.Construct {
     });
 
     const project = new codebuild.Project(this, 'MyProject', {
-//      source: new codebuild.CodePipelineSource(),
-//      artifacts: new codebuild.CodePipelineBuildArtifacts(),
       environment: {
         buildImage: codebuild.LinuxBuildImage.UBUNTU_14_04_OPEN_JDK_11
       },
