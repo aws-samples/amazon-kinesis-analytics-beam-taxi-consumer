@@ -1,0 +1,2370 @@
+{
+  "version": "0.34.0",
+  "artifacts": {
+    "BeamTaxiCount-Build": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://399220903411/eu-west-1",
+      "properties": {
+        "templateFile": "BeamTaxiCount-Build.template.json"
+      },
+      "metadata": {
+        "/BeamTaxiCount-Build/KeyName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KeyName",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:24:21)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Bucket83908E77",
+            "trace": [
+              "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:896:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:28:20)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/S3Bucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3Bucket",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:32:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/GithubOauthToken": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GithubOauthToken",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:35:7)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:635:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicyBF401442",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Project.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:196:17)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:716:10)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/MyProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectA087020D",
+            "trace": [
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:682:22)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/WaitHandle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:77:24)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/WaitCondition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:79:38)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:402:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:87:27)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function-base.ts:186:15)",
+              "LambdaInvokeAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/lambda/invoke-action.ts:95:23)",
+              "LambdaInvokeAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:419:35)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:87:27)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:240:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:102:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:524:23)",
+              "Bucket.grantReadWrite (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:462:17)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:256:25)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipeline9ECC2268",
+            "trace": [
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:244:26)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource8C2B15E4",
+            "trace": [
+              "GitHubSourceAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/github/source-action.ts:90:7)",
+              "GitHubSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Build/BeamTaxiConsumerBuildPipeline/BeamTaxiCountCopyCommand": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineBeamTaxiCountCopyCommand3906FDA0",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:124:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:8:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ]
+      }
+    },
+    "BeamTaxiCount-Demo": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://399220903411/eu-west-1",
+      "properties": {
+        "templateFile": "BeamTaxiCount-Demo.template.json"
+      },
+      "metadata": {
+        "/BeamTaxiCount-Demo/KeyName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KeyName",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:24:21)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Bucket83908E77",
+            "trace": [
+              "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:896:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:28:20)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/S3Bucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3Bucket",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:32:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/GithubOauthToken": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GithubOauthToken",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:35:7)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:635:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicyBF401442",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Project.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:196:17)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:716:10)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectA087020D",
+            "trace": [
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:682:22)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/WaitHandle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:77:24)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/WaitCondition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:79:38)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:402:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:87:27)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function-base.ts:186:15)",
+              "LambdaInvokeAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/lambda/invoke-action.ts:95:23)",
+              "LambdaInvokeAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:419:35)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:87:27)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:240:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:102:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:524:23)",
+              "Bucket.grantReadWrite (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:462:17)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:256:25)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipeline9ECC2268",
+            "trace": [
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:244:26)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource8C2B15E4",
+            "trace": [
+              "GitHubSourceAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/github/source-action.ts:90:7)",
+              "GitHubSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/BeamTaxiCountCopyCommand": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineBeamTaxiCountCopyCommand3906FDA0",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:124:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/EnrichEventsLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnrichEventsLambdaServiceRoleD32248A6",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:402:31)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:60:26)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/EnrichEventsLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnrichEventsLambda23B68032",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:419:35)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:60:26)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRole3B3C8A38",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:635:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:37:21)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicy0FED466C",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Project.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:196:17)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:716:10)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:37:21)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527",
+            "trace": [
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:682:22)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:37:21)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/WaitHandle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitHandleD023A81D",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:77:24)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/WaitCondition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitCondition4FE02D51",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:79:38)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:402:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:87:27)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy245DACCB",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function-base.ts:186:15)",
+              "LambdaInvokeAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/lambda/invoke-action.ts:95:23)",
+              "LambdaInvokeAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaB1CB3295",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:419:35)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:87:27)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:240:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy277A67B0",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:102:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:524:23)",
+              "Bucket.grantReadWrite (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:462:17)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:256:25)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineB67D56F2",
+            "trace": [
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:244:26)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource6BF24A5C",
+            "trace": [
+              "GitHubSourceAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/github/source-action.ts:90:7)",
+              "GitHubSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/AmazonKinesisReplayCopyCommand": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineAmazonKinesisReplayCopyCommand6A25682B",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:124:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureSecurityGroup192A878A",
+            "trace": [
+              "new SecurityGroup (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-ec2/lib/security-group.ts:275:26)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:37:16)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/ReplayRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureReplayRole501258B1",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:47:18)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/ReplayRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureReplayRoleDefaultPolicy351423BD",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Function.grantPutMetricData (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-cloudwatch/lib/metric.ts:103:22)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:54:23)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureInstanceProfile4256A29E",
+            "trace": [
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:62:29)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/ReplayInstance": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureReplayInstance5A978C92",
+            "trace": [
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:66:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayInstance": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureKinesisReplayInstance97EC36CE",
+            "trace": [
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:95:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/EmrInfrastructure/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureSecurityGroupC050C542",
+            "trace": [
+              "new SecurityGroup (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-ec2/lib/security-group.ts:275:26)",
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:23:20)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/EmrInfrastructure/ReplayRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureReplayRole45BC559F",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:29:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/EmrInfrastructure/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureInstanceProfileA9CB34C5",
+            "trace": [
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:36:25)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/EmrInfrastructure/EmrCluster": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureEmrClusterE950A629",
+            "trace": [
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:42:25)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/EmrInfrastructure/SshEmrCluster": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureSshEmrClusterEC3E33DC",
+            "trace": [
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:80:9)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/EmrInfrastructure/StartFlinkRuntime": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureStartFlinkRuntime2BE04C38",
+            "trace": [
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:81:9)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/KinesisReplayCommand": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayCommand",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:83:7)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Demo/StartFlinkApplication": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartFlinkApplication",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:84:7)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:12:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ]
+      }
+    },
+    "BeamTaxiCount-Complete": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://399220903411/eu-west-1",
+      "properties": {
+        "templateFile": "BeamTaxiCount-Complete.template.json"
+      },
+      "metadata": {
+        "/BeamTaxiCount-Complete/KeyName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KeyName",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:24:21)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Bucket83908E77",
+            "trace": [
+              "new Bucket (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:896:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:28:20)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/S3Bucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3Bucket",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:32:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/GithubOauthToken": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GithubOauthToken",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:35:7)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:635:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicyBF401442",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Project.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:196:17)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:716:10)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyProjectA087020D",
+            "trace": [
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:682:22)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:37:21)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/WaitHandle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:77:24)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/WaitCondition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:79:38)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:402:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:87:27)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function-base.ts:186:15)",
+              "LambdaInvokeAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/lambda/invoke-action.ts:95:23)",
+              "LambdaInvokeAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:419:35)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:87:27)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:240:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:102:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:524:23)",
+              "Bucket.grantReadWrite (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:462:17)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:256:25)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipeline9ECC2268",
+            "trace": [
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:244:26)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource8C2B15E4",
+            "trace": [
+              "GitHubSourceAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/github/source-action.ts:90:7)",
+              "GitHubSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:104:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/BeamTaxiCountCopyCommand": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BeamTaxiConsumerBuildPipelineBeamTaxiCountCopyCommand3906FDA0",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/beam-taxi-count-build.ts:124:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:43:27)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/EnrichEventsLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnrichEventsLambdaServiceRoleD32248A6",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:402:31)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:60:26)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/EnrichEventsLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EnrichEventsLambda23B68032",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:419:35)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:60:26)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRole3B3C8A38",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:635:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:37:21)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicy0FED466C",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Project.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:196:17)",
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:716:10)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:37:21)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527",
+            "trace": [
+              "new Project (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codebuild/lib/project.ts:682:22)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:37:21)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/WaitHandle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitHandleD023A81D",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:77:24)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/WaitCondition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitCondition4FE02D51",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:79:38)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:402:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:87:27)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy245DACCB",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToRolePolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function-base.ts:186:15)",
+              "LambdaInvokeAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/lambda/invoke-action.ts:95:23)",
+              "LambdaInvokeAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaB1CB3295",
+            "trace": [
+              "new Function (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-lambda/lib/function.ts:419:35)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:87:27)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:240:31)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy277A67B0",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:102:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:524:23)",
+              "Bucket.grantReadWrite (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:462:17)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:256:25)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineB67D56F2",
+            "trace": [
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:244:26)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource6BF24A5C",
+            "trace": [
+              "GitHubSourceAction.bind (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline-actions/lib/github/source-action.ts:90:7)",
+              "GitHubSourceAction._actionAttachedToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/action.ts:326:10)",
+              "Pipeline._attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:358:12)",
+              "Stage.attachActionToPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:120:28)",
+              "Stage.addAction (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:78:10)",
+              "new Stage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/stage.ts:37:12)",
+              "Pipeline.addStage (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:286:19)",
+              "new Pipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-codepipeline/lib/pipeline.ts:270:12)",
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:104:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/AmazonKinesisReplayCopyCommand": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineAmazonKinesisReplayCopyCommand6A25682B",
+            "trace": [
+              "new GithubBuildPipeline (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/github-build-pipeline.ts:124:5)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:22:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureSecurityGroup192A878A",
+            "trace": [
+              "new SecurityGroup (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-ec2/lib/security-group.ts:275:26)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:37:16)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/ReplayRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureReplayRole501258B1",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:47:18)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/ReplayRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureReplayRoleDefaultPolicy351423BD",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Function.grantPutMetricData (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-cloudwatch/lib/metric.ts:103:22)",
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:54:23)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureInstanceProfile4256A29E",
+            "trace": [
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:62:29)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/ReplayInstance": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureReplayInstance5A978C92",
+            "trace": [
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:66:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayInfrastructure/KinesisReplayInstance": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayInfrastructureKinesisReplayInstance97EC36CE",
+            "trace": [
+              "new KinesisReplay (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/amazon-kinesis-replay.ts:95:5)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:67:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/EmrInfrastructure/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureSecurityGroupC050C542",
+            "trace": [
+              "new SecurityGroup (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-ec2/lib/security-group.ts:275:26)",
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:23:20)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/EmrInfrastructure/ReplayRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureReplayRole45BC559F",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:29:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/EmrInfrastructure/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureInstanceProfileA9CB34C5",
+            "trace": [
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:36:25)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/EmrInfrastructure/EmrCluster": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureEmrClusterE950A629",
+            "trace": [
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:42:25)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/EmrInfrastructure/SshEmrCluster": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureSshEmrClusterEC3E33DC",
+            "trace": [
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:80:9)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/EmrInfrastructure/StartFlinkRuntime": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EmrInfrastructureStartFlinkRuntime2BE04C38",
+            "trace": [
+              "new EmrInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/emr-infrastructure.ts:81:9)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:75:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/InputStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InputStreamCFB159EA",
+            "trace": [
+              "new Stream (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-kinesis/lib/stream.ts:254:19)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:90:20)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/Dashboard/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Dashboard9E4231ED",
+            "trace": [
+              "new Dashboard (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-cloudwatch/lib/dashboard.ts:68:5)",
+              "new BeamDashboard (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cloudwatch-dashboard.ts:13:9)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:94:23)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FirehoseInfrastructure/FirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FirehoseInfrastructureFirehoseRole3E5B243F",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new FirehoseInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-firehose-infrastructure.ts:20:30)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:98:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FirehoseInfrastructure/FirehoseRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FirehoseInfrastructureFirehoseRoleDefaultPolicyF3BBC6E6",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Stream.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-kinesis/lib/stream.ts:162:22)",
+              "Stream.grantRead (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-kinesis/lib/stream.ts:112:22)",
+              "new FirehoseInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-firehose-infrastructure.ts:24:27)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:98:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FirehoseInfrastructure/FirehoseDeliveryStream": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FirehoseInfrastructureFirehoseDeliveryStream365513AC",
+            "trace": [
+              "new FirehoseInfrastructure (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-firehose-infrastructure.ts:28:26)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:98:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FlinkInfrastructure/KinesisAnalyticsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FlinkInfrastructureKinesisAnalyticsRole71C99707",
+            "trace": [
+              "new Role (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:212:18)",
+              "new KinesisAnalyticsJava (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-analytics-infrastructure.ts:25:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:105:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FlinkInfrastructure/KinesisAnalyticsRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FlinkInfrastructureKinesisAnalyticsRoleDefaultPolicy2AA4B95F",
+            "trace": [
+              "new Policy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/policy.ts:96:22)",
+              "Role.addToPolicy (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/role.ts:256:28)",
+              "Function.addToPrincipal (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:132:61)",
+              "Function.addToPrincipalOrResource (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-iam/lib/grant.ts:102:26)",
+              "Bucket.grant (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:524:23)",
+              "Bucket.grantRead (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:403:17)",
+              "new KinesisAnalyticsJava (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-analytics-infrastructure.ts:36:22)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:105:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FlinkInfrastructure/FlinkLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FlinkInfrastructureFlinkLogGroupD9BFEBD6",
+            "trace": [
+              "new LogGroup (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-logs/lib/log-group.ts:335:22)",
+              "new KinesisAnalyticsJava (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-analytics-infrastructure.ts:29:26)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:105:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FlinkInfrastructure/FlinkLogGroupName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FlinkInfrastructureFlinkLogGroupNameF37E6FFF",
+            "trace": [
+              "new KinesisAnalyticsJava (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-analytics-infrastructure.ts:33:9)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:105:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FlinkInfrastructure/FlinkLogStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FlinkInfrastructureFlinkLogStream37FF822A",
+            "trace": [
+              "new LogStream (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/node_modules/@aws-cdk/aws-logs/lib/log-stream.ts:69:22)",
+              "new KinesisAnalyticsJava (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-analytics-infrastructure.ts:52:27)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:105:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FlinkInfrastructure/FlinkApplication": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FlinkInfrastructureFlinkApplicationBEFFC04F",
+            "trace": [
+              "new KinesisAnalyticsJava (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-analytics-infrastructure.ts:56:26)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:105:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/FlinkInfrastructure/FlinkLogging": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "FlinkInfrastructureFlinkLogging8F449288",
+            "trace": [
+              "new KinesisAnalyticsJava (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/kinesis-analytics-infrastructure.ts:99:9)",
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:105:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/KinesisReplayCommand": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisReplayCommand",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:114:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ],
+        "/BeamTaxiCount-Complete/StartFlinkApplication": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StartFlinkApplication",
+            "trace": [
+              "new CdkStack (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/lib/cdk-stack.ts:115:5)",
+              "Object.<anonymous> (/Users/shausma/Documents/Code/amazon-kinesis-analytics-beam-taxi-consumer/cdk/bin/cdk.ts:16:1)",
+              "Module._compile (internal/modules/cjs/loader.js:774:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)",
+              "Module.load (internal/modules/cjs/loader.js:641:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:556:12)",
+              "Function.Module.runMain (internal/modules/cjs/loader.js:837:10)",
+              "internal/main/run_main_module.js:17:11"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "runtime": {
+    "libraries": {
+      "@aws-cdk/cdk": "0.35.0",
+      "@aws-cdk/cx-api": "0.35.0",
+      "@aws-cdk/aws-s3": "0.35.0",
+      "@aws-cdk/aws-events": "0.35.0",
+      "@aws-cdk/aws-iam": "0.35.0",
+      "@aws-cdk/region-info": "0.35.0",
+      "@aws-cdk/aws-kms": "0.35.0",
+      "@aws-cdk/aws-lambda": "0.35.0",
+      "@aws-cdk/aws-cloudwatch": "0.35.0",
+      "@aws-cdk/aws-ec2": "0.35.0",
+      "@aws-cdk/aws-sqs": "0.35.0",
+      "@aws-cdk/aws-s3-assets": "0.35.0",
+      "@aws-cdk/assets": "0.35.0",
+      "@aws-cdk/aws-cloudformation": "0.35.0",
+      "@aws-cdk/aws-codepipeline": "0.35.0",
+      "@aws-cdk/aws-codepipeline-actions": "0.35.0",
+      "@aws-cdk/aws-events-targets": "0.35.0",
+      "@aws-cdk/aws-ecs": "0.35.0",
+      "@aws-cdk/aws-applicationautoscaling": "0.35.0",
+      "@aws-cdk/aws-autoscaling-common": "0.35.0",
+      "@aws-cdk/aws-elasticloadbalancingv2": "0.35.0",
+      "@aws-cdk/aws-servicediscovery": "0.35.0",
+      "@aws-cdk/aws-ecr-assets": "0.35.0",
+      "@aws-cdk/aws-ecr": "0.35.0",
+      "@aws-cdk/aws-autoscaling": "0.35.0",
+      "@aws-cdk/aws-autoscaling-hooktargets": "0.35.0",
+      "@aws-cdk/aws-sns": "0.35.0",
+      "@aws-cdk/aws-sns-subscriptions": "0.35.0",
+      "@aws-cdk/aws-logs": "0.35.0",
+      "@aws-cdk/aws-codebuild": "0.35.0",
+      "@aws-cdk/aws-emr": "0.35.0",
+      "@aws-cdk/aws-kinesis": "0.35.0",
+      "@aws-cdk/aws-kinesisanalytics": "0.35.0",
+      "@aws-cdk/aws-kinesisfirehose": "0.35.0",
+      "jsii-runtime": "node.js/v12.4.0"
+    }
+  }
+}

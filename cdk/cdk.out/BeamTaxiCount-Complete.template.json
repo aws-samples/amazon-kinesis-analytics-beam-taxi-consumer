@@ -1,0 +1,2232 @@
+{
+  "Parameters": {
+    "KeyName": {
+      "Type": "AWS::EC2::KeyPair::KeyName"
+    },
+    "GithubOauthToken": {
+      "Type": "String",
+      "Description": "Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens",
+      "NoEcho": true
+    }
+  },
+  "Resources": {
+    "Bucket83908E77": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/Bucket/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "codebuild.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicyBF401442": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "BeamTaxiConsumerBuildPipelineMyProjectA087020D"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "BeamTaxiConsumerBuildPipelineMyProjectA087020D"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicyBF401442",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineMyProjectA087020D": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/java:openjdk-11",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/beam-taxi-count-*.jar\"\n    ],\n    \"discard\": true\n  }\n}",
+          "Type": "NO_SOURCE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyProject/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/WaitHandle"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "Properties": {
+        "Count": 1,
+        "Handle": {
+          "Ref": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2"
+        },
+        "Timeout": "300"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/WaitCondition"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "lambda.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codepipeline:PutJobSuccessResult",
+                "codepipeline:PutJobFailureResult"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import json\nimport boto3\nimport urllib.request\nimport os\n\ncode_pipeline = boto3.client('codepipeline')\n\ndef handler(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"failure: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})"
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "waitHandleUrl": {
+              "Ref": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2"
+            }
+          }
+        },
+        "Timeout": 10
+      },
+      "DependsOn": [
+        "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
+        "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "codepipeline.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:StopBuild"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "BeamTaxiConsumerBuildPipelineMyProjectA087020D",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "lambda:ListFunctions",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineMyPipeline9ECC2268": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D",
+            "Arn"
+          ]
+        },
+        "Stages": [
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "ThirdParty",
+                  "Provider": "GitHub",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "Owner": "aws-samples",
+                  "Repo": "amazon-kinesis-analytics-beam-taxi-consumer",
+                  "Branch": "master",
+                  "OAuthToken": {
+                    "Ref": "GithubOauthToken"
+                  },
+                  "PollForSourceChanges": false
+                },
+                "InputArtifacts": [],
+                "Name": "SourceAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Source"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "BeamTaxiConsumerBuildPipelineMyProjectA087020D"
+                  }
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "Name": "BuildAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Build"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "BucketName": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "Extract": "true"
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "Name": "CopyAction",
+                "OutputArtifacts": [],
+                "RunOrder": 1
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Invoke",
+                  "Owner": "AWS",
+                  "Provider": "Lambda",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "FunctionName": {
+                    "Ref": "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5"
+                  }
+                },
+                "InputArtifacts": [],
+                "Name": "InvokeAction",
+                "OutputArtifacts": [],
+                "RunOrder": 2
+              }
+            ],
+            "Name": "Copy"
+          }
+        ],
+        "ArtifactStore": {
+          "Location": {
+            "Ref": "Bucket83908E77"
+          },
+          "Type": "S3"
+        }
+      },
+      "DependsOn": [
+        "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF",
+        "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource8C2B15E4": {
+      "Type": "AWS::CodePipeline::Webhook",
+      "Properties": {
+        "Authentication": "GITHUB_HMAC",
+        "AuthenticationConfiguration": {
+          "SecretToken": {
+            "Ref": "GithubOauthToken"
+          }
+        },
+        "Filters": [
+          {
+            "JsonPath": "$.ref",
+            "MatchEquals": "refs/heads/{Branch}"
+          }
+        ],
+        "TargetAction": "SourceAction",
+        "TargetPipeline": {
+          "Ref": "BeamTaxiConsumerBuildPipelineMyPipeline9ECC2268"
+        },
+        "TargetPipelineVersion": 1,
+        "RegisterWithThirdParty": true
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource"
+      }
+    },
+    "EnrichEventsLambdaServiceRoleD32248A6": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "lambda.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EnrichEventsLambda/ServiceRole/Resource"
+      }
+    },
+    "EnrichEventsLambda23B68032": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "'use strict';\nconsole.log('Loading function');\n\nexports.handler = (event, context, callback) => {\n    /* Process the list of records and transform them */\n    const output = event.records.map((record) => ({\n        recordId: record.recordId,\n        result: 'Ok',\n        data: enrichPayload(record),\n    }));\n    \n    console.log(`Processing completed.  Successful records ${output.length}.`);\n    \n    callback(null, { records: output });\n};\n\n\nfunction enrichPayload(record) {\n    const payload = JSON.parse(Buffer.from(record.data, 'base64').toString('utf8'));\n    const timestamp = new Date(record.kinesisRecordMetadata.approximateArrivalTimestamp).toISOString();\n    \n    const enrichedPayload = Object.assign({approximate_arrival_timestamp: timestamp}, payload);\n\n    return Buffer.from(JSON.stringify(enrichedPayload)+\"\\n\").toString('base64');\n}"
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "EnrichEventsLambdaServiceRoleD32248A6",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs8.10",
+        "Timeout": 60
+      },
+      "DependsOn": [
+        "EnrichEventsLambdaServiceRoleD32248A6"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EnrichEventsLambda/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRole3B3C8A38": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "codebuild.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicy0FED466C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicy0FED466C",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRole3B3C8A38"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "NO_ARTIFACTS"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/java:openjdk-11",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRole3B3C8A38",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard\": true\n  }\n}",
+          "Type": "NO_SOURCE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitHandleD023A81D": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/WaitHandle"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitCondition4FE02D51": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "Properties": {
+        "Count": 1,
+        "Handle": {
+          "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitHandleD023A81D"
+        },
+        "Timeout": "300"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/WaitCondition"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "lambda.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy245DACCB": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codepipeline:PutJobSuccessResult",
+                "codepipeline:PutJobFailureResult"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy245DACCB",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaB1CB3295": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import json\nimport boto3\nimport urllib.request\nimport os\n\ncode_pipeline = boto3.client('codepipeline')\n\ndef handler(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"failure: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})"
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "waitHandleUrl": {
+              "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitHandleD023A81D"
+            }
+          }
+        },
+        "Timeout": 10
+      },
+      "DependsOn": [
+        "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy245DACCB",
+        "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "codepipeline.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy277A67B0": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:StopBuild"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "lambda:ListFunctions",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaB1CB3295",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy277A67B0",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineB67D56F2": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8",
+            "Arn"
+          ]
+        },
+        "Stages": [
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "ThirdParty",
+                  "Provider": "GitHub",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "Owner": "aws-samples",
+                  "Repo": "amazon-kinesis-replay",
+                  "Branch": "master",
+                  "OAuthToken": {
+                    "Ref": "GithubOauthToken"
+                  },
+                  "PollForSourceChanges": false
+                },
+                "InputArtifacts": [],
+                "Name": "SourceAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Source"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527"
+                  }
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "Name": "BuildAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Build"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "BucketName": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "Extract": "true"
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "Name": "CopyAction",
+                "OutputArtifacts": [],
+                "RunOrder": 1
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Invoke",
+                  "Owner": "AWS",
+                  "Provider": "Lambda",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "FunctionName": {
+                    "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaB1CB3295"
+                  }
+                },
+                "InputArtifacts": [],
+                "Name": "InvokeAction",
+                "OutputArtifacts": [],
+                "RunOrder": 2
+              }
+            ],
+            "Name": "Copy"
+          }
+        ],
+        "ArtifactStore": {
+          "Location": {
+            "Ref": "Bucket83908E77"
+          },
+          "Type": "S3"
+        }
+      },
+      "DependsOn": [
+        "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy277A67B0",
+        "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource6BF24A5C": {
+      "Type": "AWS::CodePipeline::Webhook",
+      "Properties": {
+        "Authentication": "GITHUB_HMAC",
+        "AuthenticationConfiguration": {
+          "SecretToken": {
+            "Ref": "GithubOauthToken"
+          }
+        },
+        "Filters": [
+          {
+            "JsonPath": "$.ref",
+            "MatchEquals": "refs/heads/{Branch}"
+          }
+        ],
+        "TargetAction": "SourceAction",
+        "TargetPipeline": {
+          "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineB67D56F2"
+        },
+        "TargetPipelineVersion": 1,
+        "RegisterWithThirdParty": true
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource"
+      }
+    },
+    "KinesisReplayInfrastructureSecurityGroup192A878A": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:22",
+            "FromPort": 22,
+            "IpProtocol": "tcp",
+            "ToPort": 22
+          }
+        ],
+        "VpcId": "vpc-fc78da99"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/SecurityGroup/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureReplayRole501258B1": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "ec2.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/AmazonS3ReadOnlyAccess"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/ReplayRole/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureReplayRoleDefaultPolicy351423BD": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "kinesis:*",
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayInfrastructureReplayRoleDefaultPolicy351423BD",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayInfrastructureReplayRole501258B1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/ReplayRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureInstanceProfile4256A29E": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "KinesisReplayInfrastructureReplayRole501258B1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/InstanceProfile"
+      }
+    },
+    "KinesisReplayInfrastructureReplayInstance5A978C92": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "IamInstanceProfile": {
+          "Ref": "KinesisReplayInfrastructureInstanceProfile4256A29E"
+        },
+        "ImageId": "ami-07683a44e80cd32c5",
+        "InstanceType": "c5.2xlarge",
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "Monitoring": true,
+        "NetworkInterfaces": [
+          {
+            "AssociatePublicIpAddress": true,
+            "DeleteOnTermination": true,
+            "DeviceIndex": "0",
+            "GroupSet": [
+              {
+                "Fn::GetAtt": [
+                  "KinesisReplayInfrastructureSecurityGroup192A878A",
+                  "GroupId"
+                ]
+              }
+            ]
+          }
+        ],
+        "UserData": "IyEvYmluL2Jhc2ggLXgKICAgICAgICAgICAgCiAgICAgICAgICAgIHl1bSB1cGRhdGUgLXkKICAgICAgICAgICAgeXVtIGluc3RhbGwgLXkgdG11eAoKICAgICAgICAgICAgIyBpbnN0YWxsIEphdmEgMTEKICAgICAgICAgICAgYW1hem9uLWxpbnV4LWV4dHJhcyBlbmFibGUgamF2YS1vcGVuamRrMTEKICAgICAgICAgICAgeXVtIGluc3RhbGwgLXkgamF2YS0xMS1vcGVuamRrCgogICAgICAgICAgICAjIGNvcHkgdGhlIHJlcGxheSBKYXZhIGFwcCBmcm9tIHMzCiAgICAgICAgICAgIHN1IGVjMi11c2VyIC1sIC1jICJhd3MgczMgY3AgLS1yZWN1cnNpdmUgLS1leGNsdWRlICcqJyAtLWluY2x1ZGUgJ2FtYXpvbi1raW5lc2lzLXJlcGxheS0qLmphcicgJ3MzOi8vJHtUb2tlbltOYW1lLjI5Ml19L3RhcmdldC8nIC4i"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/ReplayInstance"
+      }
+    },
+    "EmrInfrastructureSecurityGroupC050C542": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "BeamTaxiCount-Complete/EmrInfrastructure/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "from 0.0.0.0/0:22",
+            "FromPort": 22,
+            "IpProtocol": "tcp",
+            "ToPort": 22
+          }
+        ],
+        "VpcId": "vpc-fc78da99"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EmrInfrastructure/SecurityGroup/Resource"
+      }
+    },
+    "EmrInfrastructureReplayRole45BC559F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "ec2.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EmrInfrastructure/ReplayRole/Resource"
+      }
+    },
+    "EmrInfrastructureInstanceProfileA9CB34C5": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "EmrInfrastructureReplayRole45BC559F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EmrInfrastructure/InstanceProfile"
+      }
+    },
+    "EmrInfrastructureEmrClusterE950A629": {
+      "Type": "AWS::EMR::Cluster",
+      "Properties": {
+        "Instances": {
+          "AdditionalMasterSecurityGroups": [
+            {
+              "Ref": "EmrInfrastructureSecurityGroupC050C542"
+            }
+          ],
+          "CoreInstanceGroup": {
+            "InstanceCount": 2,
+            "InstanceType": "r5.xlarge",
+            "Name": "Core"
+          },
+          "Ec2KeyName": {
+            "Ref": "KeyName"
+          },
+          "MasterInstanceGroup": {
+            "InstanceCount": 1,
+            "InstanceType": "c5.xlarge",
+            "Name": "Master"
+          }
+        },
+        "JobFlowRole": {
+          "Ref": "EmrInfrastructureInstanceProfileA9CB34C5"
+        },
+        "Name": "Beam",
+        "ServiceRole": "EMR_DefaultRole",
+        "Applications": [
+          {
+            "Name": "Hadoop"
+          },
+          {
+            "Name": "Ganglia"
+          },
+          {
+            "Name": "Flink"
+          },
+          {
+            "Name": "ZooKeeper"
+          }
+        ],
+        "Configurations": [
+          {
+            "Classification": "emrfs-site",
+            "ConfigurationProperties": {
+              "fs.s3.maxConnections": "1000"
+            }
+          }
+        ],
+        "ReleaseLabel": "emr-5.20.0",
+        "VisibleToAllUsers": true
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EmrInfrastructure/EmrCluster"
+      }
+    },
+    "InputStreamCFB159EA": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "ShardCount": 8,
+        "RetentionPeriodHours": 24
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/InputStream/Resource"
+      }
+    },
+    "Dashboard9E4231ED": {
+      "Type": "AWS::CloudWatch::Dashboard",
+      "Properties": {
+        "DashboardBody": {
+          "Fn::Join": [
+            "",
+            [
+              "{\"widgets\":[{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":0,\"properties\":{\"view\":\"timeSeries\",\"region\":\"",
+              {
+                "Ref": "AWS::Region"
+              },
+              "\",\"metrics\":[[\"AWS/Kinesis\",\"GetRecords.IteratorAgeMilliseconds\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",{\"yAxis\":\"left\",\"period\":60,\"stat\":\"Maximum\"}],[\"AWS/Kinesis\",\"IncomingRecords\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",{\"yAxis\":\"right\",\"period\":60,\"stat\":\"Sum\"}]],\"annotations\":{\"horizontal\":[]},\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"region\":\"",
+              {
+                "Ref": "AWS::Region"
+              },
+              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}]],\"annotations\":{\"horizontal\":[]},\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":12,\"properties\":{\"view\":\"timeSeries\",\"region\":\"",
+              {
+                "Ref": "AWS::Region"
+              },
+              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",\"Borough\",\"Bronx\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",\"Borough\",\"Brooklyn\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",\"Borough\",\"Queens\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",\"Borough\",\"Staten Island\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",\"Borough\",\"Manhattan\",{\"yAxis\":\"right\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              {
+                "Ref": "InputStreamCFB159EA"
+              },
+              "\",\"Borough\",\"Unknown\",{\"yAxis\":\"right\",\"period\":5,\"stat\":\"Maximum\"}]],\"annotations\":{\"horizontal\":[]},\"yAxis\":{}}}]}"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/Dashboard/Resource"
+      }
+    },
+    "FirehoseInfrastructureFirehoseRole3E5B243F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "firehose.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FirehoseInfrastructure/FirehoseRole/Resource"
+      }
+    },
+    "FirehoseInfrastructureFirehoseRoleDefaultPolicyF3BBC6E6": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:DescribeStream",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "InputStreamCFB159EA",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "EnrichEventsLambda23B68032",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FirehoseInfrastructureFirehoseRoleDefaultPolicyF3BBC6E6",
+        "Roles": [
+          {
+            "Ref": "FirehoseInfrastructureFirehoseRole3E5B243F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FirehoseInfrastructure/FirehoseRole/DefaultPolicy/Resource"
+      }
+    },
+    "FirehoseInfrastructureFirehoseDeliveryStream365513AC": {
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+      "Properties": {
+        "DeliveryStreamType": "KinesisStreamAsSource",
+        "ExtendedS3DestinationConfiguration": {
+          "BucketARN": {
+            "Fn::GetAtt": [
+              "Bucket83908E77",
+              "Arn"
+            ]
+          },
+          "BufferingHints": {
+            "IntervalInSeconds": 300,
+            "SizeInMBs": 128
+          },
+          "CompressionFormat": "GZIP",
+          "Prefix": "kinesis-stream-data/",
+          "ProcessingConfiguration": {
+            "Enabled": true,
+            "Processors": [
+              {
+                "Parameters": [
+                  {
+                    "ParameterName": "LambdaArn",
+                    "ParameterValue": {
+                      "Fn::GetAtt": [
+                        "EnrichEventsLambda23B68032",
+                        "Arn"
+                      ]
+                    }
+                  }
+                ],
+                "Type": "Lambda"
+              }
+            ]
+          },
+          "RoleARN": {
+            "Fn::GetAtt": [
+              "FirehoseInfrastructureFirehoseRole3E5B243F",
+              "Arn"
+            ]
+          }
+        },
+        "KinesisStreamSourceConfiguration": {
+          "KinesisStreamARN": {
+            "Fn::GetAtt": [
+              "InputStreamCFB159EA",
+              "Arn"
+            ]
+          },
+          "RoleARN": {
+            "Fn::GetAtt": [
+              "FirehoseInfrastructureFirehoseRole3E5B243F",
+              "Arn"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FirehoseInfrastructure/FirehoseDeliveryStream"
+      }
+    },
+    "FlinkInfrastructureKinesisAnalyticsRole71C99707": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "kinesisanalytics.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/KinesisAnalyticsRole/Resource"
+      }
+    },
+    "FlinkInfrastructureKinesisAnalyticsRoleDefaultPolicy2AA4B95F": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "kinesis:DescribeStream",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "InputStreamCFB159EA",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkInfrastructureFlinkLogGroupD9BFEBD6",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "logs:DescribeLogStreams",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkInfrastructureFlinkLogGroupD9BFEBD6",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "logs:DescribeLogGroups",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":log-group:*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::nyc-tlc"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::nyc-tlc/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkInfrastructureKinesisAnalyticsRoleDefaultPolicy2AA4B95F",
+        "Roles": [
+          {
+            "Ref": "FlinkInfrastructureKinesisAnalyticsRole71C99707"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/KinesisAnalyticsRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkInfrastructureFlinkLogGroupD9BFEBD6": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 7
+      },
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/FlinkLogGroup/Resource"
+      }
+    },
+    "FlinkInfrastructureFlinkLogStream37FF822A": {
+      "Type": "AWS::Logs::LogStream",
+      "Properties": {
+        "LogGroupName": {
+          "Ref": "FlinkInfrastructureFlinkLogGroupD9BFEBD6"
+        }
+      },
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/FlinkLogStream/Resource"
+      }
+    },
+    "FlinkInfrastructureFlinkApplicationBEFFC04F": {
+      "Type": "AWS::KinesisAnalyticsV2::Application",
+      "Properties": {
+        "RuntimeEnvironment": "FLINK-1_6",
+        "ServiceExecutionRole": {
+          "Fn::GetAtt": [
+            "FlinkInfrastructureKinesisAnalyticsRole71C99707",
+            "Arn"
+          ]
+        },
+        "ApplicationConfiguration": {
+          "ApplicationCodeConfiguration": {
+            "CodeContent": {
+              "S3ContentLocation": {
+                "BucketARN": {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                "FileKey": "target/beam-taxi-count-1.0-SNAPSHOT.jar"
+              }
+            },
+            "CodeContentType": "ZIPFILE"
+          },
+          "ApplicationSnapshotConfiguration": {
+            "SnapshotsEnabled": false
+          },
+          "EnvironmentProperties": {
+            "PropertyGroups": [
+              {
+                "PropertyGroupId": "BeamApplicationProperties",
+                "PropertyMap": {
+                  "InputStreamName": {
+                    "Ref": "InputStreamCFB159EA"
+                  },
+                  "OutputBoroughs": "false"
+                }
+              }
+            ]
+          },
+          "FlinkApplicationConfiguration": {
+            "MonitoringConfiguration": {
+              "ConfigurationType": "CUSTOM",
+              "LogLevel": "INFO",
+              "MetricsLevel": "TASK"
+            },
+            "ParallelismConfiguration": {
+              "AutoScalingEnabled": false,
+              "ConfigurationType": "CUSTOM",
+              "Parallelism": 4,
+              "ParallelismPerKPU": 1
+            }
+          }
+        }
+      },
+      "DependsOn": [
+        "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/FlinkApplication"
+      }
+    },
+    "FlinkInfrastructureFlinkLogging8F449288": {
+      "Type": "AWS::KinesisAnalyticsV2::ApplicationCloudWatchLoggingOption",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "FlinkInfrastructureFlinkApplicationBEFFC04F"
+        },
+        "CloudWatchLoggingOption": {
+          "LogStreamARN": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:logs:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                ":log-group:",
+                {
+                  "Ref": "FlinkInfrastructureFlinkLogGroupD9BFEBD6"
+                },
+                ":log-stream:",
+                {
+                  "Ref": "FlinkInfrastructureFlinkLogStream37FF822A"
+                }
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/FlinkLogging"
+      }
+    }
+  },
+  "Outputs": {
+    "S3Bucket": {
+      "Value": {
+        "Ref": "Bucket83908E77"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineBeamTaxiCountCopyCommand3906FDA0": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "aws s3 cp --recursive --exclude '*' --include 'beam-taxi-count-*.jar' 's3://",
+            {
+              "Ref": "Bucket83908E77"
+            },
+            "/target/' ."
+          ]
+        ]
+      }
+    },
+    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineAmazonKinesisReplayCopyCommand6A25682B": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-replay-*.jar' 's3://",
+            {
+              "Ref": "Bucket83908E77"
+            },
+            "/target/' ."
+          ]
+        ]
+      }
+    },
+    "KinesisReplayInfrastructureKinesisReplayInstance97EC36CE": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "ssh -C ec2-user@",
+            {
+              "Fn::GetAtt": [
+                "KinesisReplayInfrastructureReplayInstance5A978C92",
+                "PublicDnsName"
+              ]
+            }
+          ]
+        ]
+      }
+    },
+    "EmrInfrastructureSshEmrClusterEC3E33DC": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "ssh -C -D 8157 hadoop@",
+            {
+              "Fn::GetAtt": [
+                "EmrInfrastructureEmrClusterE950A629",
+                "MasterPublicDNS"
+              ]
+            }
+          ]
+        ]
+      }
+    },
+    "EmrInfrastructureStartFlinkRuntime2BE04C38": {
+      "Value": "flink-yarn-session -n 2 -s 4 -tm 16GB -d"
+    },
+    "FlinkInfrastructureFlinkLogGroupNameF37E6FFF": {
+      "Value": {
+        "Ref": "FlinkInfrastructureFlinkLogGroupD9BFEBD6"
+      }
+    },
+    "KinesisReplayCommand": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "java -jar amazon-kinesis-replay-*.jar -streamRegion ",
+            {
+              "Ref": "AWS::Region"
+            },
+            " -streamName ",
+            {
+              "Ref": "InputStreamCFB159EA"
+            },
+            " -objectPrefix yellow-trip-data/taxi-trips-2018.json/ -bucketRegion us-east-1 -speedup 720"
+          ]
+        ]
+      }
+    },
+    "StartFlinkApplication": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "flink run -p 8 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://",
+            {
+              "Ref": "Bucket83908E77"
+            },
+            "/kinesis-stream-data/*/*/*/*/* --awsRegion=",
+            {
+              "Ref": "AWS::Region"
+            },
+            " --inputStreamName=",
+            {
+              "Ref": "InputStreamCFB159EA"
+            },
+            " --source=s3 --outputBoroughs=true"
+          ]
+        ]
+      }
+    }
+  }
+}
