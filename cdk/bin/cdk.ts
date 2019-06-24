@@ -5,6 +5,14 @@ import { CdkStack } from '../lib/cdk-stack';
 
 const app = new cdk.App();
 
-new CdkStack(app, 'BeamTaxiCount', {
+new CdkStack(app, 'BeamTaxiCount-Build', {
+    build: true
+});
+
+new CdkStack(app, 'BeamTaxiCount-Demo', {
     demoInfrastructure: true
+});
+
+new CdkStack(app, 'BeamTaxiCount-Complete', {
+    completeInfrastructure: true
 });

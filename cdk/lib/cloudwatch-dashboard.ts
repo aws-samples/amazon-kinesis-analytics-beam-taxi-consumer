@@ -70,9 +70,11 @@ export class BeamDashboard extends cloudwatch.Dashboard {
           width: 24
         }));
     
+        /*
         this.addWidgets(new cloudwatch.GraphWidget({
           left: ['Bronx', 'Brooklyn', 'Manhattan', 'Queens', 'Staten Island'].map(toMetric('samplecount')),
           width: 24
-        }));    
+        }));
+        */
     }
 }

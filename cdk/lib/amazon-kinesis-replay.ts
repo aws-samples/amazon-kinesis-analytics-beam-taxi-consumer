@@ -62,6 +62,7 @@ export class KinesisReplay extends cdk.Construct {
         imageId: ami.getImage(this).imageId,
         monitoring: true,
         instanceType: 'c5.2xlarge',
+        iamInstanceProfile: instanceProfile.refAsString,
         networkInterfaces: [
             {
                 deviceIndex: '0',
@@ -70,7 +71,6 @@ export class KinesisReplay extends cdk.Construct {
                 groupSet: [sg.securityGroupId]
             }
         ],
-        iamInstanceProfile: instanceProfile.instanceProfileName,
         keyName: props.keyName,
         userData: Base64.encode(
             `#!/bin/bash -x

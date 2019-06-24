@@ -1,12 +1,12 @@
 import cdk = require('@aws-cdk/cdk');
 import kds = require('@aws-cdk/aws-kinesis');
-//import kda = require('@aws-cdk/aws-kinesisanalytics');
+import kda = require('@aws-cdk/aws-kinesisanalytics');
 import s3 = require('@aws-cdk/aws-s3');
 import iam = require('@aws-cdk/aws-iam');
 import cloudwatch = require('@aws-cdk/aws-cloudwatch')
 import logs = require('@aws-cdk/aws-logs');
 import { Bucket } from '@aws-cdk/aws-s3';
-
+import cfn = require('@aws-cdk/aws-cloudformation');
 
 
 export interface KinesisAnalyticsProps {
@@ -14,7 +14,8 @@ export interface KinesisAnalyticsProps {
     bucket: s3.Bucket,
     inputStream: kds.Stream,
     region: string,
-    accountId: string
+    accountId: string,
+    buildSuccessWaitCondition: cfn.CfnWaitCondition
 }
 
 export class KinesisAnalyticsJava extends cdk.Construct {
@@ -47,8 +48,6 @@ export class KinesisAnalyticsJava extends cdk.Construct {
 
         const bucket = Bucket.fromBucketName(this, 'TclBucket', 'nyc-tlc');
         bucket.grantRead(role);
-
-        /*
         
         const logStream = new logs.LogStream(this, 'FlinkLogStream', {
             logGroup: logGroup
@@ -72,9 +71,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
                         {
                             propertyGroupId: 'BeamApplicationProperties',
                             propertyMap: {
-                                InputType: 'kinesis',
                                 InputStreamName: props.inputStream.streamName,
-                                AwsRegion: props.region,
                                 OutputBoroughs: 'false'
                             }
                         }
@@ -88,7 +85,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
                     },
                     parallelismConfiguration: {
                         autoScalingEnabled: true,
-                        parallelism: 1,
+                        parallelism: 4,
                         parallelismPerKpu: 1,
                         configurationType: 'CUSTOM'
                     }
@@ -100,11 +97,12 @@ export class KinesisAnalyticsJava extends cdk.Construct {
         });
 
         new kda.CfnApplicationCloudWatchLoggingOptionV2(this, 'FlinkLogging', {
-            applicationName: flinkApp.ref,
+            applicationName: flinkApp.ref.toString(),
             cloudWatchLoggingOption: {
                 logStreamArn: `arn:aws:logs:${props.region}:${props.accountId}:log-group:${logGroup.logGroupName}:log-stream:${logStream.logStreamName}`
             }
         });
-        */
+
+        flinkApp.node.addDependency(props.buildSuccessWaitCondition);
     }
 }
