@@ -2201,7 +2201,7 @@
             {
               "Ref": "InputStreamCFB159EA"
             },
-            " -objectPrefix yellow-trip-data/taxi-trips-2018.json/ -bucketRegion us-east-1 -speedup 720"
+            " -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720"
           ]
         ]
       }

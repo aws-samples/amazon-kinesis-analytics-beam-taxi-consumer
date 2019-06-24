@@ -1651,7 +1651,7 @@
             {
               "Ref": "AWS::Region"
             },
-            " -bucketName shausma-nyc-tlc -objectPrefix yellow-trip-data/taxi-trips-2018.json/ -bucketRegion eu-west-1 -speedup 720 -streamName beam-summit"
+            " -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit"
           ]
         ]
       }
