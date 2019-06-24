@@ -84,7 +84,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
                         configurationType: 'CUSTOM'
                     },
                     parallelismConfiguration: {
-                        autoScalingEnabled: true,
+                        autoScalingEnabled: false,
                         parallelism: 4,
                         parallelismPerKpu: 1,
                         configurationType: 'CUSTOM'

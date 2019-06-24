@@ -10,7 +10,7 @@ export interface EmrProps {
     bucket: s3.Bucket,
     keyName: string,
     region: string
-  }
+}
   
 export class EmrInfrastructure extends cdk.Construct {
     constructor(scope: cdk.Construct, id: string, props: EmrProps) {
@@ -55,7 +55,7 @@ export class EmrInfrastructure extends cdk.Construct {
                 },
                 coreInstanceGroup: {
                     instanceCount: 2,
-                    instanceType: 'r5.4xlarge',
+                    instanceType: 'r5.xlarge',
                     name: 'Core'
                 },
                 ec2KeyName: props.keyName,
@@ -78,6 +78,6 @@ export class EmrInfrastructure extends cdk.Construct {
         });
 
         new cdk.CfnOutput(this, 'SshEmrCluster', { value: `ssh -C -D 8157 hadoop@${cluster.attrMasterPublicDns}` });
-        new cdk.CfnOutput(this, 'StartFlinkRuntime', { value: 'flink-yarn-session -n 2 -s 16 -tm 64GB -d' });
+        new cdk.CfnOutput(this, 'StartFlinkRuntime', { value: 'flink-yarn-session -n 2 -s 4 -tm 16GB -d' });
     }
 }

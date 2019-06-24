@@ -10,7 +10,7 @@ def handler(event, context):
 
     url = os.environ['waitHandleUrl']
     headers = { "Content-Type": "" }
-    data = { "Status": "SUCCESS", "Reason": "Compilation Succeeded", "UniqueId": "KinesisAnalyticsBuildProject", "Data": "Compilation Succeeded" }
+    data = { "Status": "SUCCESS", "Reason": "Compilation Succeeded", "UniqueId": job_id, "Data": "Compilation Succeeded" }
 
     try:
         req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding="utf-8"), method='PUT')

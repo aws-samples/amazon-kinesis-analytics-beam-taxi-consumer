@@ -4,26 +4,31 @@ import ec2 = require('@aws-cdk/aws-ec2');
 import iam = require('@aws-cdk/aws-iam');
 import cloudwatch = require('@aws-cdk/aws-cloudwatch')
 import { Vpc, AmazonLinuxGeneration } from '@aws-cdk/aws-ec2';
-import { CfnStack } from '@aws-cdk/aws-cloudformation';
 import { Base64 } from 'js-base64';
+import { GithubBuildPipeline } from './github-build-pipeline';
 
 export interface KinesisReplayProps {
   bucket: s3.Bucket,
-  keyName: string
+  keyName: string,
+  region: string,
+  accountId: string,
+  oauthToken: cdk.SecretValue
 }
 
 export class KinesisReplay extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: KinesisReplayProps) {
     super(scope, id);
 
-    const replayBuildStack = new CfnStack(this, 'KinesisReplayBuild', {
-        templateUrl: 'https://s3.amazonaws.com/aws-bigdata-blog/artifacts/kinesis-analytics-taxi-consumer/cfn-templates/kinesis-replay-build-pipeline.yml',
-        parameters: {
-            ExternalArtifactBucket: props.bucket.bucketName
-        }
+    new GithubBuildPipeline(this, 'BeamTaxiConsumerBuildPipeline', {
+        bucket: props.bucket,
+        region: props.region,
+        accountId: props.accountId,
+        oauthToken: props.oauthToken,
+        repo: 'amazon-kinesis-replay',
+        artifactPrefix: 'amazon-kinesis-replay'
     });
 
-    const kinesisReplayCopyCommand = replayBuildStack.getAtt('Outputs.KinesisReplayCopyCommand');
+    const replayCopyCommand = `aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-replay-*.jar' 's3://${props.bucket.bucketName}/target/' .`
 
     const vpc = Vpc.fromLookup(this, 'VPC', {
         isDefault: true
@@ -83,11 +88,10 @@ export class KinesisReplay extends cdk.Construct {
             yum install -y java-11-openjdk
 
             # copy the replay Java app from s3
-            # su ec2-user -l -c "${kinesisReplayCopyCommand}"`
+            su ec2-user -l -c "${replayCopyCommand}"`
         )
     });
     
     new cdk.CfnOutput(this, 'KinesisReplayInstance', { value: `ssh -C ec2-user@${instance.attrPublicDnsName}` });
-    new cdk.CfnOutput(this, 'KinesisReplayCopyCommand', { value: `${kinesisReplayCopyCommand}` });
   }
 }

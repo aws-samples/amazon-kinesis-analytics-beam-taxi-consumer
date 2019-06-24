@@ -2,13 +2,14 @@ import cdk = require('@aws-cdk/cdk');
 import s3 = require('@aws-cdk/aws-s3');
 import lambda = require('@aws-cdk/aws-lambda');
 import { KinesisReplay } from './amazon-kinesis-replay';
-import { BeamBuildPipeline } from './beam-taxi-count-build';
+import { GithubBuildPipeline } from './beam-taxi-count-build';
 import { EmrInfrastructure } from './emr-infrastructure';
 import kds = require('@aws-cdk/aws-kinesis');
 import { KinesisAnalyticsJava } from './kinesis-analytics-infrastructure';
 import { FirehoseInfrastructure } from './kinesis-firehose-infrastructure';
 import { BeamDashboard } from './cloudwatch-dashboard';
 import * as fs from 'fs';
+import { SecretValue, CfnParameter } from '@aws-cdk/cdk';
 
 export interface StackProps extends cdk.StackProps {
   build?: boolean,
@@ -24,18 +25,28 @@ export class CdkStack extends cdk.Stack {
       type: 'AWS::EC2::KeyPair::KeyName'
     }).valueAsString;
 
-   //const keyName = this.node.tryGetContext("keyName");
-
     const bucket = new s3.Bucket(this, 'Bucket', {
       versioned: true
     });
 
     new cdk.CfnOutput(this, 'S3Bucket', { value: bucket.bucketName });
 
-    const build = new BeamBuildPipeline(this, 'BuildPipeline', {
+    const oauthToken = SecretValue.cfnParameter(
+      new CfnParameter(this, 'GithubOauthToken', {
+        type: 'String',
+        noEcho: true,
+        description: `Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens`
+      })
+    );
+
+
+    const consumerBuild = new GithubBuildPipeline(this, 'BeamTaxiConsumerBuildPipeline', {
       bucket: bucket,
       region: this.region,
-      accountId: this.account
+      accountId: this.account,
+      oauthToken: oauthToken,
+      repo: 'amazon-kinesis-analytics-beam-taxi-consumer',
+      artifactPrefix: 'beam-taxi-count'
     });
     
 
@@ -55,7 +66,10 @@ export class CdkStack extends cdk.Stack {
     
     new KinesisReplay(this, 'KinesisReplayInfrastructure', {
       bucket: bucket,
-      keyName: keyName
+      keyName: keyName,
+      region: this.region,
+      accountId: this.account,
+      oauthToken: oauthToken
     });
 
     new EmrInfrastructure(this, 'EmrInfrastructure', {
@@ -66,8 +80,8 @@ export class CdkStack extends cdk.Stack {
 
 
     if (! props.completeInfrastructure) {
-      new cdk.CfnOutput(this, 'BeamReplay', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -bucketName shausma-nyc-tlc -objectPrefix yellow-trip-data/taxi-trips-2018-odd.json/ -bucketRegion eu-west-1 -speedup 1440 -streamName beam-summit` });
-      new cdk.CfnOutput(this, 'StartFlinkApplication', { value: `flink run -p 32 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${this.region} --source=s3 --outputBoroughs=true` });  
+      new cdk.CfnOutput(this, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -bucketName shausma-nyc-tlc -objectPrefix yellow-trip-data/taxi-trips-2018.json/ -bucketRegion eu-west-1 -speedup 720 -streamName beam-summit` });
+      new cdk.CfnOutput(this, 'StartFlinkApplication', { value: `flink run -p 8 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${this.region} --source=s3 --outputBoroughs=true` });  
 
       return;
     }
@@ -85,7 +99,7 @@ export class CdkStack extends cdk.Stack {
       bucket: bucket,
       inputStream: stream,
       lambda: enrichEvents,
-      buildSuccessWaitCondition: build.buildSuccessWaitCondition
+      buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition
     });
 
     new KinesisAnalyticsJava(this, 'FlinkInfrastructure', {
@@ -94,10 +108,10 @@ export class CdkStack extends cdk.Stack {
       inputStream: stream,
       accountId: this.account,
       region: this.region,
-      buildSuccessWaitCondition: build.buildSuccessWaitCondition
+      buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition
     });
 
-    new cdk.CfnOutput(this, 'BeamReplay', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -streamName ${stream.streamName} -objectPrefix yellow-trip-data/taxi-trips-2018.json/ -bucketRegion us-east-1 -speedup 1440` });
-    new cdk.CfnOutput(this, 'StartFlinkApplication', { value: `flink run -p 32 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${this.region} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
+    new cdk.CfnOutput(this, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -streamName ${stream.streamName} -objectPrefix yellow-trip-data/taxi-trips-2018.json/ -bucketRegion us-east-1 -speedup 720` });
+    new cdk.CfnOutput(this, 'StartFlinkApplication', { value: `flink run -p 8 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${this.region} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
   }
 }
