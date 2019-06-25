@@ -2,6 +2,8 @@
 
 Sample Apache Beam pipeline that can be deployed to Kinesis Analytics for Java Applications. It reads taxi events from a Kinesis data stream, processes and aggregates them, and ingests the result to Amazon CloudWatch for visualization.
 
+![Architecture Diagramm](misc/architecture.png?raw=true)
+
 To see the sample Beam pipeline in action, simply execute [this](cdk/cdk.out/BeamTaxiCount-Complete.template.json) AWS CloudFormation (CFN) template in your own AWS account. The template first builds the Beam pipeline that is analyzing the incoming taxi trips and then creates the infrastructure and submits the Flink application to KDA for Java.
 
 To populate the Kinesis data stream, we use a Java application that replays a public data set of historic taxi trips made in New York City into the data stream. The Java application can be downloaded to an EC2 instance that has been provisioned by CFN, you just need to connect to the instance to download and execute the jar file to start ingesting events into the stream.
