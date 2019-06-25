@@ -1,14 +1,14 @@
 ## Amazon Kinesis Analytics Beam Taxi Consumer
 
-Sample Apache Beam pipeline that can be deployed to Kinesis Analytics for Java Applications. It reads taxi events from a Kinesis data stream, processes and aggregates them, and ingests the result to Amazon CloudWatch for visualization.
+Sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications. It reads taxi events from a Kinesis data stream, processes and aggregates them, and ingests the result to Amazon CloudWatch for visualization.
 
 ![Architecture Diagramm](misc/architecture.png?raw=true)
 
-To see the sample Beam pipeline in action, simply execute [this](cdk/cdk.out/BeamTaxiCount-Complete.template.json) AWS CloudFormation (CFN) template in your own AWS account. The template first builds the Beam pipeline that is analyzing the incoming taxi trips and then creates the infrastructure and submits the Flink application to KDA for Java.
+To see the sample Beam pipeline in action, simply execute [this](cdk/cdk.out/BeamTaxiCount-Complete.template.json) AWS CloudFormation template in your own AWS account. The template first builds the Beam pipeline that is analyzing the incoming taxi trips and then creates the infrastructure and deploys the Flink application to Kinesis Data Analytics for Java Applications.
 
-To populate the Kinesis data stream, we use a Java application that replays a public data set of historic taxi trips made in New York City into the data stream. The Java application can be downloaded to an EC2 instance that has been provisioned by CFN, you just need to connect to the instance to download and execute the jar file to start ingesting events into the stream.
+To populate the Kinesis data stream, we use a Java application that replays a public data set of historic taxi trips made in New York City into the data stream. The Java application can be downloaded to an Amazon EC2 instance that has been provisioned by CloudFormation, you just need to connect to the instance to download and execute the jar file to start ingesting events into the stream.
 
-Note that all of the following commands, including their correct parameters, can be obtained from the output section of the CFN template that has been executed previously.
+Note that all of the following commands, including their correct parameters, can be obtained from the output section of the CloudFormation template that has been executed previously.
 
 ```
 $ ssh ec2-user@«Replay instance DNS name»
@@ -25,7 +25,7 @@ run botton. You can then find the generated metrics in an Amazon CloudWatch dash
 ![CloudWatch Dashboard Screen Shot](misc/cloudwatch-dashboard-screenshot.png?raw=true)
 
 
-To execute the Beam pipeline in a batch processing fashion. Connect to the provisioned Amazon Elastic Map Reduce (EMR) cluster and submit the Jar file of the Beam pipeline to Apache Flink.
+To execute the Beam pipeline in a batch processing fashion. Connect to the provisioned Amazon Elastic Map Reduce cluster and submit the Jar file of the Beam pipeline to Apache Flink.
 
 ```
 $ ssh -C -D 8157 hadoop@«EMR master node DNS name»
