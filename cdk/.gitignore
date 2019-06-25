@@ -2,6 +2,8 @@
 *.js
 *.d.ts
 node_modules
+cdk.out/manifest.json
+cdk.out/cdk.out
 
 !lambda/*.js
 

@@ -1,4 +1,5 @@
 {
+  "Description": "Creates sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications (amazon-kinesis-analytics-beam-taxi-consumer)",
   "Parameters": {
     "KeyName": {
       "Type": "AWS::EC2::KeyPair::KeyName"

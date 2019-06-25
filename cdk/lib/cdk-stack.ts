@@ -21,6 +21,8 @@ export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
+    this.templateOptions.description = 'Creates sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications (amazon-kinesis-analytics-beam-taxi-consumer)'
+
     const keyName = new cdk.CfnParameter(this, 'KeyName', {
       type: 'AWS::EC2::KeyPair::KeyName'
     }).valueAsString;

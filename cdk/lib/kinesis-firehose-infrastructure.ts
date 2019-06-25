@@ -34,7 +34,7 @@ export class FirehoseInfrastructure extends cdk.Construct {
             extendedS3DestinationConfiguration: {
                 bucketArn: props.bucket.bucketArn,
                 bufferingHints: {
-                    intervalInSeconds: 300,
+                    intervalInSeconds: 60,
                     sizeInMBs: 128
                 },
                 compressionFormat: 'GZIP',

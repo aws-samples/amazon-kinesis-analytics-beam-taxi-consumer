@@ -1,4 +1,5 @@
 {
+  "Description": "Creates sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications (amazon-kinesis-analytics-beam-taxi-consumer)",
   "Parameters": {
     "KeyName": {
       "Type": "AWS::EC2::KeyPair::KeyName"
@@ -1575,7 +1576,7 @@
     "InputStreamCFB159EA": {
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
-        "ShardCount": 8,
+        "ShardCount": 4,
         "RetentionPeriodHours": 24
       },
       "Metadata": {
@@ -1764,7 +1765,7 @@
             ]
           },
           "BufferingHints": {
-            "IntervalInSeconds": 300,
+            "IntervalInSeconds": 60,
             "SizeInMBs": 128
           },
           "CompressionFormat": "GZIP",
