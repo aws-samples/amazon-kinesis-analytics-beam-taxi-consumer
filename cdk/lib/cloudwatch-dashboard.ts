@@ -1,7 +1,8 @@
-import cdk = require('@aws-cdk/cdk');
+import cdk = require('@aws-cdk/core');
 import kds = require('@aws-cdk/aws-kinesis');
 import cloudwatch = require('@aws-cdk/aws-cloudwatch')
 import { Metric } from '@aws-cdk/aws-cloudwatch';
+import { Duration } from '@aws-cdk/core';
 
 
 export interface BeamDashboardProps {
@@ -18,7 +19,7 @@ export class BeamDashboard extends cloudwatch.Dashboard {
           dimensions: {
             StreamName: props.inputStream.streamName
           },
-          periodSec: 60,
+          period: Duration.minutes(1),
           statistic: 'max'
         });
     
@@ -28,7 +29,7 @@ export class BeamDashboard extends cloudwatch.Dashboard {
           dimensions: {
             StreamName: props.inputStream.streamName
           },
-          periodSec: 60,
+          period: Duration.minutes(1),
           statistic: 'sum'
         });  
     
@@ -46,7 +47,7 @@ export class BeamDashboard extends cloudwatch.Dashboard {
               dimensions: {
                 StreamName: props.inputStream.streamName
               },
-              periodSec: 5,
+              period: Duration.seconds(5),
               statistic: 'max'
             })        
           ],
@@ -60,7 +61,7 @@ export class BeamDashboard extends cloudwatch.Dashboard {
             StreamName: props.inputStream.streamName,
             Borough: borough
           },
-          periodSec: 5,
+          period: Duration.seconds(5),
           statistic: statistic
         });
     

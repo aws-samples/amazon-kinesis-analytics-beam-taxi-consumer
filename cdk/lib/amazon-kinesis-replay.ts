@@ -1,9 +1,9 @@
-import cdk = require('@aws-cdk/cdk');
+import cdk = require('@aws-cdk/core');
 import s3 = require('@aws-cdk/aws-s3');
 import ec2 = require('@aws-cdk/aws-ec2');
 import iam = require('@aws-cdk/aws-iam');
 import cloudwatch = require('@aws-cdk/aws-cloudwatch')
-import { Vpc, AmazonLinuxGeneration } from '@aws-cdk/aws-ec2';
+import { AmazonLinuxGeneration } from '@aws-cdk/aws-ec2';
 import { Base64 } from 'js-base64';
 import { GithubBuildPipeline } from './github-build-pipeline';
 
@@ -12,7 +12,8 @@ export interface KinesisReplayProps {
   keyName: string,
   region: string,
   accountId: string,
-  oauthToken: cdk.SecretValue
+  oauthToken: cdk.SecretValue,
+  vpc: ec2.Vpc
 }
 
 export class KinesisReplay extends cdk.Construct {
@@ -30,18 +31,14 @@ export class KinesisReplay extends cdk.Construct {
 
     const replayCopyCommand = `aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-replay-*.jar' 's3://${props.bucket.bucketName}/target/' .`
 
-    const vpc = Vpc.fromLookup(this, 'VPC', {
-        isDefault: true
-    });
-
     const sg = new ec2.SecurityGroup(this, 'SecurityGroup', {
-        vpc: vpc
+        vpc: props.vpc
     });
 
-    sg.addIngressRule(new ec2.AnyIPv4, new ec2.TcpPort(22));
+    sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22));
 
     const ami = new ec2.AmazonLinuxImage({
-        generation: AmazonLinuxGeneration.AmazonLinux2
+        generation: AmazonLinuxGeneration.AMAZON_LINUX_2
     });
 
     const role = new iam.Role(this, 'ReplayRole', {
@@ -67,15 +64,9 @@ export class KinesisReplay extends cdk.Construct {
         imageId: ami.getImage(this).imageId,
         monitoring: true,
         instanceType: 'c5.2xlarge',
-        iamInstanceProfile: instanceProfile.refAsString,
-        networkInterfaces: [
-            {
-                deviceIndex: '0',
-                associatePublicIpAddress: true,
-                deleteOnTermination: true,
-                groupSet: [sg.securityGroupId]
-            }
-        ],
+        iamInstanceProfile: instanceProfile.ref,
+        subnetId: props.vpc.publicSubnets[0].subnetId,
+        securityGroupIds: [sg.securityGroupId],
         keyName: props.keyName,
         userData: Base64.encode(
             `#!/bin/bash -x

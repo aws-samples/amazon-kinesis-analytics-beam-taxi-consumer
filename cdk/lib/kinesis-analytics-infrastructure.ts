@@ -1,4 +1,4 @@
-import cdk = require('@aws-cdk/cdk');
+import cdk = require('@aws-cdk/core');
 import kds = require('@aws-cdk/aws-kinesis');
 import kda = require('@aws-cdk/aws-kinesisanalytics');
 import s3 = require('@aws-cdk/aws-s3');
@@ -7,6 +7,7 @@ import cloudwatch = require('@aws-cdk/aws-cloudwatch')
 import logs = require('@aws-cdk/aws-logs');
 import { Bucket } from '@aws-cdk/aws-s3';
 import cfn = require('@aws-cdk/aws-cloudformation');
+import { RetentionDays } from '@aws-cdk/aws-logs';
 
 
 export interface KinesisAnalyticsProps {
@@ -27,7 +28,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
         });
 
         const logGroup = new logs.LogGroup(this, 'FlinkLogGroup', {
-            retentionDays: 7
+            retention: RetentionDays.ONE_WEEK
         });
 
         new cdk.CfnOutput(this, 'FlinkLogGroupName', { value: logGroup.logGroupName });

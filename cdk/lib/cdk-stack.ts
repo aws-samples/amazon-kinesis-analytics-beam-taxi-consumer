@@ -1,15 +1,16 @@
-import cdk = require('@aws-cdk/cdk');
+import cdk = require('@aws-cdk/core');
 import s3 = require('@aws-cdk/aws-s3');
+import ec2 = require('@aws-cdk/aws-ec2');
 import lambda = require('@aws-cdk/aws-lambda');
 import { KinesisReplay } from './amazon-kinesis-replay';
-import { GithubBuildPipeline } from './beam-taxi-count-build';
+import { GithubBuildPipeline } from './github-build-pipeline';
 import { EmrInfrastructure } from './emr-infrastructure';
 import kds = require('@aws-cdk/aws-kinesis');
 import { KinesisAnalyticsJava } from './kinesis-analytics-infrastructure';
 import { FirehoseInfrastructure } from './kinesis-firehose-infrastructure';
 import { BeamDashboard } from './cloudwatch-dashboard';
 import * as fs from 'fs';
-import { SecretValue, CfnParameter } from '@aws-cdk/cdk';
+import { SecretValue, CfnParameter, Duration } from '@aws-cdk/core';
 
 export interface StackProps extends cdk.StackProps {
   build?: boolean,
@@ -21,11 +22,22 @@ export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
-    this.templateOptions.description = 'Creates sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications (amazon-kinesis-analytics-beam-taxi-consumer)'
+    this.templateOptions.description = 'Creates sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications and Amazon EMR (amazon-kinesis-analytics-beam-taxi-consumer)'
 
     const keyName = new cdk.CfnParameter(this, 'KeyName', {
       type: 'AWS::EC2::KeyPair::KeyName'
     }).valueAsString;
+
+    const vpc = new ec2.Vpc(this, 'VPC', {
+      cidr: "10.0.0.0/16",
+      subnetConfiguration: [
+        {
+          cidrMask: 24,
+          name: 'public',
+          subnetType: ec2.SubnetType.PUBLIC,
+        }
+      ]
+    });
 
     const bucket = new s3.Bucket(this, 'Bucket', {
       versioned: true
@@ -60,9 +72,9 @@ export class CdkStack extends cdk.Stack {
     const lambdaSource = fs.readFileSync('lambda/add-approximate-arrival-time.js').toString();
 
     const enrichEvents = new lambda.Function(this, 'EnrichEventsLambda', {
-      runtime: lambda.Runtime.Nodejs810,
+      runtime: lambda.Runtime.NODEJS_8_10,
       code: lambda.Code.inline(lambdaSource),
-      timeout: 60,
+      timeout: Duration.seconds(60),
       handler: 'index.handler'
     });
     
@@ -71,13 +83,15 @@ export class CdkStack extends cdk.Stack {
       keyName: keyName,
       region: this.region,
       accountId: this.account,
-      oauthToken: oauthToken
+      oauthToken: oauthToken,
+      vpc: vpc
     });
 
     new EmrInfrastructure(this, 'EmrInfrastructure', {
       bucket: bucket,
       keyName: keyName,
-      region: this.region
+      region: this.region,
+      vpc: vpc
     });
 
 

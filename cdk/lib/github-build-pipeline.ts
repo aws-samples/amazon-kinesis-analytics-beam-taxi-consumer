@@ -1,4 +1,4 @@
-import cdk = require('@aws-cdk/cdk');
+import cdk = require('@aws-cdk/core');
 import s3 = require('@aws-cdk/aws-s3');
 import cfn = require('@aws-cdk/aws-cloudformation');
 import codepipeline = require('@aws-cdk/aws-codepipeline');
@@ -7,6 +7,7 @@ import codebuild = require('@aws-cdk/aws-codebuild');
 import { BuildSpec } from '@aws-cdk/aws-codebuild';
 import lambda = require('@aws-cdk/aws-lambda');
 import * as fs from 'fs';
+import { Duration } from '@aws-cdk/core';
 
 export interface GithubBuildPipelineProps {
   bucket: s3.Bucket,
@@ -78,19 +79,19 @@ export class GithubBuildPipeline extends cdk.Construct {
 
     this.buildSuccessWaitCondition = new cfn.CfnWaitCondition(this, 'WaitCondition', {
       count: 1,
-      handle: waitHandle.refAsString,
+      handle: waitHandle.ref,
       timeout: '300'
     });
 
     const lambdaSource = fs.readFileSync('lambda/notify-build-success.py').toString();
 
     const notifyLambda =  new lambda.Function(this, 'NotifyLambda', {
-      runtime: lambda.Runtime.Python37,
+      runtime: lambda.Runtime.PYTHON_3_7,
       code: lambda.Code.inline(lambdaSource),
-      timeout: 10,
+      timeout: Duration.seconds(10),
       handler: 'index.handler',
       environment: {
-        waitHandleUrl: waitHandle.refAsString
+        waitHandleUrl: waitHandle.ref
       }
     });
 
