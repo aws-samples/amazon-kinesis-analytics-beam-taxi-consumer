@@ -8,6 +8,11 @@
       "Type": "String",
       "Description": "Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens",
       "NoEcho": true
+    },
+    "GithubUser": {
+      "Type": "String",
+      "Default": "aws-samples",
+      "Description": "Your github username (you need to fork the two repositories https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer and https://github.com/aws-samples/amazon-kinesis-replay)"
     }
   },
   "Resources": {
@@ -657,7 +662,9 @@
                   "Version": "1"
                 },
                 "Configuration": {
-                  "Owner": "aws-samples",
+                  "Owner": {
+                    "Ref": "GithubUser"
+                  },
                   "Repo": "amazon-kinesis-analytics-beam-taxi-consumer",
                   "Branch": "master",
                   "OAuthToken": {

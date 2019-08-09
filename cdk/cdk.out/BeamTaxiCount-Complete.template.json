@@ -9,6 +9,11 @@
       "Description": "Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens",
       "NoEcho": true
     },
+    "GithubUser": {
+      "Type": "String",
+      "Default": "aws-samples",
+      "Description": "Your github username (you need to fork the two repositories https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer and https://github.com/aws-samples/amazon-kinesis-replay)"
+    },
     "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
       "Type": "AWS::SSM::Parameter::Value<String>",
       "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
@@ -661,7 +666,9 @@
                   "Version": "1"
                 },
                 "Configuration": {
-                  "Owner": "aws-samples",
+                  "Owner": {
+                    "Ref": "GithubUser"
+                  },
                   "Repo": "amazon-kinesis-analytics-beam-taxi-consumer",
                   "Branch": "master",
                   "OAuthToken": {
@@ -1552,7 +1559,9 @@
                   "Version": "1"
                 },
                 "Configuration": {
-                  "Owner": "aws-samples",
+                  "Owner": {
+                    "Ref": "GithubUser"
+                  },
                   "Repo": "amazon-kinesis-replay",
                   "Branch": "master",
                   "OAuthToken": {
@@ -2126,7 +2135,20 @@
         "SubnetId": {
           "Ref": "VPCpublicSubnet1Subnet325F50B2"
         },
-        "UserData": "IyEvYmluL2Jhc2ggLXgKICAgICAgICAgICAgCiAgICAgICAgICAgIHl1bSB1cGRhdGUgLXkKICAgICAgICAgICAgeXVtIGluc3RhbGwgLXkgdG11eAoKICAgICAgICAgICAgIyBpbnN0YWxsIEphdmEgMTEKICAgICAgICAgICAgYW1hem9uLWxpbnV4LWV4dHJhcyBlbmFibGUgamF2YS1vcGVuamRrMTEKICAgICAgICAgICAgeXVtIGluc3RhbGwgLXkgamF2YS0xMS1vcGVuamRrCgogICAgICAgICAgICAjIGNvcHkgdGhlIHJlcGxheSBKYXZhIGFwcCBmcm9tIHMzCiAgICAgICAgICAgIHN1IGVjMi11c2VyIC1sIC1jICJhd3MgczMgY3AgLS1yZWN1cnNpdmUgLS1leGNsdWRlICcqJyAtLWluY2x1ZGUgJ2FtYXpvbi1raW5lc2lzLXJlcGxheS0qLmphcicgJ3MzOi8vJHtUb2tlbltUT0tFTi41NjddfS90YXJnZXQvJyAuIg=="
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash -x\n            \n            yum update -y\n            yum install -y tmux\n\n            # install Java 11\n            amazon-linux-extras enable java-openjdk11\n            yum install -y java-11-openjdk\n\n            # copy the replay Java app from s3\n            su ec2-user -l -c \"aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-replay-*.jar' 's3://",
+                {
+                  "Ref": "Bucket83908E77"
+                },
+                "/target/' .\""
+              ]
+            ]
+          }
+        }
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/ReplayInstance"
@@ -2345,6 +2367,9 @@
               "\",\"Borough\",\"Unknown\",{\"yAxis\":\"right\",\"period\":5,\"stat\":\"Maximum\"}]],\"annotations\":{\"horizontal\":[]},\"yAxis\":{}}}]}"
             ]
           ]
+        },
+        "DashboardName": {
+          "Ref": "AWS::StackName"
         }
       },
       "Metadata": {
@@ -2775,6 +2800,9 @@
               "ParallelismPerKPU": 1
             }
           }
+        },
+        "ApplicationName": {
+          "Ref": "AWS::StackName"
         }
       },
       "DependsOn": [

@@ -15,6 +15,7 @@ export interface GithubBuildPipelineProps {
   accountId: string,
   oauthToken: cdk.SecretValue
   repo: string,
+  owner: string,
   artifactPrefix: string
 }
 
@@ -29,7 +30,7 @@ export class GithubBuildPipeline extends cdk.Construct {
     const sourceAction = new codepipeline_actions.GitHubSourceAction({
       actionName: 'SourceAction',
       repo: props.repo,
-      owner: 'aws-samples',
+      owner: props.owner,
       oauthToken: props.oauthToken,
       branch: 'master',
       output: sourceOutput

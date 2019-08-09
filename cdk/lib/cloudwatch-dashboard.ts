@@ -6,12 +6,13 @@ import { Duration } from '@aws-cdk/core';
 
 
 export interface BeamDashboardProps {
-    inputStream: kds.Stream
+    inputStream: kds.Stream,
+    dashboardName: string
 }
 
 export class BeamDashboard extends cloudwatch.Dashboard {
     constructor(scope: cdk.Construct, id: string, props: BeamDashboardProps) {
-        super(scope, id);
+        super(scope, id, props);
 
         const iteratorAge = new Metric({
           namespace: 'AWS/Kinesis',

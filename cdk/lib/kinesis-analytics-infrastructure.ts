@@ -16,7 +16,8 @@ export interface KinesisAnalyticsProps {
     inputStream: kds.Stream,
     region: string,
     accountId: string,
-    buildSuccessWaitCondition: cfn.CfnWaitCondition
+    buildSuccessWaitCondition: cfn.CfnWaitCondition,
+    applicationName: string
 }
 
 export class KinesisAnalyticsJava extends cdk.Construct {
@@ -57,6 +58,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
         const flinkApp = new kda.CfnApplicationV2(this, 'FlinkApplication', {
             runtimeEnvironment: 'FLINK-1_6',
             serviceExecutionRole: role.roleArn,
+            applicationName: props.applicationName,
             applicationConfiguration: {
                 applicationCodeConfiguration: {
                     codeContent: {

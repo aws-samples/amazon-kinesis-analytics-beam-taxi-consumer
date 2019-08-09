@@ -4,7 +4,6 @@ import ec2 = require('@aws-cdk/aws-ec2');
 import iam = require('@aws-cdk/aws-iam');
 import cloudwatch = require('@aws-cdk/aws-cloudwatch')
 import { AmazonLinuxGeneration } from '@aws-cdk/aws-ec2';
-import { Base64 } from 'js-base64';
 import { GithubBuildPipeline } from './github-build-pipeline';
 
 export interface KinesisReplayProps {
@@ -13,6 +12,7 @@ export interface KinesisReplayProps {
   region: string,
   accountId: string,
   oauthToken: cdk.SecretValue,
+  owner: string,
   vpc: ec2.Vpc
 }
 
@@ -26,6 +26,7 @@ export class KinesisReplay extends cdk.Construct {
         accountId: props.accountId,
         oauthToken: props.oauthToken,
         repo: 'amazon-kinesis-replay',
+        owner: props.owner,
         artifactPrefix: 'amazon-kinesis-replay'
     });
 
@@ -68,7 +69,7 @@ export class KinesisReplay extends cdk.Construct {
         subnetId: props.vpc.publicSubnets[0].subnetId,
         securityGroupIds: [sg.securityGroupId],
         keyName: props.keyName,
-        userData: Base64.encode(
+        userData: cdk.Fn.base64(
             `#!/bin/bash -x
             
             yum update -y

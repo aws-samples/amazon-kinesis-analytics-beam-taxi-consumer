@@ -53,6 +53,11 @@ export class CdkStack extends cdk.Stack {
       })
     );
 
+    const githubUsername = new CfnParameter(this, 'GithubUser', {
+      type: 'String',
+      default: 'aws-samples',
+      description: `Your github username (you need to fork the two repositories https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer and https://github.com/aws-samples/amazon-kinesis-replay)`
+    })
 
     const consumerBuild = new GithubBuildPipeline(this, 'BeamTaxiConsumerBuildPipeline', {
       bucket: bucket,
@@ -60,6 +65,7 @@ export class CdkStack extends cdk.Stack {
       accountId: this.account,
       oauthToken: oauthToken,
       repo: 'amazon-kinesis-analytics-beam-taxi-consumer',
+      owner: githubUsername.valueAsString,
       artifactPrefix: 'beam-taxi-count'
     });
     
@@ -84,6 +90,7 @@ export class CdkStack extends cdk.Stack {
       region: this.region,
       accountId: this.account,
       oauthToken: oauthToken,
+      owner: githubUsername.valueAsString,
       vpc: vpc
     });
 
@@ -102,13 +109,13 @@ export class CdkStack extends cdk.Stack {
       return;
     }
 
-
     const stream = new kds.Stream(this, 'InputStream', {
       shardCount: 4
     });
 
     const dashboard = new BeamDashboard(this, 'Dashboard', {
-      inputStream: stream
+      inputStream: stream,
+      dashboardName: cdk.Aws.STACK_NAME
     });
 
     new FirehoseInfrastructure(this, 'FirehoseInfrastructure', {
@@ -119,12 +126,13 @@ export class CdkStack extends cdk.Stack {
     });
 
     new KinesisAnalyticsJava(this, 'FlinkInfrastructure', {
+      applicationName: cdk.Aws.STACK_NAME,
       dashboard: dashboard,
       bucket: bucket,
       inputStream: stream,
       accountId: this.account,
       region: this.region,
-      buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition
+      buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition,
     });
 
     new cdk.CfnOutput(this, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -streamName ${stream.streamName} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720` });
