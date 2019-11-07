@@ -1,25 +1,1077 @@
 {
   "Description": "Creates sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications and Amazon EMR (amazon-kinesis-analytics-beam-taxi-consumer)",
-  "Parameters": {
-    "KeyName": {
-      "Type": "AWS::EC2::KeyPair::KeyName"
-    },
-    "GithubOauthToken": {
-      "Type": "String",
-      "Description": "Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens",
-      "NoEcho": true
-    },
-    "GithubUser": {
-      "Type": "String",
-      "Default": "aws-samples",
-      "Description": "Your github username (you need to fork the two repositories https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer and https://github.com/aws-samples/amazon-kinesis-replay)"
-    },
-    "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
-      "Type": "AWS::SSM::Parameter::Value<String>",
-      "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
-    }
-  },
   "Resources": {
+    "Bucket83908E77": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/Bucket/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDDB48159": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "lambda.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/DownloadLambda/ServiceRole/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDefaultPolicy841A2736": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "Bucket83908E77",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDefaultPolicy841A2736",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDDB48159"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineDownloadLambda5F6C5A7A": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.download_sources",
+        "Role": {
+          "Fn::GetAtt": [
+            "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDDB48159",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "url": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/master.zip",
+            "bucket": {
+              "Ref": "Bucket83908E77"
+            },
+            "key": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
+          }
+        },
+        "Timeout": 30
+      },
+      "DependsOn": [
+        "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDefaultPolicy841A2736",
+        "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDDB48159"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/DownloadLambda/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineDownloadLambdaResourceEF8767F4": {
+      "Type": "AWS::CloudFormation::CustomResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "BeamTaxiConsumerBuildPipelineDownloadLambda5F6C5A7A",
+            "Arn"
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/DownloadLambdaResource/Default"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodebuildProjectRole8A633BC6": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "codebuild.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodebuildProject/Role/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodebuildProjectRoleDefaultPolicy394A0A12": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "BeamTaxiConsumerBuildPipelineCodebuildProjectE94068B3"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":log-group:/aws/codebuild/",
+                      {
+                        "Ref": "BeamTaxiConsumerBuildPipelineCodebuildProjectE94068B3"
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineCodebuildProjectRoleDefaultPolicy394A0A12",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineCodebuildProjectRole8A633BC6"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodebuildProject/Role/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodebuildProjectE94068B3": {
+      "Type": "AWS::CodeBuild::Project",
+      "Properties": {
+        "Artifacts": {
+          "Type": "CODEPIPELINE"
+        },
+        "Environment": {
+          "ComputeType": "BUILD_GENERAL1_SMALL",
+          "Image": "aws/codebuild/java:openjdk-11",
+          "PrivilegedMode": false,
+          "Type": "LINUX_CONTAINER"
+        },
+        "ServiceRole": {
+          "Fn::GetAtt": [
+            "BeamTaxiConsumerBuildPipelineCodebuildProjectRole8A633BC6",
+            "Arn"
+          ]
+        },
+        "Source": {
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-analytics-beam-taxi-consumer-master\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-analytics-beam-taxi-consumer-*.jar\",\n      \"target/beam-taxi-count-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-analytics-beam-taxi-consumer-master\"\n  }\n}",
+          "Type": "CODEPIPELINE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodebuildProject/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/WaitHandle"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "Properties": {
+        "Count": 1,
+        "Handle": {
+          "Ref": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2"
+        },
+        "Timeout": "1200"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/WaitCondition"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "lambda.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codepipeline:PutJobSuccessResult",
+                "codepipeline:PutJobFailureResult"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.notify_build_success",
+        "Role": {
+          "Fn::GetAtt": [
+            "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "waitHandleUrl": {
+              "Ref": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2"
+            }
+          }
+        },
+        "Timeout": 10
+      },
+      "DependsOn": [
+        "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
+        "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineRoleA2A59BB5": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "codepipeline.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Role/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineRoleDefaultPolicy745C1C6E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "BeamTaxiConsumerBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRole107A6A77",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "BeamTaxiConsumerBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole8A9C2DB3",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "BeamTaxiConsumerBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole08009C82",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "BeamTaxiConsumerBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleABC84458",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineCodePipelineRoleDefaultPolicy745C1C6E",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineCodePipelineRoleA2A59BB5"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Role/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipeline1EFC3561": {
+      "Type": "AWS::CodePipeline::Pipeline",
+      "Properties": {
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "BeamTaxiConsumerBuildPipelineCodePipelineRoleA2A59BB5",
+            "Arn"
+          ]
+        },
+        "Stages": [
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Source",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "S3Bucket": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "S3ObjectKey": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
+                },
+                "InputArtifacts": [],
+                "Name": "SourceAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "BeamTaxiConsumerBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRole107A6A77",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Source"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Build",
+                  "Owner": "AWS",
+                  "Provider": "CodeBuild",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "ProjectName": {
+                    "Ref": "BeamTaxiConsumerBuildPipelineCodebuildProjectE94068B3"
+                  }
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Source_SourceAction"
+                  }
+                ],
+                "Name": "BuildAction",
+                "OutputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "BeamTaxiConsumerBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole8A9C2DB3",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              }
+            ],
+            "Name": "Build"
+          },
+          {
+            "Actions": [
+              {
+                "ActionTypeId": {
+                  "Category": "Deploy",
+                  "Owner": "AWS",
+                  "Provider": "S3",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "BucketName": {
+                    "Ref": "Bucket83908E77"
+                  },
+                  "Extract": "true"
+                },
+                "InputArtifacts": [
+                  {
+                    "Name": "Artifact_Build_BuildAction"
+                  }
+                ],
+                "Name": "CopyAction",
+                "OutputArtifacts": [],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "BeamTaxiConsumerBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole08009C82",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 1
+              },
+              {
+                "ActionTypeId": {
+                  "Category": "Invoke",
+                  "Owner": "AWS",
+                  "Provider": "Lambda",
+                  "Version": "1"
+                },
+                "Configuration": {
+                  "FunctionName": {
+                    "Ref": "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5"
+                  }
+                },
+                "InputArtifacts": [],
+                "Name": "InvokeAction",
+                "OutputArtifacts": [],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "BeamTaxiConsumerBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleABC84458",
+                    "Arn"
+                  ]
+                },
+                "RunOrder": 2
+              }
+            ],
+            "Name": "Copy"
+          }
+        ],
+        "ArtifactStore": {
+          "Location": {
+            "Ref": "Bucket83908E77"
+          },
+          "Type": "S3"
+        }
+      },
+      "DependsOn": [
+        "BeamTaxiConsumerBuildPipelineCodePipelineRoleDefaultPolicy745C1C6E",
+        "BeamTaxiConsumerBuildPipelineCodePipelineRoleA2A59BB5"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRole107A6A77": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy16133A47": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy16133A47",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRole107A6A77"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole8A9C2DB3": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicyB6FE722C": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:StopBuild"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "BeamTaxiConsumerBuildPipelineCodebuildProjectE94068B3",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicyB6FE722C",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole8A9C2DB3"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole08009C82": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy46A4F07B": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy46A4F07B",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole08009C82"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleABC84458": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "BeamTaxiConsumerBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyF8FF4A4E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:ListFunctions",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "BeamTaxiConsumerBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyF8FF4A4E",
+        "Roles": [
+          {
+            "Ref": "BeamTaxiConsumerBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleABC84458"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
     "VPCB9E5F0B4": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
@@ -234,845 +1286,6 @@
         "aws:cdk:path": "BeamTaxiCount-Demo/VPC/VPCGW"
       }
     },
-    "Bucket83908E77": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain",
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/Bucket/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "codebuild.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicyBF401442": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":logs:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":log-group:/aws/codebuild/",
-                      {
-                        "Ref": "BeamTaxiConsumerBuildPipelineMyProjectA087020D"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":logs:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":log-group:/aws/codebuild/",
-                      {
-                        "Ref": "BeamTaxiConsumerBuildPipelineMyProjectA087020D"
-                      },
-                      ":*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject*",
-                "s3:Abort*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "Bucket83908E77",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "Bucket83908E77",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "BeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicyBF401442",
-        "Roles": [
-          {
-            "Ref": "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyProjectA087020D": {
-      "Type": "AWS::CodeBuild::Project",
-      "Properties": {
-        "Artifacts": {
-          "Type": "NO_ARTIFACTS"
-        },
-        "Environment": {
-          "ComputeType": "BUILD_GENERAL1_SMALL",
-          "Image": "aws/codebuild/java:openjdk-11",
-          "PrivilegedMode": false,
-          "Type": "LINUX_CONTAINER"
-        },
-        "ServiceRole": {
-          "Fn::GetAtt": [
-            "BeamTaxiConsumerBuildPipelineMyProjectRoleBF7F38CE",
-            "Arn"
-          ]
-        },
-        "Source": {
-          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/beam-taxi-count-*.jar\"\n    ],\n    \"discard\": true\n  }\n}",
-          "Type": "NO_SOURCE"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyProject/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2": {
-      "Type": "AWS::CloudFormation::WaitConditionHandle",
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/WaitHandle"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A": {
-      "Type": "AWS::CloudFormation::WaitCondition",
-      "Properties": {
-        "Count": 1,
-        "Handle": {
-          "Ref": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2"
-        },
-        "Timeout": "300"
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/WaitCondition"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "lambda.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-              ]
-            ]
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "codepipeline:PutJobSuccessResult",
-                "codepipeline:PutJobFailureResult"
-              ],
-              "Effect": "Allow",
-              "Resource": "*"
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
-        "Roles": [
-          {
-            "Ref": "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "ZipFile": "import json\nimport boto3\nimport urllib.request\nimport os\n\ncode_pipeline = boto3.client('codepipeline')\n\ndef handler(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"failure: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})"
-        },
-        "Handler": "index.handler",
-        "Role": {
-          "Fn::GetAtt": [
-            "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393",
-            "Arn"
-          ]
-        },
-        "Runtime": "python3.7",
-        "Environment": {
-          "Variables": {
-            "waitHandleUrl": {
-              "Ref": "BeamTaxiConsumerBuildPipelineWaitHandle410EECC2"
-            }
-          }
-        },
-        "Timeout": 10
-      },
-      "DependsOn": [
-        "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy3E045A13",
-        "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393"
-      ],
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "codepipeline.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject*",
-                "s3:Abort*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "Bucket83908E77",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "Bucket83908E77",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "BeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRole19211345",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "BeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRole99DEFC1C",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "BeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRoleFCC4A80D",
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF",
-        "Roles": [
-          {
-            "Ref": "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipeline9ECC2268": {
-      "Type": "AWS::CodePipeline::Pipeline",
-      "Properties": {
-        "RoleArn": {
-          "Fn::GetAtt": [
-            "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D",
-            "Arn"
-          ]
-        },
-        "Stages": [
-          {
-            "Actions": [
-              {
-                "ActionTypeId": {
-                  "Category": "Source",
-                  "Owner": "ThirdParty",
-                  "Provider": "GitHub",
-                  "Version": "1"
-                },
-                "Configuration": {
-                  "Owner": {
-                    "Ref": "GithubUser"
-                  },
-                  "Repo": "amazon-kinesis-analytics-beam-taxi-consumer",
-                  "Branch": "master",
-                  "OAuthToken": {
-                    "Ref": "GithubOauthToken"
-                  },
-                  "PollForSourceChanges": false
-                },
-                "InputArtifacts": [],
-                "Name": "SourceAction",
-                "OutputArtifacts": [
-                  {
-                    "Name": "Artifact_Source_SourceAction"
-                  }
-                ],
-                "RunOrder": 1
-              }
-            ],
-            "Name": "Source"
-          },
-          {
-            "Actions": [
-              {
-                "ActionTypeId": {
-                  "Category": "Build",
-                  "Owner": "AWS",
-                  "Provider": "CodeBuild",
-                  "Version": "1"
-                },
-                "Configuration": {
-                  "ProjectName": {
-                    "Ref": "BeamTaxiConsumerBuildPipelineMyProjectA087020D"
-                  }
-                },
-                "InputArtifacts": [
-                  {
-                    "Name": "Artifact_Source_SourceAction"
-                  }
-                ],
-                "Name": "BuildAction",
-                "OutputArtifacts": [
-                  {
-                    "Name": "Artifact_Build_BuildAction"
-                  }
-                ],
-                "RoleArn": {
-                  "Fn::GetAtt": [
-                    "BeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRole19211345",
-                    "Arn"
-                  ]
-                },
-                "RunOrder": 1
-              }
-            ],
-            "Name": "Build"
-          },
-          {
-            "Actions": [
-              {
-                "ActionTypeId": {
-                  "Category": "Deploy",
-                  "Owner": "AWS",
-                  "Provider": "S3",
-                  "Version": "1"
-                },
-                "Configuration": {
-                  "BucketName": {
-                    "Ref": "Bucket83908E77"
-                  },
-                  "Extract": "true"
-                },
-                "InputArtifacts": [
-                  {
-                    "Name": "Artifact_Build_BuildAction"
-                  }
-                ],
-                "Name": "CopyAction",
-                "OutputArtifacts": [],
-                "RoleArn": {
-                  "Fn::GetAtt": [
-                    "BeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRole99DEFC1C",
-                    "Arn"
-                  ]
-                },
-                "RunOrder": 1
-              },
-              {
-                "ActionTypeId": {
-                  "Category": "Invoke",
-                  "Owner": "AWS",
-                  "Provider": "Lambda",
-                  "Version": "1"
-                },
-                "Configuration": {
-                  "FunctionName": {
-                    "Ref": "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5"
-                  }
-                },
-                "InputArtifacts": [],
-                "Name": "InvokeAction",
-                "OutputArtifacts": [],
-                "RoleArn": {
-                  "Fn::GetAtt": [
-                    "BeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRoleFCC4A80D",
-                    "Arn"
-                  ]
-                },
-                "RunOrder": 2
-              }
-            ],
-            "Name": "Copy"
-          }
-        ],
-        "ArtifactStore": {
-          "Location": {
-            "Ref": "Bucket83908E77"
-          },
-          "Type": "S3"
-        }
-      },
-      "DependsOn": [
-        "BeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy9098B5DF",
-        "BeamTaxiConsumerBuildPipelineMyPipelineRole0257A62D"
-      ],
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource8C2B15E4": {
-      "Type": "AWS::CodePipeline::Webhook",
-      "Properties": {
-        "Authentication": "GITHUB_HMAC",
-        "AuthenticationConfiguration": {
-          "SecretToken": {
-            "Ref": "GithubOauthToken"
-          }
-        },
-        "Filters": [
-          {
-            "JsonPath": "$.ref",
-            "MatchEquals": "refs/heads/{Branch}"
-          }
-        ],
-        "TargetAction": "SourceAction",
-        "TargetPipeline": {
-          "Ref": "BeamTaxiConsumerBuildPipelineMyPipeline9ECC2268"
-        },
-        "TargetPipelineVersion": 1,
-        "RegisterWithThirdParty": true
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRole19211345": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
-                    ]
-                  ]
-                }
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Build/BuildAction/CodePipelineActionRole/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy89D1AC27": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "codebuild:BatchGetBuilds",
-                "codebuild:StartBuild",
-                "codebuild:StopBuild"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "BeamTaxiConsumerBuildPipelineMyProjectA087020D",
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "BeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy89D1AC27",
-        "Roles": [
-          {
-            "Ref": "BeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRole19211345"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRole99DEFC1C": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
-                    ]
-                  ]
-                }
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Copy/CopyAction/CodePipelineActionRole/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyB31E84E8": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:DeleteObject*",
-                "s3:PutObject*",
-                "s3:Abort*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "Bucket83908E77",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "Bucket83908E77",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "Bucket83908E77",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "Bucket83908E77",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "BeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRoleDefaultPolicyB31E84E8",
-        "Roles": [
-          {
-            "Ref": "BeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRole99DEFC1C"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRoleFCC4A80D": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":root"
-                    ]
-                  ]
-                }
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Copy/InvokeAction/CodePipelineActionRole/Resource"
-      }
-    },
-    "BeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy0CBF25C3": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": "lambda:ListFunctions",
-              "Effect": "Allow",
-              "Resource": "*"
-            },
-            {
-              "Action": "lambda:InvokeFunction",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5",
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "BeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicy0CBF25C3",
-        "Roles": [
-          {
-            "Ref": "BeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRoleFCC4A80D"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/BeamTaxiConsumerBuildPipeline/MyPipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
-      }
-    },
     "EnrichEventsLambdaServiceRoleD32248A6": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -1140,7 +1353,140 @@
         "aws:cdk:path": "BeamTaxiCount-Demo/EnrichEventsLambda/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRole3B3C8A38": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaServiceRole86B346C9": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "lambda.",
+                      {
+                        "Ref": "AWS::URLSuffix"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicy102A21E6": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "Bucket83908E77",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicy102A21E6",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaServiceRole86B346C9"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/DownloadLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambda644E8085": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+        },
+        "Handler": "index.download_sources",
+        "Role": {
+          "Fn::GetAtt": [
+            "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaServiceRole86B346C9",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/master.zip",
+            "bucket": {
+              "Ref": "Bucket83908E77"
+            },
+            "key": "sources/amazon-kinesis-replay-master.zip"
+          }
+        },
+        "Timeout": 30
+      },
+      "DependsOn": [
+        "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaServiceRoleDefaultPolicy102A21E6",
+        "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaServiceRole86B346C9"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/DownloadLambda/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaResource49730AA6": {
+      "Type": "AWS::CloudFormation::CustomResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambda644E8085",
+            "Arn"
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/DownloadLambdaResource/Default"
+      }
+    },
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProjectRole3C10904F": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1167,10 +1513,10 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Role/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodebuildProject/Role/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicy0FED466C": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicyAC53B5B1": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -1201,7 +1547,7 @@
                       },
                       ":log-group:/aws/codebuild/",
                       {
-                        "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527"
+                        "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProject8B60D31D"
                       }
                     ]
                   ]
@@ -1224,7 +1570,7 @@
                       },
                       ":log-group:/aws/codebuild/",
                       {
-                        "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527"
+                        "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProject8B60D31D"
                       },
                       ":*"
                     ]
@@ -1268,22 +1614,22 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRoleDefaultPolicy0FED466C",
+        "PolicyName": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProjectRoleDefaultPolicyAC53B5B1",
         "Roles": [
           {
-            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRole3B3C8A38"
+            "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProjectRole3C10904F"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Role/DefaultPolicy/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodebuildProject/Role/DefaultPolicy/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProject8B60D31D": {
       "Type": "AWS::CodeBuild::Project",
       "Properties": {
         "Artifacts": {
-          "Type": "NO_ARTIFACTS"
+          "Type": "CODEPIPELINE"
         },
         "Environment": {
           "ComputeType": "BUILD_GENERAL1_SMALL",
@@ -1293,39 +1639,39 @@
         },
         "ServiceRole": {
           "Fn::GetAtt": [
-            "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectRole3B3C8A38",
+            "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProjectRole3C10904F",
             "Arn"
           ]
         },
         "Source": {
-          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard\": true\n  }\n}",
-          "Type": "NO_SOURCE"
+          "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-replay-master\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-replay-master\"\n  }\n}",
+          "Type": "CODEPIPELINE"
         }
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyProject/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodebuildProject/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitHandleD023A81D": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineWaitHandle3C26CE2C": {
       "Type": "AWS::CloudFormation::WaitConditionHandle",
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/WaitHandle"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/WaitHandle"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitCondition4FE02D51": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineWaitConditionEDD2A6F2": {
       "Type": "AWS::CloudFormation::WaitCondition",
       "Properties": {
         "Count": 1,
         "Handle": {
-          "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitHandleD023A81D"
+          "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineWaitHandle3C26CE2C"
         },
-        "Timeout": "300"
+        "Timeout": "1200"
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/WaitCondition"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/WaitCondition"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambdaServiceRole1532D198": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1366,10 +1712,10 @@
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy245DACCB": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicyFE5622CC": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -1385,27 +1731,27 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy245DACCB",
+        "PolicyName": "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicyFE5622CC",
         "Roles": [
           {
-            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5"
+            "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambdaServiceRole1532D198"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/NotifyLambda/ServiceRole/DefaultPolicy/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaB1CB3295": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambda9D2FC2E0": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "ZipFile": "import json\nimport boto3\nimport urllib.request\nimport os\n\ncode_pipeline = boto3.client('codepipeline')\n\ndef handler(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"failure: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})"
+          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
         },
-        "Handler": "index.handler",
+        "Handler": "index.notify_build_success",
         "Role": {
           "Fn::GetAtt": [
-            "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5",
+            "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambdaServiceRole1532D198",
             "Arn"
           ]
         },
@@ -1413,21 +1759,21 @@
         "Environment": {
           "Variables": {
             "waitHandleUrl": {
-              "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineWaitHandleD023A81D"
+              "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineWaitHandle3C26CE2C"
             }
           }
         },
         "Timeout": 10
       },
       "DependsOn": [
-        "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleDefaultPolicy245DACCB",
-        "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaServiceRoleE30236A5"
+        "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambdaServiceRoleDefaultPolicyFE5622CC",
+        "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambdaServiceRole1532D198"
       ],
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/NotifyLambda/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/NotifyLambda/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineRole8619A4EA": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1454,10 +1800,10 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Role/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy277A67B0": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineRoleDefaultPolicyBE99C5D4": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -1500,7 +1846,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRole52D38147",
+                  "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRole2D3A619B",
                   "Arn"
                 ]
               }
@@ -1510,7 +1856,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRole694AA032",
+                  "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole5381CB1D",
                   "Arn"
                 ]
               }
@@ -1520,7 +1866,17 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRole4A430A39",
+                  "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole60F16D3A",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole9DE755D2",
                   "Arn"
                 ]
               }
@@ -1528,23 +1884,23 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy277A67B0",
+        "PolicyName": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineRoleDefaultPolicyBE99C5D4",
         "Roles": [
           {
-            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8"
+            "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineRole8619A4EA"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Role/DefaultPolicy/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Role/DefaultPolicy/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineB67D56F2": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineD89A5056": {
       "Type": "AWS::CodePipeline::Pipeline",
       "Properties": {
         "RoleArn": {
           "Fn::GetAtt": [
-            "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8",
+            "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineRole8619A4EA",
             "Arn"
           ]
         },
@@ -1554,20 +1910,15 @@
               {
                 "ActionTypeId": {
                   "Category": "Source",
-                  "Owner": "ThirdParty",
-                  "Provider": "GitHub",
+                  "Owner": "AWS",
+                  "Provider": "S3",
                   "Version": "1"
                 },
                 "Configuration": {
-                  "Owner": {
-                    "Ref": "GithubUser"
+                  "S3Bucket": {
+                    "Ref": "Bucket83908E77"
                   },
-                  "Repo": "amazon-kinesis-replay",
-                  "Branch": "master",
-                  "OAuthToken": {
-                    "Ref": "GithubOauthToken"
-                  },
-                  "PollForSourceChanges": false
+                  "S3ObjectKey": "sources/amazon-kinesis-replay-master.zip"
                 },
                 "InputArtifacts": [],
                 "Name": "SourceAction",
@@ -1576,6 +1927,12 @@
                     "Name": "Artifact_Source_SourceAction"
                   }
                 ],
+                "RoleArn": {
+                  "Fn::GetAtt": [
+                    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRole2D3A619B",
+                    "Arn"
+                  ]
+                },
                 "RunOrder": 1
               }
             ],
@@ -1592,7 +1949,7 @@
                 },
                 "Configuration": {
                   "ProjectName": {
-                    "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527"
+                    "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProject8B60D31D"
                   }
                 },
                 "InputArtifacts": [
@@ -1608,7 +1965,7 @@
                 ],
                 "RoleArn": {
                   "Fn::GetAtt": [
-                    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRole52D38147",
+                    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole5381CB1D",
                     "Arn"
                   ]
                 },
@@ -1641,7 +1998,7 @@
                 "OutputArtifacts": [],
                 "RoleArn": {
                   "Fn::GetAtt": [
-                    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRole694AA032",
+                    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole60F16D3A",
                     "Arn"
                   ]
                 },
@@ -1656,7 +2013,7 @@
                 },
                 "Configuration": {
                   "FunctionName": {
-                    "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaB1CB3295"
+                    "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambda9D2FC2E0"
                   }
                 },
                 "InputArtifacts": [],
@@ -1664,7 +2021,7 @@
                 "OutputArtifacts": [],
                 "RoleArn": {
                   "Fn::GetAtt": [
-                    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRole4A430A39",
+                    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole9DE755D2",
                     "Arn"
                   ]
                 },
@@ -1682,40 +2039,14 @@
         }
       },
       "DependsOn": [
-        "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRoleDefaultPolicy277A67B0",
-        "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineRole62E745C8"
+        "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineRoleDefaultPolicyBE99C5D4",
+        "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineRole8619A4EA"
       ],
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineSourceSourceActionWebhookResource6BF24A5C": {
-      "Type": "AWS::CodePipeline::Webhook",
-      "Properties": {
-        "Authentication": "GITHUB_HMAC",
-        "AuthenticationConfiguration": {
-          "SecretToken": {
-            "Ref": "GithubOauthToken"
-          }
-        },
-        "Filters": [
-          {
-            "JsonPath": "$.ref",
-            "MatchEquals": "refs/heads/{Branch}"
-          }
-        ],
-        "TargetAction": "SourceAction",
-        "TargetPipeline": {
-          "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineB67D56F2"
-        },
-        "TargetPipelineVersion": 1,
-        "RegisterWithThirdParty": true
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Source/SourceAction/WebhookResource"
-      }
-    },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRole52D38147": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRole2D3A619B": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1747,10 +2078,124 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Build/BuildAction/CodePipelineActionRole/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy165314E2": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy236BB23E": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRoleDefaultPolicy236BB23E",
+        "Roles": [
+          {
+            "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineSourceSourceActionCodePipelineActionRole2D3A619B"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Source/SourceAction/CodePipelineActionRole/DefaultPolicy/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole5381CB1D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/Resource"
+      }
+    },
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicyF9260D33": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -1764,7 +2209,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyProjectD1914527",
+                  "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProject8B60D31D",
                   "Arn"
                 ]
               }
@@ -1772,18 +2217,18 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRoleDefaultPolicy165314E2",
+        "PolicyName": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRoleDefaultPolicyF9260D33",
         "Roles": [
           {
-            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineBuildBuildActionCodePipelineActionRole52D38147"
+            "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineBuildBuildActionCodePipelineActionRole5381CB1D"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Build/BuildAction/CodePipelineActionRole/DefaultPolicy/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRole694AA032": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole60F16D3A": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1815,10 +2260,10 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Copy/CopyAction/CodePipelineActionRole/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy3E7D2113": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy9B2CA74C": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -1886,18 +2331,18 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy3E7D2113",
+        "PolicyName": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRoleDefaultPolicy9B2CA74C",
         "Roles": [
           {
-            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyCopyActionCodePipelineActionRole694AA032"
+            "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole60F16D3A"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Copy/CopyAction/CodePipelineActionRole/DefaultPolicy/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRole4A430A39": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole9DE755D2": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1929,10 +2374,10 @@
         }
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Copy/InvokeAction/CodePipelineActionRole/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/Resource"
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyCD2C183A": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyE2818116": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -1947,7 +2392,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineNotifyLambdaB1CB3295",
+                  "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambda9D2FC2E0",
                   "Arn"
                 ]
               }
@@ -1955,15 +2400,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyCD2C183A",
+        "PolicyName": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleDefaultPolicyE2818116",
         "Roles": [
           {
-            "Ref": "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineMyPipelineCopyInvokeActionCodePipelineActionRole4A430A39"
+            "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole9DE755D2"
           }
         ]
       },
       "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/BeamTaxiConsumerBuildPipeline/MyPipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
+        "aws:cdk:path": "BeamTaxiCount-Demo/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodePipeline/Copy/InvokeAction/CodePipelineActionRole/DefaultPolicy/Resource"
       }
     },
     "KinesisReplayInfrastructureSecurityGroup192A878A": {
@@ -2306,12 +2751,12 @@
         "Ref": "Bucket83908E77"
       }
     },
-    "BeamTaxiConsumerBuildPipelineBeamTaxiCountCopyCommand3906FDA0": {
+    "BeamTaxiConsumerBuildPipelineAmazonKinesisAnalyticsBeamTaxiConsumerCopyCommand89496320": {
       "Value": {
         "Fn::Join": [
           "",
           [
-            "aws s3 cp --recursive --exclude '*' --include 'beam-taxi-count-*.jar' 's3://",
+            "aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-analytics-beam-taxi-consumer-*.jar' 's3://",
             {
               "Ref": "Bucket83908E77"
             },
@@ -2320,7 +2765,7 @@
         ]
       }
     },
-    "KinesisReplayInfrastructureBeamTaxiConsumerBuildPipelineAmazonKinesisReplayCopyCommand6A25682B": {
+    "KinesisReplayInfrastructureKinesisReplayBuildPipelineAmazonKinesisReplayCopyCommand95EC83DD": {
       "Value": {
         "Fn::Join": [
           "",
@@ -2400,6 +2845,15 @@
           ]
         ]
       }
+    }
+  },
+  "Parameters": {
+    "KeyName": {
+      "Type": "AWS::EC2::KeyPair::KeyName"
+    },
+    "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
     }
   }
 }

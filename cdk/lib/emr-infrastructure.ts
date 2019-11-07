@@ -7,7 +7,6 @@ import ec2 = require('@aws-cdk/aws-ec2');
 export interface EmrProps {
     bucket: s3.Bucket,
     keyName: string,
-    region: string,
     vpc: ec2.Vpc
 }
   

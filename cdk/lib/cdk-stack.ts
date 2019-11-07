@@ -1,16 +1,16 @@
+import fs = require('fs');
 import cdk = require('@aws-cdk/core');
 import s3 = require('@aws-cdk/aws-s3');
 import ec2 = require('@aws-cdk/aws-ec2');
+import kds = require('@aws-cdk/aws-kinesis');
 import lambda = require('@aws-cdk/aws-lambda');
 import { KinesisReplay } from './amazon-kinesis-replay';
 import { GithubBuildPipeline } from './github-build-pipeline';
 import { EmrInfrastructure } from './emr-infrastructure';
-import kds = require('@aws-cdk/aws-kinesis');
 import { KinesisAnalyticsJava } from './kinesis-analytics-infrastructure';
 import { FirehoseInfrastructure } from './kinesis-firehose-infrastructure';
 import { BeamDashboard } from './cloudwatch-dashboard';
-import * as fs from 'fs';
-import { SecretValue, CfnParameter, Duration } from '@aws-cdk/core';
+import { Duration } from '@aws-cdk/core';
 
 export interface StackProps extends cdk.StackProps {
   build?: boolean,
@@ -23,6 +23,25 @@ export class CdkStack extends cdk.Stack {
     super(scope, id, props);
 
     this.templateOptions.description = 'Creates sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications and Amazon EMR (amazon-kinesis-analytics-beam-taxi-consumer)'
+
+    const bucket = new s3.Bucket(this, 'Bucket', {
+      versioned: true
+    });
+
+    new cdk.CfnOutput(this, 'S3Bucket', { value: bucket.bucketName });
+
+
+    const consumerBuild = new GithubBuildPipeline(this, 'BeamTaxiConsumerBuildPipeline', {
+      bucket: bucket,
+      url: 'https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/master.zip',
+      extract: true,
+      files: ['target/beam-taxi-count-*.jar']
+    });
+    
+
+    if (! (props.demoInfrastructure || props.completeInfrastructure)) {
+      return;
+    }
 
     const keyName = new cdk.CfnParameter(this, 'KeyName', {
       type: 'AWS::EC2::KeyPair::KeyName'
@@ -39,41 +58,6 @@ export class CdkStack extends cdk.Stack {
       ]
     });
 
-    const bucket = new s3.Bucket(this, 'Bucket', {
-      versioned: true
-    });
-
-    new cdk.CfnOutput(this, 'S3Bucket', { value: bucket.bucketName });
-
-    const oauthToken = SecretValue.cfnParameter(
-      new CfnParameter(this, 'GithubOauthToken', {
-        type: 'String',
-        noEcho: true,
-        description: `Create a token with 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens`
-      })
-    );
-
-    const githubUsername = new CfnParameter(this, 'GithubUser', {
-      type: 'String',
-      default: 'aws-samples',
-      description: `Your github username (you need to fork the two repositories https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer and https://github.com/aws-samples/amazon-kinesis-replay)`
-    })
-
-    const consumerBuild = new GithubBuildPipeline(this, 'BeamTaxiConsumerBuildPipeline', {
-      bucket: bucket,
-      region: this.region,
-      accountId: this.account,
-      oauthToken: oauthToken,
-      repo: 'amazon-kinesis-analytics-beam-taxi-consumer',
-      owner: githubUsername.valueAsString,
-      artifactPrefix: 'beam-taxi-count'
-    });
-    
-
-    if (! (props.demoInfrastructure || props.completeInfrastructure)) {
-      return;
-    }
-
 
     const lambdaSource = fs.readFileSync('lambda/add-approximate-arrival-time.js').toString();
 
@@ -87,17 +71,12 @@ export class CdkStack extends cdk.Stack {
     new KinesisReplay(this, 'KinesisReplayInfrastructure', {
       bucket: bucket,
       keyName: keyName,
-      region: this.region,
-      accountId: this.account,
-      oauthToken: oauthToken,
-      owner: githubUsername.valueAsString,
       vpc: vpc
     });
 
     new EmrInfrastructure(this, 'EmrInfrastructure', {
       bucket: bucket,
       keyName: keyName,
-      region: this.region,
       vpc: vpc
     });
 

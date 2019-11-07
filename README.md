@@ -15,17 +15,17 @@ $ ssh ec2-user@«Replay instance DNS name»
 
 $ aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-replay-*.jar' 's3://«AWS bucket name»/target/' .
 
-$ java -jar amazon-kinesis-replay-1.0.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018 -streamName «Kinesis data stream name» -streamRegion «AWS region» -speedup 720
+$ java -jar amazon-kinesis-replay-*.jar -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018 -streamName «Kinesis data stream name» -streamRegion «AWS region» -speedup 720
 ```
 
-Once data is being ingested into the Kinesis data stream, you can start the processing with the Beam pipeline. Just navigate to the created Kinesis Data Analytics application in the management console and press the 
-run botton. You can then find the generated metrics in an Amazon CloudWatch dashboard that has already been created.
+Once data is being ingested into the Kinesis data stream, you can start the processing with the Beam pipeline. Just navigate to the created Kinesis Data Analytics application in the management console and press the run button. You can then find the generated metrics in an Amazon CloudWatch dashboard that has already been created.
 
 
 ![CloudWatch Dashboard Screen Shot](misc/cloudwatch-dashboard-screenshot.png?raw=true)
 
+By default, the Beam pipeline will only output of the overall trip count. To obtain a more fine grained visualisation per borough, you need to change the configuration of the application: Navigate to the Kinesis Analytics application and choose configure. Then, change the value of the property `OutputBoroughs` from `false` to `true` in the property group BeamApplicationProperties under Properties.
 
-To execute the Beam pipeline in a batch processing fashion. Connect to the provisioned Amazon Elastic Map Reduce cluster and submit the Jar file of the Beam pipeline to Apache Flink.
+Once the application has been reconfigured and is running again, it will output the trip count per borough for all new events. However, it does not backfill these metrics for events that have already been processed. To backfill these fine grained metrics for historic values, you can execute the Beam pipeline in a batch processing fashion on EMR. Connect to the provisioned Amazon Elastic Map Reduce cluster and submit the Jar file of the Beam pipeline to Apache Flink.
 
 ```
 $ ssh -C -D 8157 hadoop@«EMR master node DNS name»

@@ -9,10 +9,6 @@ import { GithubBuildPipeline } from './github-build-pipeline';
 export interface KinesisReplayProps {
   bucket: s3.Bucket,
   keyName: string,
-  region: string,
-  accountId: string,
-  oauthToken: cdk.SecretValue,
-  owner: string,
   vpc: ec2.Vpc
 }
 
@@ -20,14 +16,10 @@ export class KinesisReplay extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: KinesisReplayProps) {
     super(scope, id);
 
-    new GithubBuildPipeline(this, 'BeamTaxiConsumerBuildPipeline', {
+    new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
         bucket: props.bucket,
-        region: props.region,
-        accountId: props.accountId,
-        oauthToken: props.oauthToken,
-        repo: 'amazon-kinesis-replay',
-        owner: props.owner,
-        artifactPrefix: 'amazon-kinesis-replay'
+        url: 'https://github.com/aws-samples/amazon-kinesis-replay/archive/master.zip',
+        extract: true
     });
 
     const replayCopyCommand = `aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-replay-*.jar' 's3://${props.bucket.bucketName}/target/' .`
