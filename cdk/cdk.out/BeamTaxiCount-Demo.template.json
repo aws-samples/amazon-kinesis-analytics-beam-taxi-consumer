@@ -2756,11 +2756,11 @@
         "Fn::Join": [
           "",
           [
-            "aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-analytics-beam-taxi-consumer-*.jar' 's3://",
+            "aws s3 cp --recursive --exclude '*' --include 'target/beam-taxi-count-*.jar' 's3://",
             {
               "Ref": "Bucket83908E77"
             },
-            "/target/' ."
+            "/' ."
           ]
         ]
       }

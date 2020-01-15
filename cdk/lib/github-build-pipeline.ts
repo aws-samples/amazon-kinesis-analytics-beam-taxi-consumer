@@ -160,6 +160,12 @@ export class GithubBuildPipeline extends cdk.Construct {
 
     const cfnId = artifact.split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('');
 
-    new cdk.CfnOutput(this, `${cfnId}CopyCommand`, { value: `aws s3 cp --recursive --exclude '*' --include '${artifact}-*.jar' 's3://${props.bucket.bucketName}/target/' .` });
+    if (props.files) {
+      if (props.files.length == 1) {
+        new cdk.CfnOutput(this, `${cfnId}CopyCommand`, { value: `aws s3 cp --recursive --exclude '*' --include '${props.files[0]}' 's3://${props.bucket.bucketName}/' .` });
+      }
+    } else {
+      new cdk.CfnOutput(this, `${cfnId}CopyCommand`, { value: `aws s3 cp --recursive --exclude '*' --include '${artifact}-*.jar' 's3://${props.bucket.bucketName}/target/' .` });
+    }
   }
 }
