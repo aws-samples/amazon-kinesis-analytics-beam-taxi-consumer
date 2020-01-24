@@ -3268,12 +3268,12 @@
         ]
       }
     },
-    "StartFlinkApplication": {
+    "EmrStartFlinkApplication": {
       "Value": {
         "Fn::Join": [
           "",
           [
-            "flink run -p 8 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://",
+            "flink run -p 8 target/beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://",
             {
               "Ref": "Bucket83908E77"
             },
