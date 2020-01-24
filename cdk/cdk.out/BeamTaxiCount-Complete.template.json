@@ -3226,6 +3226,24 @@
         ]
       }
     },
+    "KinesisReplayInfrastructureKinesisReplayCommand726D7342": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "java -jar amazon-kinesis-replay-*.jar -streamRegion ",
+            {
+              "Ref": "AWS::Region"
+            },
+            " -streamName ",
+            {
+              "Ref": "InputStreamCFB159EA"
+            },
+            " -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720"
+          ]
+        ]
+      }
+    },
     "EmrInfrastructureSshEmrClusterEC3E33DC": {
       "Value": {
         "Fn::Join": [
@@ -3245,30 +3263,7 @@
     "EmrInfrastructureStartFlinkRuntime2BE04C38": {
       "Value": "flink-yarn-session -n 2 -s 4 -tm 16GB -d"
     },
-    "FlinkInfrastructureFlinkLogGroupNameF37E6FFF": {
-      "Value": {
-        "Ref": "FlinkInfrastructureFlinkLogGroupD9BFEBD6"
-      }
-    },
-    "KinesisReplayCommand": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "java -jar amazon-kinesis-replay-*.jar -streamRegion ",
-            {
-              "Ref": "AWS::Region"
-            },
-            " -streamName ",
-            {
-              "Ref": "InputStreamCFB159EA"
-            },
-            " -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720"
-          ]
-        ]
-      }
-    },
-    "EmrStartFlinkApplication": {
+    "EmrInfrastructureStartFlinkApplicationB5E624EA": {
       "Value": {
         "Fn::Join": [
           "",
@@ -3288,6 +3283,11 @@
             " --source=s3 --outputBoroughs=true"
           ]
         ]
+      }
+    },
+    "FlinkInfrastructureFlinkLogGroupNameF37E6FFF": {
+      "Value": {
+        "Ref": "FlinkInfrastructureFlinkLogGroupD9BFEBD6"
       }
     }
   },

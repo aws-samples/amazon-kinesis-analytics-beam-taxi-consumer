@@ -2697,6 +2697,20 @@
         ]
       }
     },
+    "KinesisReplayInfrastructureKinesisReplayCommand726D7342": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "java -jar amazon-kinesis-replay-*.jar -streamRegion ",
+            {
+              "Ref": "AWS::Region"
+            },
+            " -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit"
+          ]
+        ]
+      }
+    },
     "EmrInfrastructureSshEmrClusterEC3E33DC": {
       "Value": {
         "Fn::Join": [
@@ -2716,21 +2730,7 @@
     "EmrInfrastructureStartFlinkRuntime2BE04C38": {
       "Value": "flink-yarn-session -n 2 -s 4 -tm 16GB -d"
     },
-    "KinesisReplayCommand": {
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "java -jar amazon-kinesis-replay-*.jar -streamRegion ",
-            {
-              "Ref": "AWS::Region"
-            },
-            " -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit"
-          ]
-        ]
-      }
-    },
-    "EmrStartFlinkApplication": {
+    "EmrInfrastructureStartFlinkApplicationB5E624EA": {
       "Value": {
         "Fn::Join": [
           "",

@@ -68,13 +68,13 @@ export class CdkStack extends cdk.Stack {
       handler: 'index.handler'
     });
     
-    new KinesisReplay(this, 'KinesisReplayInfrastructure', {
+    const replay = new KinesisReplay(this, 'KinesisReplayInfrastructure', {
       bucket: bucket,
       keyName: keyName,
       vpc: vpc
     });
 
-    new EmrInfrastructure(this, 'EmrInfrastructure', {
+    const emr = new EmrInfrastructure(this, 'EmrInfrastructure', {
       bucket: bucket,
       keyName: keyName,
       vpc: vpc
@@ -82,8 +82,8 @@ export class CdkStack extends cdk.Stack {
 
 
     if (! props.completeInfrastructure) {
-      new cdk.CfnOutput(this, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit` });
-      new cdk.CfnOutput(this, 'EmrStartFlinkApplication', { value: `flink run -p 8 target/beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${this.region} --source=s3 --outputBoroughs=true` });
+      new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit` });
+      new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 target/beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${this.region} --source=s3 --outputBoroughs=true` });
 
       return;
     }
@@ -114,7 +114,7 @@ export class CdkStack extends cdk.Stack {
       buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition,
     });
 
-    new cdk.CfnOutput(this, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -streamName ${stream.streamName} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720` });
-    new cdk.CfnOutput(this, 'EmrStartFlinkApplication', { value: `flink run -p 8 target/beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${this.region} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
+    new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -streamName ${stream.streamName} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720` });
+    new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 target/beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${this.region} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
   }
 }
