@@ -23,17 +23,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "lambda.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "lambda.amazonaws.com"
               }
             }
           ],
@@ -156,17 +146,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "codebuild.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "codebuild.amazonaws.com"
               }
             }
           ],
@@ -341,17 +321,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "lambda.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "lambda.amazonaws.com"
               }
             }
           ],
@@ -443,17 +413,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "codepipeline.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "codepipeline.amazonaws.com"
               }
             }
           ],
@@ -581,7 +541,6 @@
                   },
                   "S3ObjectKey": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
                 },
-                "InputArtifacts": [],
                 "Name": "SourceAction",
                 "OutputArtifacts": [
                   {
@@ -656,7 +615,6 @@
                   }
                 ],
                 "Name": "CopyAction",
-                "OutputArtifacts": [],
                 "RoleArn": {
                   "Fn::GetAtt": [
                     "BeamTaxiConsumerBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole08009C82",
@@ -677,9 +635,7 @@
                     "Ref": "BeamTaxiConsumerBuildPipelineNotifyLambdaEB7E94E5"
                   }
                 },
-                "InputArtifacts": [],
                 "Name": "InvokeAction",
-                "OutputArtifacts": [],
                 "RoleArn": {
                   "Fn::GetAtt": [
                     "BeamTaxiConsumerBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRoleABC84458",
@@ -1295,17 +1251,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "lambda.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "lambda.amazonaws.com"
               }
             }
           ],
@@ -1343,7 +1289,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs12.x",
         "Timeout": 60
       },
       "DependsOn": [
@@ -1362,17 +1308,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "lambda.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "lambda.amazonaws.com"
               }
             }
           ],
@@ -1495,17 +1431,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "codebuild.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "codebuild.amazonaws.com"
               }
             }
           ],
@@ -1680,17 +1606,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "lambda.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "lambda.amazonaws.com"
               }
             }
           ],
@@ -1782,17 +1698,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "codepipeline.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "codepipeline.amazonaws.com"
               }
             }
           ],
@@ -1920,7 +1826,6 @@
                   },
                   "S3ObjectKey": "sources/amazon-kinesis-replay-master.zip"
                 },
-                "InputArtifacts": [],
                 "Name": "SourceAction",
                 "OutputArtifacts": [
                   {
@@ -1995,7 +1900,6 @@
                   }
                 ],
                 "Name": "CopyAction",
-                "OutputArtifacts": [],
                 "RoleArn": {
                   "Fn::GetAtt": [
                     "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyCopyActionCodePipelineActionRole60F16D3A",
@@ -2016,9 +1920,7 @@
                     "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambda9D2FC2E0"
                   }
                 },
-                "InputArtifacts": [],
                 "Name": "InvokeAction",
-                "OutputArtifacts": [],
                 "RoleArn": {
                   "Fn::GetAtt": [
                     "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodePipelineCopyInvokeActionCodePipelineActionRole9DE755D2",
@@ -2769,11 +2671,11 @@
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",{\"yAxis\":\"left\",\"period\":60,\"stat\":\"Maximum\"}],[\"AWS/Kinesis\",\"IncomingRecords\",\"StreamName\",\"",
+              "\",{\"period\":60,\"stat\":\"Maximum\"}],[\"AWS/Kinesis\",\"IncomingRecords\",\"StreamName\",\"",
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",{\"yAxis\":\"right\",\"period\":60,\"stat\":\"Sum\"}]],\"annotations\":{\"horizontal\":[]},\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"region\":\"",
+              "\",{\"period\":60,\"stat\":\"Sum\",\"yAxis\":\"right\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":6,\"properties\":{\"view\":\"timeSeries\",\"region\":\"",
               {
                 "Ref": "AWS::Region"
               },
@@ -2781,35 +2683,35 @@
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}]],\"annotations\":{\"horizontal\":[]},\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":12,\"properties\":{\"view\":\"timeSeries\",\"region\":\"",
+              "\",{\"period\":5,\"stat\":\"Maximum\"}]],\"yAxis\":{}}},{\"type\":\"metric\",\"width\":24,\"height\":6,\"x\":0,\"y\":12,\"properties\":{\"view\":\"timeSeries\",\"region\":\"",
               {
                 "Ref": "AWS::Region"
               },
-              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              "\",\"metrics\":[[\"Beam\",\"Number of Trips\",\"Borough\",\"Bronx\",\"StreamName\",\"",
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",\"Borough\",\"Bronx\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              "\",{\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Brooklyn\",\"StreamName\",\"",
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",\"Borough\",\"Brooklyn\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              "\",{\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Queens\",\"StreamName\",\"",
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",\"Borough\",\"Queens\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              "\",{\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Staten Island\",\"StreamName\",\"",
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",\"Borough\",\"Staten Island\",{\"yAxis\":\"left\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              "\",{\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Manhattan\",\"StreamName\",\"",
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",\"Borough\",\"Manhattan\",{\"yAxis\":\"right\",\"period\":5,\"stat\":\"Maximum\"}],[\"Beam\",\"Number of Trips\",\"StreamName\",\"",
+              "\",{\"period\":5,\"stat\":\"Maximum\",\"yAxis\":\"right\"}],[\"Beam\",\"Number of Trips\",\"Borough\",\"Unknown\",\"StreamName\",\"",
               {
                 "Ref": "InputStreamCFB159EA"
               },
-              "\",\"Borough\",\"Unknown\",{\"yAxis\":\"right\",\"period\":5,\"stat\":\"Maximum\"}]],\"annotations\":{\"horizontal\":[]},\"yAxis\":{}}}]}"
+              "\",{\"period\":5,\"stat\":\"Maximum\",\"yAxis\":\"right\"}]],\"yAxis\":{}}}]}"
             ]
           ]
         },
@@ -2830,17 +2732,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "firehose.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "firehose.amazonaws.com"
               }
             }
           ],
@@ -3001,17 +2893,7 @@
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": {
-                "Service": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "kinesisanalytics.",
-                      {
-                        "Ref": "AWS::URLSuffix"
-                      }
-                    ]
-                  ]
-                }
+                "Service": "kinesisanalytics.amazonaws.com"
               }
             }
           ],
@@ -3414,7 +3296,7 @@
       "Type": "AWS::EC2::KeyPair::KeyName"
     },
     "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
-      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
       "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
     }
   }

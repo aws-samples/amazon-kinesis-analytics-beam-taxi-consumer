@@ -62,7 +62,7 @@ export class CdkStack extends cdk.Stack {
     const lambdaSource = fs.readFileSync('lambda/add-approximate-arrival-time.js').toString();
 
     const enrichEvents = new lambda.Function(this, 'EnrichEventsLambda', {
-      runtime: lambda.Runtime.NODEJS_8_10,
+      runtime: lambda.Runtime.NODEJS_12_X,
       code: lambda.Code.inline(lambdaSource),
       timeout: Duration.seconds(60),
       handler: 'index.handler'
