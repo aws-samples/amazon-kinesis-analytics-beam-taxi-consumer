@@ -14,6 +14,138 @@
         "aws:cdk:path": "BeamTaxiCount-Complete/Bucket/Resource"
       }
     },
+    "EmptyBucketEmptyBucketLambdaServiceRole67452BDD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EmptyBucket/EmptyBucketLambda/ServiceRole/Resource"
+      }
+    },
+    "EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject*",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF",
+        "Roles": [
+          {
+            "Ref": "EmptyBucketEmptyBucketLambdaServiceRole67452BDD"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EmptyBucket/EmptyBucketLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "EmptyBucketEmptyBucketLambdaD0E9E93D": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\n\ndef empty_bucket(event, context):\n    bucket_name = os.environ['bucket_name']\n\n    try:\n        if event['RequestType'] == 'Delete':\n            print(\"empty bucket: \" + bucket_name)\n            \n            bucket = boto3.resource('s3').Bucket(bucket_name)\n            bucket.object_versions.delete()\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})"
+        },
+        "Handler": "index.empty_bucket",
+        "Role": {
+          "Fn::GetAtt": [
+            "EmptyBucketEmptyBucketLambdaServiceRole67452BDD",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "bucket_name": {
+              "Ref": "Bucket83908E77"
+            }
+          }
+        },
+        "MemorySize": 512,
+        "Timeout": 900
+      },
+      "DependsOn": [
+        "EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF",
+        "EmptyBucketEmptyBucketLambdaServiceRole67452BDD"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EmptyBucket/EmptyBucketLambda/Resource"
+      }
+    },
+    "EmptyBucketEmptyBucketResource78AC492E": {
+      "Type": "AWS::CloudFormation::CustomResource",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "EmptyBucketEmptyBucketLambdaD0E9E93D",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/EmptyBucket/EmptyBucketResource"
+      }
+    },
     "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDDB48159": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -92,7 +224,7 @@
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+          "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
         },
         "Handler": "index.download_sources",
         "Role": {
@@ -377,7 +509,7 @@
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+          "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
         },
         "Handler": "index.notify_build_success",
         "Role": {
@@ -1377,7 +1509,7 @@
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+          "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
         },
         "Handler": "index.download_sources",
         "Role": {
@@ -1662,7 +1794,7 @@
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "ZipFile": "import os\nimport json\nimport boto3\nimport urllib.request\nfrom botocore.vendored import requests\n\ns3 = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        req = urllib.request.Request(url)\n        response = urllib.request.urlopen(req)\n\n        s3.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        send(event, context, SUCCESS, {})\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        send(event, context, FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception as e:\n        print(\"exception: \" + str(e))\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'message': str(e), 'type': 'JobFailed'})\n\n\n#  Copyright 2016 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.\n#  This file is licensed to you under the AWS Customer Agreement (the \"License\").\n#  You may not use this file except in compliance with the License.\n#  A copy of the License is located at http://aws.amazon.com/agreement/ .\n#  This file is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied.\n#  See the License for the specific language governing permissions and limitations under the License.\n  \nSUCCESS = \"SUCCESS\"\nFAILED = \"FAILED\"\n \ndef send(event, context, responseStatus, responseData, physicalResourceId=None, noEcho=False):\n    responseUrl = event['ResponseURL']\n \n    print(responseUrl)\n \n    responseBody = {}\n    responseBody['Status'] = responseStatus\n    responseBody['Reason'] = 'See the details in CloudWatch Log Stream: ' + context.log_stream_name\n    responseBody['PhysicalResourceId'] = physicalResourceId or context.log_stream_name\n    responseBody['StackId'] = event['StackId']\n    responseBody['RequestId'] = event['RequestId']\n    responseBody['LogicalResourceId'] = event['LogicalResourceId']\n    responseBody['NoEcho'] = noEcho\n    responseBody['Data'] = responseData\n \n    json_responseBody = json.dumps(responseBody)\n \n    print(\"Response body:\\n\" + json_responseBody)\n \n    headers = {\n        'content-type' : '',\n        'content-length' : str(len(json_responseBody))\n    }\n \n    try:\n        response = requests.put(responseUrl,\n                                data=json_responseBody,\n                                headers=headers)\n        print(\"Status code: \" + response.reason)\n    except Exception as e:\n        print(\"send(..) failed executing requests.put(..): \" + str(e))"
+          "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
         },
         "Handler": "index.notify_build_success",
         "Role": {
@@ -2878,7 +3010,11 @@
         }
       },
       "DependsOn": [
-        "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A"
+        "BeamTaxiConsumerBuildPipelineWaitConditionA50E497A",
+        "EmptyBucketEmptyBucketLambdaD0E9E93D",
+        "EmptyBucketEmptyBucketLambdaServiceRoleDefaultPolicy0872AADF",
+        "EmptyBucketEmptyBucketLambdaServiceRole67452BDD",
+        "EmptyBucketEmptyBucketResource78AC492E"
       ],
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/FirehoseInfrastructure/FirehoseDeliveryStream"
@@ -3106,10 +3242,26 @@
               {
                 "PropertyGroupId": "BeamApplicationProperties",
                 "PropertyMap": {
+                  "AwsRegion": {
+                    "Ref": "AWS::Region"
+                  },
                   "InputStreamName": {
                     "Ref": "InputStreamCFB159EA"
                   },
-                  "OutputBoroughs": "false"
+                  "OutputBoroughs": "false",
+                  "InputS3Pattern": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "s3://",
+                        {
+                          "Ref": "Bucket83908E77"
+                        },
+                        "/kinesis-stream-data/*/*/*/*/*"
+                      ]
+                    ]
+                  },
+                  "Source": "kinesis"
                 }
               }
             ]
@@ -3173,6 +3325,203 @@
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/FlinkLogging"
+      }
+    },
+    "FlinkInfrastructureTerminateAppLambdaServiceRoleBC54A969": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/TerminateAppLambda/ServiceRole/Resource"
+      }
+    },
+    "FlinkInfrastructureTerminateAppLambdaServiceRoleDefaultPolicy555FF482": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "kinesisanalytics:StopApplication",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":kinesisanalytics:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":application/",
+                    {
+                      "Ref": "FlinkInfrastructureFlinkApplicationBEFFC04F"
+                    }
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "FlinkInfrastructureTerminateAppLambdaServiceRoleDefaultPolicy555FF482",
+        "Roles": [
+          {
+            "Ref": "FlinkInfrastructureTerminateAppLambdaServiceRoleBC54A969"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/TerminateAppLambda/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "FlinkInfrastructureTerminateAppLambdaB2D53924": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "ZipFile": "import os\nimport boto3\n\nclient = boto3.client('kinesisanalyticsv2')\n\ndef empty_bucket(event, context):\n    response = client.stop_application(\n        ApplicationName=os.environ['application_name']\n    )"
+        },
+        "Handler": "index.empty_bucket",
+        "Role": {
+          "Fn::GetAtt": [
+            "FlinkInfrastructureTerminateAppLambdaServiceRoleBC54A969",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.7",
+        "Environment": {
+          "Variables": {
+            "application_name": {
+              "Ref": "FlinkInfrastructureFlinkApplicationBEFFC04F"
+            }
+          }
+        },
+        "MemorySize": 512,
+        "Timeout": 900
+      },
+      "DependsOn": [
+        "FlinkInfrastructureTerminateAppLambdaServiceRoleDefaultPolicy555FF482",
+        "FlinkInfrastructureTerminateAppLambdaServiceRoleBC54A969"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/TerminateAppLambda/Resource"
+      }
+    },
+    "FlinkInfrastructureTerminateAppLambdaAllowInvokeBeamTaxiCountCompleteFlinkInfrastructureAppTerminatedTopic87DD645B23FB2833": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "FlinkInfrastructureTerminateAppLambdaB2D53924",
+            "Arn"
+          ]
+        },
+        "Principal": "sns.amazonaws.com",
+        "SourceArn": {
+          "Ref": "FlinkInfrastructureAppTerminatedTopicFEFBAAE4"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/TerminateAppLambda/AllowInvoke:BeamTaxiCountCompleteFlinkInfrastructureAppTerminatedTopic87DD645B"
+      }
+    },
+    "FlinkInfrastructureTerminateAppLambdaAppTerminatedTopicE4CEBE9F": {
+      "Type": "AWS::SNS::Subscription",
+      "Properties": {
+        "Protocol": "lambda",
+        "TopicArn": {
+          "Ref": "FlinkInfrastructureAppTerminatedTopicFEFBAAE4"
+        },
+        "Endpoint": {
+          "Fn::GetAtt": [
+            "FlinkInfrastructureTerminateAppLambdaB2D53924",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/TerminateAppLambda/AppTerminatedTopic/Resource"
+      }
+    },
+    "FlinkInfrastructureAppTerminatedFilter27E13BC8": {
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterPattern": "Job reached globally terminal state FINISHED",
+        "LogGroupName": {
+          "Ref": "FlinkInfrastructureFlinkLogGroupD9BFEBD6"
+        },
+        "MetricTransformations": [
+          {
+            "DefaultValue": 0,
+            "MetricName": "BeamApplicationFinished",
+            "MetricNamespace": "Beam",
+            "MetricValue": "1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/AppTerminatedFilter/Resource"
+      }
+    },
+    "FlinkInfrastructureAppTerminatedAlarmF585A163": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ComparisonOperator": "GreaterThanThreshold",
+        "EvaluationPeriods": 1,
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Ref": "FlinkInfrastructureAppTerminatedTopicFEFBAAE4"
+          }
+        ],
+        "MetricName": "BeamApplicationFinished",
+        "Namespace": "Beam",
+        "Period": 60,
+        "Statistic": "Sum",
+        "Threshold": 0,
+        "TreatMissingData": "notBreaching"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/AppTerminatedAlarm/Resource"
+      }
+    },
+    "FlinkInfrastructureAppTerminatedTopicFEFBAAE4": {
+      "Type": "AWS::SNS::Topic",
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/AppTerminatedTopic/Resource"
       }
     }
   },

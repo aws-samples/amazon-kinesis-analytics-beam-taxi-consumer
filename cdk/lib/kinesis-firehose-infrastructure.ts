@@ -5,12 +5,14 @@ import iam = require('@aws-cdk/aws-iam');
 import kdf = require('@aws-cdk/aws-kinesisfirehose');
 import lambda = require('@aws-cdk/aws-lambda');
 import cfn = require('@aws-cdk/aws-cloudformation');
+import { EmptyBucketOnDelete } from './empty-bucket';
 
 export interface FirehoseProps {
     bucket: s3.Bucket,
     inputStream: kds.Stream,
     lambda: lambda.Function,
-    buildSuccessWaitCondition: cfn.CfnWaitCondition
+    buildSuccessWaitCondition: cfn.CfnWaitCondition,
+    emptyBucket: EmptyBucketOnDelete
 }
 
 export class FirehoseInfrastructure extends cdk.Construct {
@@ -57,7 +59,8 @@ export class FirehoseInfrastructure extends cdk.Construct {
             }
         });
 
-        //atrificially delay creation of the delivery stream; due to bug in cdk, creation would fail
+        //arificially delay creation of the delivery stream; due to bug in cdk, creation would fail
         firehose.node.addDependency(props.buildSuccessWaitCondition);
+        firehose.node.addDependency(props.emptyBucket)
     }
 }

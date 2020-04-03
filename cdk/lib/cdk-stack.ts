@@ -11,6 +11,7 @@ import { KinesisAnalyticsJava } from './kinesis-analytics-infrastructure';
 import { FirehoseInfrastructure } from './kinesis-firehose-infrastructure';
 import { BeamDashboard } from './cloudwatch-dashboard';
 import { Duration } from '@aws-cdk/core';
+import { EmptyBucketOnDelete } from './empty-bucket';
 
 export interface StackProps extends cdk.StackProps {
   build?: boolean,
@@ -26,6 +27,10 @@ export class CdkStack extends cdk.Stack {
 
     const bucket = new s3.Bucket(this, 'Bucket', {
       versioned: true
+    });
+
+    const emptyBucket = new EmptyBucketOnDelete(this, 'EmptyBucket', {
+      bucket: bucket
     });
 
     new cdk.CfnOutput(this, 'S3Bucket', { value: bucket.bucketName });
@@ -99,6 +104,7 @@ export class CdkStack extends cdk.Stack {
 
     new FirehoseInfrastructure(this, 'FirehoseInfrastructure', {
       bucket: bucket,
+      emptyBucket: emptyBucket,
       inputStream: stream,
       lambda: enrichEvents,
       buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition
@@ -109,8 +115,6 @@ export class CdkStack extends cdk.Stack {
       dashboard: dashboard,
       bucket: bucket,
       inputStream: stream,
-      accountId: this.account,
-      region: this.region,
       buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition,
     });
 
