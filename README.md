@@ -37,6 +37,8 @@ $ flink-yarn-session -n 2 -s 4 -tm 16GB -d
 $ flink run -p 8 beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://«S3 bucket name»/kinesis-stream-data/*/*/*/*/* --inputStreamName=«Kinesis stream name» --awsRegion=«AWS region» --source=s3 --outputBoroughs=true
 ```
 
+Alternatively, you can run the backfill job on Amazon Kinesis Data Analytics (KDA) in a fully managed Flink environment. You just need to change the `Source` to `s3` in the  properties section of the KDA application. Once the backfill job completes, a Lambda function that is monitoring the appliaction output through a CloudWatch metric filter will stop the KDA application.
+
 ![CloudWatch Dashboard Screen Shot](misc/cloudwatch-dashboard-screenshot-boroughs.png?raw=true)
 
 ## License Summary
