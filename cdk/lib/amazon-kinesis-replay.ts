@@ -7,6 +7,7 @@ import { AmazonLinuxGeneration } from '@aws-cdk/aws-ec2';
 import { GithubBuildPipeline } from './github-build-pipeline';
 
 export interface KinesisReplayProps {
+  kinesisReplayVersion: string,
   bucket: s3.Bucket,
   keyName: string,
   vpc: ec2.Vpc
@@ -18,7 +19,7 @@ export class KinesisReplay extends cdk.Construct {
 
     new GithubBuildPipeline(this, 'KinesisReplayBuildPipeline', {
         bucket: props.bucket,
-        url: 'https://github.com/aws-samples/amazon-kinesis-replay/archive/master.zip',
+        url: `https://github.com/aws-samples/amazon-kinesis-replay/archive/${props.kinesisReplayVersion}.zip`,
         extract: true
     });
 

@@ -22,7 +22,8 @@ export interface KinesisAnalyticsProps {
     bucket: s3.Bucket,
     inputStream: kds.Stream,
     buildSuccessWaitCondition: cfn.CfnWaitCondition,
-    applicationName: string,
+    consumerApplicationVersion: string,
+    consumerApplicationJarObject: string
 }
 
 export class KinesisAnalyticsJava extends cdk.Construct {
@@ -61,15 +62,15 @@ export class KinesisAnalyticsJava extends cdk.Construct {
         });
 
         const flinkApp = new kda.CfnApplicationV2(this, 'FlinkApplication', {
-            runtimeEnvironment: 'FLINK-1_6',
+            runtimeEnvironment: 'FLINK-1_8',
             serviceExecutionRole: role.roleArn,
-            applicationName: props.applicationName,
+            applicationName: `${cdk.Aws.STACK_NAME}`,
             applicationConfiguration: {
                 applicationCodeConfiguration: {
                     codeContent: {
                         s3ContentLocation: {
                             bucketArn: props.bucket.bucketArn,
-                            fileKey: 'target/beam-taxi-count-1.0-SNAPSHOT.jar'
+                            fileKey: props.consumerApplicationJarObject
                         }
                     },
                     codeContentType: 'ZIPFILE'

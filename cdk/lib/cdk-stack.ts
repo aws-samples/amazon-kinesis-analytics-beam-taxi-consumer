@@ -16,7 +16,10 @@ import { EmptyBucketOnDelete } from './empty-bucket';
 export interface StackProps extends cdk.StackProps {
   build?: boolean,
   demoInfrastructure?: boolean,
-  completeInfrastructure?: boolean
+  completeInfrastructure?: boolean,
+  kinesisReplayVersion: string,
+  consumerApplicationVersion: string,
+  consumerApplicationJarObject: string,
 }
 
 export class CdkStack extends cdk.Stack {
@@ -38,9 +41,8 @@ export class CdkStack extends cdk.Stack {
 
     const consumerBuild = new GithubBuildPipeline(this, 'BeamTaxiConsumerBuildPipeline', {
       bucket: bucket,
-      url: 'https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/master.zip',
+      url: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/${props.consumerApplicationVersion}.zip`,
       extract: true,
-      files: ['target/beam-taxi-count-*.jar']
     });
     
 
@@ -74,6 +76,7 @@ export class CdkStack extends cdk.Stack {
     });
     
     const replay = new KinesisReplay(this, 'KinesisReplayInfrastructure', {
+      ...props,
       bucket: bucket,
       keyName: keyName,
       vpc: vpc
@@ -87,8 +90,8 @@ export class CdkStack extends cdk.Stack {
 
 
     if (! props.completeInfrastructure) {
-      new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit` });
-      new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 target/beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${this.region} --source=s3 --outputBoroughs=true` });
+      new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${cdk.Aws.REGION} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit` });
+      new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 target/${props.consumerApplicationJarObject} --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${cdk.Aws.REGION} --source=s3 --outputBoroughs=true` });
 
       return;
     }
@@ -111,14 +114,15 @@ export class CdkStack extends cdk.Stack {
     });
 
     new KinesisAnalyticsJava(this, 'FlinkInfrastructure', {
-      applicationName: cdk.Aws.STACK_NAME,
+      consumerApplicationVersion: props.consumerApplicationVersion,
+      consumerApplicationJarObject: props.consumerApplicationJarObject,
       dashboard: dashboard,
       bucket: bucket,
       inputStream: stream,
       buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition,
     });
 
-    new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${this.region} -streamName ${stream.streamName} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720` });
-    new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 target/beam-taxi-count-*.jar --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${this.region} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
+    new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${cdk.Aws.REGION} -streamName ${stream.streamName} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720` });
+    new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 target/${props.consumerApplicationJarObject} --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${cdk.Aws.REGION} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
   }
 }
