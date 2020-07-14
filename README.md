@@ -30,7 +30,7 @@ Once the application has been reconfigured and is running again, it will output 
 ```
 $ ssh -C -D 8157 hadoop@«EMR master node DNS name»
 
-$ aws s3 cp --recursive --exclude '*' --include 'beam-taxi-count-*.jar' 's3://«AWS bucket name»/target/' .
+$ aws s3 cp --recursive --exclude '*' --include 'amazon-kinesis-analytics-beam-taxi-consumer-*.jar' 's3://«AWS bucket name»/target/' .
 
 $ flink-yarn-session -n 2 -s 4 -tm 16GB -d
 
