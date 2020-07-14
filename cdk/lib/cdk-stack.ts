@@ -91,7 +91,7 @@ export class CdkStack extends cdk.Stack {
 
     if (! props.completeInfrastructure) {
       new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${cdk.Aws.REGION} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit` });
-      new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 target/${props.consumerApplicationJarObject} --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${cdk.Aws.REGION} --source=s3 --outputBoroughs=true` });
+      new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 ${props.consumerApplicationJarObject} --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${cdk.Aws.REGION} --source=s3 --outputBoroughs=true` });
 
       return;
     }
@@ -114,8 +114,7 @@ export class CdkStack extends cdk.Stack {
     });
 
     new KinesisAnalyticsJava(this, 'FlinkInfrastructure', {
-      consumerApplicationVersion: props.consumerApplicationVersion,
-      consumerApplicationJarObject: props.consumerApplicationJarObject,
+      ...props,
       dashboard: dashboard,
       bucket: bucket,
       inputStream: stream,
@@ -123,6 +122,6 @@ export class CdkStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${cdk.Aws.REGION} -streamName ${stream.streamName} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720` });
-    new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 target/${props.consumerApplicationJarObject} --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${cdk.Aws.REGION} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
+    new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 ${props.consumerApplicationJarObject} --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${cdk.Aws.REGION} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
   }
 }

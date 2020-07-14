@@ -3617,7 +3617,7 @@
         "Fn::Join": [
           "",
           [
-            "flink run -p 8 target/amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar --runner=FlinkRunner --inputS3Pattern=s3://",
+            "flink run -p 8 amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar --runner=FlinkRunner --inputS3Pattern=s3://",
             {
               "Ref": "Bucket83908E77"
             },
