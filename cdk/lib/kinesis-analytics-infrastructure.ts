@@ -70,7 +70,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
                     codeContent: {
                         s3ContentLocation: {
                             bucketArn: props.bucket.bucketArn,
-                            fileKey: props.consumerApplicationJarObject
+                            fileKey: `target/${props.consumerApplicationJarObject}`
                         }
                     },
                     codeContentType: 'ZIPFILE'

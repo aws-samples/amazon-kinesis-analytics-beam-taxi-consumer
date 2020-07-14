@@ -3229,7 +3229,7 @@
                     "Arn"
                   ]
                 },
-                "FileKey": "amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar"
+                "FileKey": "target/amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar"
               }
             },
             "CodeContentType": "ZIPFILE"
