@@ -184,7 +184,6 @@
                 </transformer>
               </transformers>
 
-              <!--
               <relocations combine.children="override">
                 <relocation>
                   <pattern>com.amazonaws.samples</pattern>
@@ -199,7 +198,6 @@
                   <shadedPattern>com.amazonaws.samples.beam.taxi.count.shaded.com.fasterxml.jackson</shadedPattern>
                 </relocation>
               </relocations>
-              -->
             </configuration>
           </execution>
         </executions>
