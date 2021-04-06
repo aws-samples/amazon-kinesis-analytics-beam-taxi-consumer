@@ -106,14 +106,12 @@
         "Code": {
           "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\n\ndef empty_bucket(event, context):\n    bucket_name = os.environ['bucket_name']\n\n    try:\n        if event['RequestType'] == 'Delete':\n            print(\"empty bucket: \" + bucket_name)\n            \n            bucket = boto3.resource('s3').Bucket(bucket_name)\n            bucket.object_versions.delete()\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})"
         },
-        "Handler": "index.empty_bucket",
         "Role": {
           "Fn::GetAtt": [
             "EmptyBucketEmptyBucketLambdaServiceRole67452BDD",
             "Arn"
           ]
         },
-        "Runtime": "python3.7",
         "Environment": {
           "Variables": {
             "bucket_name": {
@@ -121,7 +119,9 @@
             }
           }
         },
+        "Handler": "index.empty_bucket",
         "MemorySize": 512,
+        "Runtime": "python3.7",
         "Timeout": 900
       },
       "DependsOn": [
@@ -226,14 +226,12 @@
         "Code": {
           "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
         },
-        "Handler": "index.download_sources",
         "Role": {
           "Fn::GetAtt": [
             "BeamTaxiConsumerBuildPipelineDownloadLambdaServiceRoleDDB48159",
             "Arn"
           ]
         },
-        "Runtime": "python3.7",
         "Environment": {
           "Variables": {
             "url": "https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/master.zip",
@@ -243,6 +241,8 @@
             "key": "sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
           }
         },
+        "Handler": "index.download_sources",
+        "Runtime": "python3.7",
         "Timeout": 30
       },
       "DependsOn": [
@@ -353,6 +353,40 @@
             },
             {
               "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases",
+                "codebuild:BatchPutCodeCoverages"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "BeamTaxiConsumerBuildPipelineCodebuildProjectE94068B3"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
@@ -407,6 +441,7 @@
         "Environment": {
           "ComputeType": "BUILD_GENERAL1_SMALL",
           "Image": "aws/codebuild/java:openjdk-11",
+          "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
           "Type": "LINUX_CONTAINER"
         },
@@ -419,7 +454,8 @@
         "Source": {
           "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-analytics-beam-taxi-consumer-master\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-analytics-beam-taxi-consumer-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-analytics-beam-taxi-consumer-master\"\n  }\n}",
           "Type": "CODEPIPELINE"
-        }
+        },
+        "EncryptionKey": "alias/aws/s3"
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/BeamTaxiConsumerBuildPipeline/CodebuildProject/Resource"
@@ -511,14 +547,12 @@
         "Code": {
           "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
         },
-        "Handler": "index.notify_build_success",
         "Role": {
           "Fn::GetAtt": [
             "BeamTaxiConsumerBuildPipelineNotifyLambdaServiceRole94083393",
             "Arn"
           ]
         },
-        "Runtime": "python3.7",
         "Environment": {
           "Variables": {
             "waitHandleUrl": {
@@ -526,6 +560,8 @@
             }
           }
         },
+        "Handler": "index.notify_build_success",
+        "Runtime": "python3.7",
         "Timeout": 10
       },
       "DependsOn": [
@@ -1196,16 +1232,16 @@
         "MapPublicIpOnLaunch": true,
         "Tags": [
           {
-            "Key": "Name",
-            "Value": "BeamTaxiCount-Complete/VPC/publicSubnet1"
-          },
-          {
             "Key": "aws-cdk:subnet-name",
             "Value": "public"
           },
           {
             "Key": "aws-cdk:subnet-type",
             "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "BeamTaxiCount-Complete/VPC/publicSubnet1"
           }
         ]
       },
@@ -1280,16 +1316,16 @@
         "MapPublicIpOnLaunch": true,
         "Tags": [
           {
-            "Key": "Name",
-            "Value": "BeamTaxiCount-Complete/VPC/publicSubnet2"
-          },
-          {
             "Key": "aws-cdk:subnet-name",
             "Value": "public"
           },
           {
             "Key": "aws-cdk:subnet-type",
             "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "BeamTaxiCount-Complete/VPC/publicSubnet2"
           }
         ]
       },
@@ -1414,13 +1450,13 @@
         "Code": {
           "ZipFile": "'use strict';\nconsole.log('Loading function');\n\nexports.handler = (event, context, callback) => {\n    /* Process the list of records and transform them */\n    const output = event.records.map((record) => ({\n        recordId: record.recordId,\n        result: 'Ok',\n        data: enrichPayload(record),\n    }));\n    \n    console.log(`Processing completed.  Successful records ${output.length}.`);\n    \n    callback(null, { records: output });\n};\n\n\nfunction enrichPayload(record) {\n    const payload = JSON.parse(Buffer.from(record.data, 'base64').toString('utf8'));\n    const timestamp = new Date(record.kinesisRecordMetadata.approximateArrivalTimestamp).toISOString();\n    \n    const enrichedPayload = Object.assign({approximate_arrival_timestamp: timestamp}, payload);\n\n    return Buffer.from(JSON.stringify(enrichedPayload)+\"\\n\").toString('base64');\n}"
         },
-        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "EnrichEventsLambdaServiceRoleD32248A6",
             "Arn"
           ]
         },
+        "Handler": "index.handler",
         "Runtime": "nodejs12.x",
         "Timeout": 60
       },
@@ -1511,14 +1547,12 @@
         "Code": {
           "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
         },
-        "Handler": "index.download_sources",
         "Role": {
           "Fn::GetAtt": [
             "KinesisReplayInfrastructureKinesisReplayBuildPipelineDownloadLambdaServiceRole86B346C9",
             "Arn"
           ]
         },
-        "Runtime": "python3.7",
         "Environment": {
           "Variables": {
             "url": "https://github.com/aws-samples/amazon-kinesis-replay/archive/release-0.1.0.zip",
@@ -1528,6 +1562,8 @@
             "key": "sources/amazon-kinesis-replay-release-0.1.0.zip"
           }
         },
+        "Handler": "index.download_sources",
+        "Runtime": "python3.7",
         "Timeout": 30
       },
       "DependsOn": [
@@ -1638,6 +1674,40 @@
             },
             {
               "Action": [
+                "codebuild:CreateReportGroup",
+                "codebuild:CreateReport",
+                "codebuild:UpdateReport",
+                "codebuild:BatchPutTestCases",
+                "codebuild:BatchPutCodeCoverages"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":codebuild:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":report-group/",
+                    {
+                      "Ref": "KinesisReplayInfrastructureKinesisReplayBuildPipelineCodebuildProject8B60D31D"
+                    },
+                    "-*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
                 "s3:GetObject*",
                 "s3:GetBucket*",
                 "s3:List*",
@@ -1692,6 +1762,7 @@
         "Environment": {
           "ComputeType": "BUILD_GENERAL1_SMALL",
           "Image": "aws/codebuild/java:openjdk-11",
+          "ImagePullCredentialsType": "CODEBUILD",
           "PrivilegedMode": false,
           "Type": "LINUX_CONTAINER"
         },
@@ -1704,7 +1775,8 @@
         "Source": {
           "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"build\": {\n      \"commands\": [\n        \"cd amazon-kinesis-replay-release-0.1.0\",\n        \"mvn clean package -B\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"target/amazon-kinesis-replay-*.jar\"\n    ],\n    \"discard-paths\": false,\n    \"base-directory\": \"amazon-kinesis-replay-release-0.1.0\"\n  }\n}",
           "Type": "CODEPIPELINE"
-        }
+        },
+        "EncryptionKey": "alias/aws/s3"
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/KinesisReplayInfrastructure/KinesisReplayBuildPipeline/CodebuildProject/Resource"
@@ -1796,14 +1868,12 @@
         "Code": {
           "ZipFile": "import os\nimport json\nimport boto3\nimport traceback\nimport cfnresponse\nimport urllib.request\n\ns3client = boto3.client('s3')\ncode_pipeline = boto3.client('codepipeline')\n\n\ndef download_sources(event, context):\n    url = os.environ['url']\n    bucket = os.environ['bucket']\n    key = os.environ['key']\n\n    try:\n        if event['RequestType'] != 'Delete':\n            req = urllib.request.Request(url)\n            response = urllib.request.urlopen(req)\n\n            s3client.put_object(Bucket=bucket, Key=key, Body=response.read())\n\n        cfnresponse.send(event, context, cfnresponse.SUCCESS, {})\n    except Exception:\n        traceback.print_exc()\n\n        cfnresponse.send(event, context, cfnresponse.FAILED, {})\n\n\ndef notify_build_success(event, context):\n    job_id = event['CodePipeline.job']['id']\n\n    url = os.environ['waitHandleUrl']\n    headers = { \"Content-Type\": \"\" }\n    data = { \"Status\": \"SUCCESS\", \"Reason\": \"Compilation Succeeded\", \"UniqueId\": job_id, \"Data\": \"Compilation Succeeded\" }\n\n    try:\n        req = urllib.request.Request(url, headers=headers, data=bytes(json.dumps(data), encoding=\"utf-8\"), method='PUT')\n        response = urllib.request.urlopen(req)\n\n        code_pipeline.put_job_success_result(jobId=job_id)\n    except Exception:\n        traceback.print_exc()\n\n        code_pipeline.put_job_failure_result(jobId=job_id, failureDetails={'type': 'JobFailed'})\n"
         },
-        "Handler": "index.notify_build_success",
         "Role": {
           "Fn::GetAtt": [
             "KinesisReplayInfrastructureKinesisReplayBuildPipelineNotifyLambdaServiceRole1532D198",
             "Arn"
           ]
         },
-        "Runtime": "python3.7",
         "Environment": {
           "Variables": {
             "waitHandleUrl": {
@@ -1811,6 +1881,8 @@
             }
           }
         },
+        "Handler": "index.notify_build_success",
+        "Runtime": "python3.7",
         "Timeout": 10
       },
       "DependsOn": [
@@ -2782,7 +2854,19 @@
       "Type": "AWS::Kinesis::Stream",
       "Properties": {
         "ShardCount": 4,
-        "RetentionPeriodHours": 24
+        "RetentionPeriodHours": 24,
+        "StreamEncryption": {
+          "Fn::If": [
+            "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            {
+              "Ref": "AWS::NoValue"
+            },
+            {
+              "EncryptionType": "KMS",
+              "KeyId": "alias/aws/kinesis"
+            }
+          ]
+        }
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/InputStream/Resource"
@@ -2882,9 +2966,11 @@
           "Statement": [
             {
               "Action": [
-                "kinesis:DescribeStream",
+                "kinesis:DescribeStreamSummary",
                 "kinesis:GetRecords",
-                "kinesis:GetShardIterator"
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard"
               ],
               "Effect": "Allow",
               "Resource": {
@@ -3077,9 +3163,11 @@
             },
             {
               "Action": [
-                "kinesis:DescribeStream",
+                "kinesis:DescribeStreamSummary",
                 "kinesis:GetRecords",
-                "kinesis:GetShardIterator"
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard"
               ],
               "Effect": "Allow",
               "Resource": {
@@ -3413,14 +3501,12 @@
         "Code": {
           "ZipFile": "import os\nimport boto3\n\nclient = boto3.client('kinesisanalyticsv2')\n\ndef empty_bucket(event, context):\n    response = client.stop_application(\n        ApplicationName=os.environ['application_name']\n    )"
         },
-        "Handler": "index.empty_bucket",
         "Role": {
           "Fn::GetAtt": [
             "FlinkInfrastructureTerminateAppLambdaServiceRoleBC54A969",
             "Arn"
           ]
         },
-        "Runtime": "python3.7",
         "Environment": {
           "Variables": {
             "application_name": {
@@ -3428,7 +3514,9 @@
             }
           }
         },
+        "Handler": "index.empty_bucket",
         "MemorySize": 512,
+        "Runtime": "python3.7",
         "Timeout": 900
       },
       "DependsOn": [
@@ -3523,6 +3611,16 @@
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/AppTerminatedTopic/Resource"
       }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VTyW7bMBD9lt4Zpk7QAr3VdZC0QIsIduCcR9TIHpsbuMQwBP17SUqWnOSkN/ubN9SC//jOv375CSd/I5rjbSeMQ95tAogjWxntg4sisFWrn2OwsaA1ehOdwIwrcKAwoGPX3lTYUCCje5Ybd/6ed7+iOGKpH1DPJKi6Ad49Ri1yco5d4wqdIu9LGwLFu7WRpX35VkaSOJe8Cf1JfEELrJxpSWLPhDSxaY1TkJvyLnOLPhg1s/1gtvoVKEwL/AbdyM/u1Nk0WEeSDe8qsihJ56kHHMQa4ZBmx/icWVJG3DMUd7zbWpG922rFqlinhTax1oNeM1qbGPAF6oHR4J99S++NILjIVwKDKuk+KfMJAp7gPI4ZrWVIp94r1IFtUERH4fzkTLRlwEfHRd/EWTmexZRJvnT8Y1rEk88PxyGoUlzQeIITBLHn3QP4fW3ANTlhNpYSXKkpoL90a8nh3njMgx6SVm/ozmN/aXZp2F+zm6hNOIGZxGz8w+BIPJLMdFPk2p4mggZ5DiR8eSlLa9Mdip7bO/bescpbveat0ogd6d2zHfJ65nXWIdZeOLKXY7yzX4ylcu0C+r5nOj0TfvC3b4tvfHGffsiDJ7pxUQdSyNfD9z8A/BiXrAMAAA=="
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/CDKMetadata/Default"
+      },
+      "Condition": "CDKMetadataAvailable"
     }
   },
   "Outputs": {
@@ -3647,6 +3745,220 @@
     "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
       "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
       "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+    }
+  },
+  "Conditions": {
+    "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": {
+      "Fn::Or": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-north-1"
+          ]
+        },
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-northwest-1"
+          ]
+        }
+      ]
+    },
+    "CDKMetadataAvailable": {
+      "Fn::Or": [
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "af-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ca-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-northwest-1"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-3"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "me-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "sa-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-2"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-2"
+              ]
+            }
+          ]
+        }
+      ]
     }
   }
 }
