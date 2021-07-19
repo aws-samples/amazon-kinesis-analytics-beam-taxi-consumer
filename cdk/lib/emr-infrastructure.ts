@@ -59,7 +59,7 @@ export class EmrInfrastructure extends cdk.Construct {
                 ec2SubnetId: props.vpc.publicSubnets[0].subnetId
             },
             serviceRole : 'EMR_DefaultRole',
-            releaseLabel: 'emr-5.20.0',
+            releaseLabel: 'emr-6.3.0',
             visibleToAllUsers: true,
             jobFlowRole: profile.ref,
             configurations: [

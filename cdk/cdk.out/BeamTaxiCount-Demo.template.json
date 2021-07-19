@@ -895,7 +895,7 @@
                           "Arn"
                         ]
                       },
-                      "/*"
+                      "/sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
                     ]
                   ]
                 }
@@ -2216,7 +2216,7 @@
                           "Arn"
                         ]
                       },
-                      "/*"
+                      "/sources/amazon-kinesis-replay-release-0.1.0.zip"
                     ]
                   ]
                 }
@@ -2843,7 +2843,7 @@
             }
           }
         ],
-        "ReleaseLabel": "emr-5.20.0",
+        "ReleaseLabel": "emr-6.3.0",
         "VisibleToAllUsers": true
       },
       "Metadata": {
@@ -2853,7 +2853,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VSy07DMBD8Fu6uS6lA4kapROFElKJy3jgb1a0fkR9UlZV/x4+0QeXk8ex4dzz2gj4/0fu7FzjZGWuP88C0QRq2DtiRrLWyznjmyLpTn971PqMarfaGYcIVGJDo0JC/bDzYcse1GkhqHOyShlfPjpjPFzQQAbJpgYY3r1gSp9oFD4SDpKHWIjfMa6UFZ+c89Yo+okNQDCujOy5wIExo33baSEhtaEhuvHVaTv5utp36Bu6ult9BteI/HTvrFhvPRUtDxXsUXKWpByzxjLDI+rE+KbNkxANB9kDDrmeJ3VVrUvkmXmjrG1USmlCtvcMvaIqjwk/cylrNOFzCy4WSSnyRqNyAwxOcxzHjbuXi4+4lKke2yLzh7rwx2vd5wC1xyTd6loamMEWMD80wEBUvSg92/rN4pItl/EQHy/nMeOW4RFqX9Rdi0o8lYAIAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VSy27DIBD8lt4Jqfs6N43UtKdaTpWeMV6rJDwsYBtFyP9eHk5cpSeG2WF3GKhoVT3Q25tndnQL3h2WgRsLNGw94weyNtp5i9yTda8/0A+YUQPOoOWQcM0sU+DBkr9sPNgJL4weSWoc3D0NL8gPkM8XNBLJVNsxGl5R8yROtTMeiWCKhsbI3DCvtZGCn/LUC3qPDpnmUFvTCwkj4dJg1xurWGpDQ3KDzhs1+7va9vqLCX+x/MZ0J//TsbPpoEUhOxpqMYAUOk3dQ4lngkU2TPVZmSUTHgnwOxp2A0/srl6TGtt4oS22uiQ0o8agh0/WFkeFn7mVc4YLdg4vF0oq8UWicsM8HNlpGjPtVj4+7rcC7ckWOFrhTxtrcMgDrolzvtGzsjSFKWN8YMeR6HhRunfLn+qJPsY/tHdCLCxqLxTQpqy/MuD6dWACAAA="
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Demo/CDKMetadata/Default"

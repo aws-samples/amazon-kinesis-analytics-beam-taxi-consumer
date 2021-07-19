@@ -895,7 +895,7 @@
                           "Arn"
                         ]
                       },
-                      "/*"
+                      "/sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
                     ]
                   ]
                 }
@@ -2216,7 +2216,7 @@
                           "Arn"
                         ]
                       },
-                      "/*"
+                      "/sources/amazon-kinesis-replay-release-0.1.0.zip"
                     ]
                   ]
                 }
@@ -2843,7 +2843,7 @@
             }
           }
         ],
-        "ReleaseLabel": "emr-5.20.0",
+        "ReleaseLabel": "emr-6.3.0",
         "VisibleToAllUsers": true
       },
       "Metadata": {
@@ -2972,6 +2972,16 @@
                 "kinesis:ListShards",
                 "kinesis:SubscribeToShard"
               ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "InputStreamCFB159EA",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "kinesis:DescribeStream",
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
@@ -3178,6 +3188,16 @@
               }
             },
             {
+              "Action": "kinesis:DescribeStream",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "InputStreamCFB159EA",
+                  "Arn"
+                ]
+              }
+            },
+            {
               "Action": "cloudwatch:PutMetricData",
               "Effect": "Allow",
               "Resource": "*"
@@ -3300,7 +3320,7 @@
     "FlinkInfrastructureFlinkApplicationBEFFC04F": {
       "Type": "AWS::KinesisAnalyticsV2::Application",
       "Properties": {
-        "RuntimeEnvironment": "FLINK-1_8",
+        "RuntimeEnvironment": "FLINK-1_11",
         "ServiceExecutionRole": {
           "Fn::GetAtt": [
             "FlinkInfrastructureKinesisAnalyticsRole71C99707",
@@ -3615,7 +3635,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VTyW7bMBD9lt4Zpk7QAr3VdZC0QIsIduCcR9TIHpsbuMQwBP17SUqWnOSkN/ubN9SC//jOv375CSd/I5rjbSeMQ95tAogjWxntg4sisFWrn2OwsaA1ehOdwIwrcKAwoGPX3lTYUCCje5Ybd/6ed7+iOGKpH1DPJKi6Ad49Ri1yco5d4wqdIu9LGwLFu7WRpX35VkaSOJe8Cf1JfEELrJxpSWLPhDSxaY1TkJvyLnOLPhg1s/1gtvoVKEwL/AbdyM/u1Nk0WEeSDe8qsihJ56kHHMQa4ZBmx/icWVJG3DMUd7zbWpG922rFqlinhTax1oNeM1qbGPAF6oHR4J99S++NILjIVwKDKuk+KfMJAp7gPI4ZrWVIp94r1IFtUERH4fzkTLRlwEfHRd/EWTmexZRJvnT8Y1rEk88PxyGoUlzQeIITBLHn3QP4fW3ANTlhNpYSXKkpoL90a8nh3njMgx6SVm/ozmN/aXZp2F+zm6hNOIGZxGz8w+BIPJLMdFPk2p4mggZ5DiR8eSlLa9Mdip7bO/bescpbveat0ogd6d2zHfJ65nXWIdZeOLKXY7yzX4ylcu0C+r5nOj0TfvC3b4tvfHGffsiDJ7pxUQdSyNfD9z8A/BiXrAMAAA=="
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VT227bMAz9lr2r6tJdnpemaDdgQ42kSJ9pmU6YyJKgS4NA8L9Pkh07bZ90SJE85KG04IvFd/71yy84uRvRHG+j0BZ53HgQR7bSynkbhGerVj0Hb0JBa3Q6WIEZV2ChQ4+WXXtTYkOetOpZLhzdNx7vgzhiyR/RcNyDw55J6OoGeHwMSuS8HHaNK7QdOVcqEnQ8rrUsTOWstCRxLnET+pNaByWwsrolmSiE1KFpte0gF+Uxtxmc193c+AezVa9AfprlN6hGfnanyrrBOpBseKzIoCSVWQ846DbCIcyM93NkCRlxz1Dc8bg1Inu31YpVoU4DbUKtBulmtNbB4wvUQ0eDf/YtndOC4CJfuRhUSatKkU/g8QTnkWa0lj5tfd+h8myDIljy5yergykEHx0XfVPPneVZTJnkS+/gmAZx5PIbsghdSS5oXMEJvNjz+ABuX2uwTQ6YjaUEW3IK6C/VWrK41w4z0UPS6g3teawv9S6R/dW7qbUJJzA3MRv/0FsSjyRzu+nm2p4YQYE8exKuvJSlMWkPRc/tHXvvWOWpXvNUiWJHavdshrieOZV1CLUTlsxlGe/sF22obLuAvu+ZSs+EH9zt2+In/5G+5sER3digPHXI18P5H8eHtb63AwAA"
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/CDKMetadata/Default"

@@ -24,6 +24,7 @@ export class FirehoseInfrastructure extends cdk.Construct {
         });
 
         props.inputStream.grantRead(firehoseRole);
+        props.inputStream.grant(firehoseRole, 'kinesis:DescribeStream');
         props.bucket.grantReadWrite(firehoseRole);
         props.lambda.grantInvoke(firehoseRole);
     

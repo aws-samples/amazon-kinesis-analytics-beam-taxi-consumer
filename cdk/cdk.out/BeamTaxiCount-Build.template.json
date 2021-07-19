@@ -895,7 +895,7 @@
                           "Arn"
                         ]
                       },
-                      "/*"
+                      "/sources/amazon-kinesis-analytics-beam-taxi-consumer-master.zip"
                     ]
                   ]
                 }
@@ -1199,7 +1199,7 @@
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2WQwU7EIBBAv8U7O2uz0cSbcRPjzaYePLNAk2mBaYDRGMK/W2h1Ez3NG+YxM9DBwz3c3jzKz3hQej5mRcFAfktSzeJMPqbAKonz6F85LdxoMJE4KFN5VTQmJF9EbZHjCfITq9k0c6MirHQXLSE/s1dVrrUfLgKlgzyQbQ1b7Mmi+qrpRkUoS6xHCk7WO5DraI6J3HWZP+no3yWm3/1epNf2//HambS5MFoNucfFWPSmDzSZ7dU7btqy169mU3YupQi/WjDF40d3B91p/dgpIh4C+4TOwLDFbzKB6WZ0AQAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2WQTU/EIBBAf4t3dtbGj7NxE7M3m3rwzAJNpgWmAUZjCP/dQqub6GneMI+ZgQ667h5ub57kZzwoPR+zomAgvyWpZnEiH1NglcRp9K+cFm40mEgclKm8KhoTki+itsjxDvIzq9k0c6MirHQXLSG/sFdVrrUfLgKlgzyQbQ1b7Mmi+qrpRkUoS6xHCk7WO5DraI6J3HWZP+no3yWm3/3O0mv7/3jtTNpcGK2G3ONiLHrTB5rM9uodN23Z61ezKTuXUoRfLZji8aN7hIf1X6eIeAjsEzoDwxa/AU9Z5/d0AQAA"
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Build/CDKMetadata/Default"

@@ -43,6 +43,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
                 
         props.bucket.grantRead(role);
         props.inputStream.grantRead(role);
+        props.inputStream.grant(role, 'kinesis:DescribeStream');
         cloudwatch.Metric.grantPutMetricData(role);
 
         logGroup.grantWrite(role);
@@ -62,7 +63,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
         });
 
         const flinkApp = new kda.CfnApplicationV2(this, 'FlinkApplication', {
-            runtimeEnvironment: 'FLINK-1_8',
+            runtimeEnvironment: 'FLINK-1_11',
             serviceExecutionRole: role.roleArn,
             applicationName: `${cdk.Aws.STACK_NAME}`,
             applicationConfiguration: {
@@ -123,7 +124,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
         const terminateAppLambda =  new lambda.Function(this, 'TerminateAppLambda', {
             runtime: lambda.Runtime.PYTHON_3_7,
             timeout: Duration.minutes(15),
-            code: lambda.Code.inline(lambdaSource),
+            code: lambda.Code.fromInline(lambdaSource),
             handler: 'index.empty_bucket',
             memorySize: 512,
             environment: {

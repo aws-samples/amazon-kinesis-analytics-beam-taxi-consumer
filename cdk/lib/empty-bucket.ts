@@ -22,7 +22,7 @@ export class EmptyBucketOnDelete extends cdk.Construct {
         const emptyBucketLambda =  new lambda.Function(this, 'EmptyBucketLambda', {
             runtime: lambda.Runtime.PYTHON_3_7,
             timeout: Duration.minutes(15),
-            code: lambda.Code.inline(lambdaSource),
+            code: lambda.Code.fromInline(lambdaSource),
             handler: 'index.empty_bucket',
             memorySize: 512,
             environment: {
