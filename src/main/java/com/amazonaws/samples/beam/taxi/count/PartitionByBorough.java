@@ -20,10 +20,6 @@ package com.amazonaws.samples.beam.taxi.count;
 import com.amazonaws.samples.beam.taxi.count.kinesis.TripEvent;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvToBeanBuilder;
-import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.values.KV;
 import org.slf4j.Logger;
@@ -31,6 +27,11 @@ import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PartitionByBorough extends DoFn<TripEvent, KV<String,TripEvent>> {
 

@@ -17,12 +17,13 @@
 
 package com.amazonaws.samples.beam.taxi.count.kinesis;
 
-import java.util.Objects;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.coders.SerializableCoder;
 import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 
 
 @DefaultCoder(SerializableCoder.class)

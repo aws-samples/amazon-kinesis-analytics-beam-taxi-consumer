@@ -18,12 +18,13 @@
 package com.amazonaws.samples.beam.taxi.count;
 
 import com.amazonaws.samples.beam.taxi.count.kinesis.Event;
-import static com.amazonaws.samples.beam.taxi.count.kinesis.Event.parseEvent;
 import com.amazonaws.samples.beam.taxi.count.kinesis.TripEvent;
 import org.apache.beam.sdk.io.kinesis.KinesisRecord;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.amazonaws.samples.beam.taxi.count.kinesis.Event.parseEvent;
 
 public class EventParser {
   private static final Logger LOG = LoggerFactory.getLogger(EventParser.class);

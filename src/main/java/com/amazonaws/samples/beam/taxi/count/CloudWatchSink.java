@@ -18,17 +18,18 @@
 package com.amazonaws.samples.beam.taxi.count;
 
 import avro.shaded.com.google.common.collect.Iterables;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.values.KV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient;
 import software.amazon.awssdk.services.cloudwatch.model.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class CloudWatchSink extends DoFn<KV<Void,Iterable<Metric>>, Void> {
   private static final Logger LOG = LoggerFactory.getLogger(CloudWatchSink.class);

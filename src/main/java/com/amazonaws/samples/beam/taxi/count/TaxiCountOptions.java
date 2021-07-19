@@ -18,15 +18,16 @@
 package com.amazonaws.samples.beam.taxi.count;
 
 import com.amazonaws.services.kinesisanalytics.runtime.KinesisAnalyticsRuntime;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
 import org.apache.beam.runners.flink.FlinkPipelineOptions;
 import org.apache.beam.sdk.io.aws.options.AwsOptions;
 import org.apache.beam.sdk.options.Default;
 import org.apache.beam.sdk.options.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
 
 public interface TaxiCountOptions extends FlinkPipelineOptions, AwsOptions {
   Logger LOG = LoggerFactory.getLogger(TaxiCountOptions.class);

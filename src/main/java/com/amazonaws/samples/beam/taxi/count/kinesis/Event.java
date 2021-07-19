@@ -20,15 +20,16 @@ package com.amazonaws.samples.beam.taxi.count.kinesis;
 import com.google.gson.*;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.coders.SerializableCoder;
 import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 
 
 @DefaultCoder(SerializableCoder.class)
