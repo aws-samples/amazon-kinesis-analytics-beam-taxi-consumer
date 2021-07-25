@@ -21,6 +21,7 @@ export interface KinesisAnalyticsProps {
     dashboard: cloudwatch.Dashboard,
     bucket: s3.Bucket,
     inputStream: kds.Stream,
+    role: iam.Role,
     buildSuccessWaitCondition: cfn.CfnWaitCondition,
     consumerApplicationVersion: string,
     consumerApplicationJarObject: string
@@ -29,10 +30,6 @@ export interface KinesisAnalyticsProps {
 export class KinesisAnalyticsJava extends cdk.Construct {
     constructor(scope: cdk.Construct, id: string, props: KinesisAnalyticsProps) {
         super(scope, id);
-    
-        const role = new iam.Role(this, 'KinesisAnalyticsRole', {
-            assumedBy: new iam.ServicePrincipal('kinesisanalytics.amazonaws.com')
-        });
 
         const logGroup = new logs.LogGroup(this, 'FlinkLogGroup', {
             retention: RetentionDays.ONE_WEEK
@@ -40,7 +37,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
 
         new cdk.CfnOutput(this, 'FlinkLogGroupName', { value: logGroup.logGroupName });
 
-                
+        const role = props.role
         props.bucket.grantRead(role);
         props.inputStream.grantRead(role);
         props.inputStream.grant(role, 'kinesis:DescribeStream');
@@ -57,7 +54,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
 
         const bucket = Bucket.fromBucketName(this, 'TclBucket', 'nyc-tlc');
         bucket.grantRead(role);
-        
+
         const logStream = new logs.LogStream(this, 'FlinkLogStream', {
             logGroup: logGroup
         });
@@ -86,6 +83,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
                                 OutputBoroughs: 'false',
                                 InputS3Pattern: `s3://${props.bucket.bucketName}/kinesis-stream-data/*/*/*/*/*`,
                                 Source: 'kinesis',
+                                CodeGuruProfilingGroupName: 'flink-beam-app'
                             }
                         }
                     ]
@@ -121,7 +119,7 @@ export class KinesisAnalyticsJava extends cdk.Construct {
 
         const lambdaSource = fs.readFileSync('lambda/stop-kda-app.py').toString();
 
-        const terminateAppLambda =  new lambda.Function(this, 'TerminateAppLambda', {
+        const terminateAppLambda = new lambda.Function(this, 'TerminateAppLambda', {
             runtime: lambda.Runtime.PYTHON_3_7,
             timeout: Duration.minutes(15),
             code: lambda.Code.fromInline(lambdaSource),

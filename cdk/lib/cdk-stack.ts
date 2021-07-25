@@ -1,6 +1,7 @@
 import fs = require('fs');
 import cdk = require('@aws-cdk/core');
 import s3 = require('@aws-cdk/aws-s3');
+import iam = require('@aws-cdk/aws-iam');
 import ec2 = require('@aws-cdk/aws-ec2');
 import kds = require('@aws-cdk/aws-kinesis');
 import lambda = require('@aws-cdk/aws-lambda');
@@ -12,6 +13,7 @@ import { FirehoseInfrastructure } from './kinesis-firehose-infrastructure';
 import { BeamDashboard } from './cloudwatch-dashboard';
 import { Duration } from '@aws-cdk/core';
 import { EmptyBucketOnDelete } from './empty-bucket';
+import { CodeGuruProfilerInfrastructure } from './codeguru-profiler-infrastructure';
 
 export interface StackProps extends cdk.StackProps {
   build?: boolean,
@@ -44,9 +46,8 @@ export class CdkStack extends cdk.Stack {
       url: `https://github.com/aws-samples/amazon-kinesis-analytics-beam-taxi-consumer/archive/${props.consumerApplicationVersion}.zip`,
       extract: true,
     });
-    
 
-    if (! (props.demoInfrastructure || props.completeInfrastructure)) {
+    if (!(props.demoInfrastructure || props.completeInfrastructure)) {
       return;
     }
 
@@ -65,7 +66,6 @@ export class CdkStack extends cdk.Stack {
       ]
     });
 
-
     const lambdaSource = fs.readFileSync('lambda/add-approximate-arrival-time.js').toString();
 
     const enrichEvents = new lambda.Function(this, 'EnrichEventsLambda', {
@@ -74,7 +74,7 @@ export class CdkStack extends cdk.Stack {
       timeout: Duration.seconds(60),
       handler: 'index.handler'
     });
-    
+
     const replay = new KinesisReplay(this, 'KinesisReplayInfrastructure', {
       ...props,
       bucket: bucket,
@@ -88,8 +88,7 @@ export class CdkStack extends cdk.Stack {
       vpc: vpc
     });
 
-
-    if (! props.completeInfrastructure) {
+    if (!props.completeInfrastructure) {
       new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${cdk.Aws.REGION} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720 -streamName beam-summit` });
       new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 ${props.consumerApplicationJarObject} --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --inputStreamName=beam-summit --awsRegion=${cdk.Aws.REGION} --source=s3 --outputBoroughs=true` });
 
@@ -98,6 +97,10 @@ export class CdkStack extends cdk.Stack {
 
     const stream = new kds.Stream(this, 'InputStream', {
       shardCount: 4
+    });
+
+    const role = new iam.Role(this, 'KinesisAnalyticsRole', {
+      assumedBy: new iam.ServicePrincipal('kinesisanalytics.amazonaws.com')
     });
 
     const dashboard = new BeamDashboard(this, 'Dashboard', {
@@ -117,9 +120,15 @@ export class CdkStack extends cdk.Stack {
       ...props,
       dashboard: dashboard,
       bucket: bucket,
+      role: role,
       inputStream: stream,
       buildSuccessWaitCondition: consumerBuild.buildSuccessWaitCondition,
     });
+
+    new CodeGuruProfilerInfrastructure(this, 'CodeGuruProfilerInfrastructure', {
+      groupName: 'flink-beam-app',
+      role: role,
+    })
 
     new cdk.CfnOutput(replay, 'KinesisReplayCommand', { value: `java -jar amazon-kinesis-replay-*.jar -streamRegion ${cdk.Aws.REGION} -streamName ${stream.streamName} -objectPrefix artifacts/kinesis-analytics-taxi-consumer/taxi-trips-partitioned.json.lz4/dropoff_year=2018/ -speedup 720` });
     new cdk.CfnOutput(emr, 'StartFlinkApplication', { value: `flink run -p 8 ${props.consumerApplicationJarObject} --runner=FlinkRunner --inputS3Pattern=s3://${bucket.bucketName}/kinesis-stream-data/*/*/*/*/* --awsRegion=${cdk.Aws.REGION} --inputStreamName=${stream.streamName} --source=s3 --outputBoroughs=true` });
