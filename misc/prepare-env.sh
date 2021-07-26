@@ -30,3 +30,10 @@ export instance_id=`aws ec2 describe-instances \
  	--query "Reservations[].Instances[].InstanceId" --output text`
 
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name=$instance_profile_name --instance-id $instance_id
+
+export replay_jar_url=`aws cloudformation describe-stacks \
+    --stack-name $stackname | jq -c '.Stacks[].Outputs[] | select(.OutputKey | contains("ReplayJarS3Url")).OutputValue' --raw-output`
+
+mkdir -p ./replay
+
+aws s3 cp $replay_jar_url ./replay/ --recursive
