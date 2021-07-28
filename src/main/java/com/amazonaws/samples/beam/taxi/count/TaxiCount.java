@@ -137,7 +137,9 @@ public class TaxiCount {
     } else {
       metrics =
           window
-              .apply("Partition by borough", ParDo.of(new PartitionByBorough()))
+              .apply(
+                  "Partition by borough",
+                  ParDo.of(new PartitionByBorough(options.getCodeGuruProfilingGroupName())))
               .apply("Count per borough", Count.perKey())
               .apply(
                   "Map to Metric",
