@@ -2872,6 +2872,196 @@
         "aws:cdk:path": "BeamTaxiCount-Complete/InputStream/Resource"
       }
     },
+    "KinesisAnalyticsRoleCBFE2DD3": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "kinesisanalytics.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisAnalyticsRole/Resource"
+      }
+    },
+    "KinesisAnalyticsRoleDefaultPolicyFC2AE5E5": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Bucket83908E77",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "Bucket83908E77",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "InputStreamCFB159EA",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "kinesis:DescribeStream",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "InputStreamCFB159EA",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkInfrastructureFlinkLogGroupD9BFEBD6",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "logs:DescribeLogStreams",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "FlinkInfrastructureFlinkLogGroupD9BFEBD6",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "logs:DescribeLogGroups",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:logs:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":log-group:*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::nyc-tlc"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::nyc-tlc/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "codeguru-profiler:ConfigureAgent",
+                "codeguru-profiler:PostAgentProfile"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "CodeGuruProfilerInfrastructureMyProfilingGroupB5E0DE7C",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "KinesisAnalyticsRoleDefaultPolicyFC2AE5E5",
+        "Roles": [
+          {
+            "Ref": "KinesisAnalyticsRoleCBFE2DD3"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/KinesisAnalyticsRole/DefaultPolicy/Resource"
+      }
+    },
     "Dashboard9E4231ED": {
       "Type": "AWS::CloudWatch::Dashboard",
       "Properties": {
@@ -3116,183 +3306,6 @@
         "aws:cdk:path": "BeamTaxiCount-Complete/FirehoseInfrastructure/FirehoseDeliveryStream"
       }
     },
-    "FlinkInfrastructureKinesisAnalyticsRole71C99707": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "kinesisanalytics.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        }
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/KinesisAnalyticsRole/Resource"
-      }
-    },
-    "FlinkInfrastructureKinesisAnalyticsRoleDefaultPolicy2AA4B95F": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "Bucket83908E77",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "Bucket83908E77",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "kinesis:DescribeStreamSummary",
-                "kinesis:GetRecords",
-                "kinesis:GetShardIterator",
-                "kinesis:ListShards",
-                "kinesis:SubscribeToShard"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "InputStreamCFB159EA",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": "kinesis:DescribeStream",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "InputStreamCFB159EA",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": "cloudwatch:PutMetricData",
-              "Effect": "Allow",
-              "Resource": "*"
-            },
-            {
-              "Action": [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "FlinkInfrastructureFlinkLogGroupD9BFEBD6",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": "logs:DescribeLogStreams",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::GetAtt": [
-                  "FlinkInfrastructureFlinkLogGroupD9BFEBD6",
-                  "Arn"
-                ]
-              }
-            },
-            {
-              "Action": "logs:DescribeLogGroups",
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:logs:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":log-group:*"
-                  ]
-                ]
-              }
-            },
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::nyc-tlc"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::nyc-tlc/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "FlinkInfrastructureKinesisAnalyticsRoleDefaultPolicy2AA4B95F",
-        "Roles": [
-          {
-            "Ref": "FlinkInfrastructureKinesisAnalyticsRole71C99707"
-          }
-        ]
-      },
-      "Metadata": {
-        "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/KinesisAnalyticsRole/DefaultPolicy/Resource"
-      }
-    },
     "FlinkInfrastructureFlinkLogGroupD9BFEBD6": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
@@ -3323,7 +3336,7 @@
         "RuntimeEnvironment": "FLINK-1_11",
         "ServiceExecutionRole": {
           "Fn::GetAtt": [
-            "FlinkInfrastructureKinesisAnalyticsRole71C99707",
+            "KinesisAnalyticsRoleCBFE2DD3",
             "Arn"
           ]
         },
@@ -3369,7 +3382,8 @@
                       ]
                     ]
                   },
-                  "Source": "kinesis"
+                  "Source": "kinesis",
+                  "CodeGuruProfilingGroupName": "flink-beam-app"
                 }
               }
             ]
@@ -3632,10 +3646,20 @@
         "aws:cdk:path": "BeamTaxiCount-Complete/FlinkInfrastructure/AppTerminatedTopic/Resource"
       }
     },
+    "CodeGuruProfilerInfrastructureMyProfilingGroupB5E0DE7C": {
+      "Type": "AWS::CodeGuruProfiler::ProfilingGroup",
+      "Properties": {
+        "ProfilingGroupName": "flink-beam-app",
+        "ComputePlatform": "Default"
+      },
+      "Metadata": {
+        "aws:cdk:path": "BeamTaxiCount-Complete/CodeGuruProfilerInfrastructure/MyProfilingGroup/ProfilingGroup"
+      }
+    },
     "CDKMetadata": {
       "Type": "AWS::CDK::Metadata",
       "Properties": {
-        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VT227bMAz9lr2r6tJdnpemaDdgQ42kSJ9pmU6YyJKgS4NA8L9Pkh07bZ90SJE85KG04IvFd/71yy84uRvRHG+j0BZ53HgQR7bSynkbhGerVj0Hb0JBa3Q6WIEZV2ChQ4+WXXtTYkOetOpZLhzdNx7vgzhiyR/RcNyDw55J6OoGeHwMSuS8HHaNK7QdOVcqEnQ8rrUsTOWstCRxLnET+pNaByWwsrolmSiE1KFpte0gF+Uxtxmc193c+AezVa9AfprlN6hGfnanyrrBOpBseKzIoCSVWQ846DbCIcyM93NkCRlxz1Dc8bg1Inu31YpVoU4DbUKtBulmtNbB4wvUQ0eDf/YtndOC4CJfuRhUSatKkU/g8QTnkWa0lj5tfd+h8myDIljy5yergykEHx0XfVPPneVZTJnkS+/gmAZx5PIbsghdSS5oXMEJvNjz+ABuX2uwTQ6YjaUEW3IK6C/VWrK41w4z0UPS6g3teawv9S6R/dW7qbUJJzA3MRv/0FsSjyRzu+nm2p4YQYE8exKuvJSlMWkPRc/tHXvvWOWpXvNUiWJHavdshrieOZV1CLUTlsxlGe/sF22obLuAvu+ZSs+EH9zt2+In/5G+5sER3digPHXI18P5H8eHtb63AwAA"
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE2VTTW/bMAz9Lbur6tJhOy9N0W7AhhpJkZ5pmU6YyJKhjwaB4f8+SnbspDv5kSL5yEd6IReLH/Lrl59w8neqOt53yjqU3SaAOoqVNT64qIJY1eY1hjZmtEZvo1OYcAEOGgzoxLWXEysKZE0vUuHOf5PdY1RHzPkjGj6P4LEXGpqyAtk9R6NSXgq7xgW6hrzPFQka2a2tzkz5W1hN6pzjJvSbWwejsHC2Js0USttY1dY1kIrKLrUZfbDN3PgnszbvQGGa5ReYSv/v5sq2wjKSrmRXUIuaTGI94KDbCIewdnyfI3PIiHuB6kF221Yl77ZYiSKWPNAmlmaQbkZrGwO+QTl0NPhn39J7qwgu8uWHQRVeFUe+QMATnEea0VoG3vq+QRPEBlV0FM4vzsY2E3x2XPTlnhsnk5ia5eM7OPIgnny6IYfQ5OSMxhWcIKi97J7A70sLrkoBs7HU4HJOBv2lWk0O99ZjInpirT7Qncf62u6Y7I/dTa1NmMHcxGz8xeBIPZNO7fLLtT0xggF9DqR8vpRl2/Iesp7bB3HrWKWp3tNUTLEjs3tth7heeJN0iKVXjtrLMm7sN9tS3nYGw5HsoovtcLaODyUjLjvNd+vp+14YzpIHf//BP/N3/p0PnujORROoQbkevv8AtciNTesDAAA="
       },
       "Metadata": {
         "aws:cdk:path": "BeamTaxiCount-Complete/CDKMetadata/Default"
@@ -3755,6 +3779,14 @@
     "FlinkInfrastructureFlinkLogGroupNameF37E6FFF": {
       "Value": {
         "Ref": "FlinkInfrastructureFlinkLogGroupD9BFEBD6"
+      }
+    },
+    "CodeGuruProfilerInfrastructureCodeGuruProfilingGroup6A98B274": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CodeGuruProfilerInfrastructureMyProfilingGroupB5E0DE7C",
+          "Arn"
+        ]
       }
     }
   },
