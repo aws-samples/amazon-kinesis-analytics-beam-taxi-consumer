@@ -18,6 +18,7 @@
 package com.amazonaws.samples.beam.taxi.count;
 
 import com.amazonaws.samples.beam.taxi.count.kinesis.TripEvent;
+import com.amazonaws.util.StringUtils;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.apache.beam.sdk.transforms.DoFn;
@@ -27,24 +28,29 @@ import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.codeguruprofilerjavaagent.Profiler;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PartitionByBorough extends DoFn<TripEvent, KV<String,TripEvent>> {
+public class PartitionByBorough extends DoFn<TripEvent, KV<String, TripEvent>> {
+  private String codeGuruProfilingGroupName;
+
+  public PartitionByBorough(String codeGuruProfilingGroupName) {
+    this.codeGuruProfilingGroupName = codeGuruProfilingGroupName;
+  }
 
   private static final Logger LOG = LoggerFactory.getLogger(PartitionByBorough.class);
 
   private transient Map<Integer, String> boroughs;
 
-
   @Setup
   public void setup() {
     S3Client s3 = S3Client.builder().region(Region.US_EAST_1).build();
-
-    GetObjectRequest request = GetObjectRequest.builder().bucket("nyc-tlc").key("misc/taxi _zone_lookup.csv").build();
+    GetObjectRequest request =
+        GetObjectRequest.builder().bucket("nyc-tlc").key("misc/taxi _zone_lookup.csv").build();
     InputStream stream = new BufferedInputStream(s3.getObject(request));
     Reader reader = new InputStreamReader(stream);
 
@@ -56,8 +62,16 @@ public class PartitionByBorough extends DoFn<TripEvent, KV<String,TripEvent>> {
     }
 
     LOG.info("found {} boroughs: {}", boroughs.size(), boroughs.toString());
-  }
 
+    // Setup the profiler
+    if (!StringUtils.isNullOrEmpty(this.codeGuruProfilingGroupName)) {
+      Profiler.builder()
+          .profilingGroupName(this.codeGuruProfilingGroupName)
+          .withHeapSummary(true)
+          .build()
+          .start();
+    }
+  }
 
   @ProcessElement
   public void process(ProcessContext c) {
@@ -68,7 +82,6 @@ public class PartitionByBorough extends DoFn<TripEvent, KV<String,TripEvent>> {
 
     c.output(KV.of(borough, c.element()));
   }
-
 
   public static class TaxiZone implements Serializable {
     @CsvBindByName(column = "LocationID", required = true)

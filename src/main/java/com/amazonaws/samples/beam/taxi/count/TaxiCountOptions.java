@@ -37,31 +37,35 @@ public interface TaxiCountOptions extends FlinkPipelineOptions, AwsOptions {
 
   void setInputStreamName(String value);
 
-
   @Description("S3 bucket name and prefix that contains the historic data")
   String getInputS3Pattern();
 
   void setInputS3Pattern(String value);
-
 
   @Default.String("kinesis")
   String getSource();
 
   void setSource(String value);
 
-
   @Default.Boolean(false)
   boolean getOutputBoroughs();
 
   void setOutputBoroughs(boolean value);
 
+  @Default.String("")
+  String getCodeGuruProfilingGroupName();
 
-  static String[] argsFromKinesisApplicationProperties(String[] args, String applicationPropertiesName) {
+  void setCodeGuruProfilingGroupName(String value);
+
+  static String[] argsFromKinesisApplicationProperties(
+      String[] args, String applicationPropertiesName) {
     Properties beamProperties = null;
 
     try {
-      Map<String, Properties> applicationProperties = KinesisAnalyticsRuntime.getApplicationProperties();
-//      Map<String, Properties> applicationProperties  = KinesisAnalyticsRuntime.getApplicationProperties(FlinkPipelineOptions.class.getClassLoader().getResource("application-properties.json").getPath());
+      Map<String, Properties> applicationProperties =
+          KinesisAnalyticsRuntime.getApplicationProperties();
+      //      Map<String, Properties> applicationProperties  =
+      // KinesisAnalyticsRuntime.getApplicationProperties(FlinkPipelineOptions.class.getClassLoader().getResource("application-properties.json").getPath());
 
       if (applicationProperties == null) {
         LOG.warn("Unable to load application properties from the Kinesis Analytics Runtime");
@@ -72,7 +76,9 @@ public interface TaxiCountOptions extends FlinkPipelineOptions, AwsOptions {
       beamProperties = applicationProperties.get(applicationPropertiesName);
 
       if (beamProperties == null) {
-        LOG.warn("Unable to load {} properties from the Kinesis Analytics Runtime", applicationPropertiesName);
+        LOG.warn(
+            "Unable to load {} properties from the Kinesis Analytics Runtime",
+            applicationPropertiesName);
 
         return new String[0];
       }
@@ -84,18 +90,17 @@ public interface TaxiCountOptions extends FlinkPipelineOptions, AwsOptions {
       return new String[0];
     }
 
-    String[] kinesisOptions = beamProperties
-        .entrySet()
-        .stream()
-        .map(property -> String.format("--%s%s=%s",
-            Character.toLowerCase(((String) property.getKey()).charAt(0)),
-            ((String) property.getKey()).substring(1),
-            property.getValue()
-        ))
-        .toArray(String[]::new);
+    String[] kinesisOptions =
+        beamProperties.entrySet().stream()
+            .map(
+                property ->
+                    String.format(
+                        "--%s%s=%s",
+                        Character.toLowerCase(((String) property.getKey()).charAt(0)),
+                        ((String) property.getKey()).substring(1),
+                        property.getValue()))
+            .toArray(String[]::new);
 
     return kinesisOptions;
   }
 }
-
-
