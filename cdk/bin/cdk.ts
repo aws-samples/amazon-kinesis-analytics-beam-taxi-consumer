@@ -7,8 +7,8 @@ const app = new cdk.App();
 
 const dependencies = {
     kinesisReplayVersion: 'release-0.1.0',
-    consumerApplicationVersion: 'master',
-    consumerApplicationJarObject: 'amazon-kinesis-analytics-beam-taxi-consumer-1.0-SNAPSHOT.jar'
+    consumerApplicationVersion: 'release-0.1.0',
+    consumerApplicationJarObject: 'amazon-kinesis-analytics-beam-taxi-consumer-0.1.0.jar'
 }
 
 
