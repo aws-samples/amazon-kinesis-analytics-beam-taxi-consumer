@@ -20,17 +20,6 @@ sudo curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto
 sudo yum install -y java-11-amazon-corretto-devel
 alias java="/usr/lib/jvm/java-11-amazon-corretto/bin/java"
 
-export tag_value_arn=`aws cloudformation describe-stacks \
-     --stack-name $stackname | jq -c '.Stacks[].Outputs[] | select(.OutputKey | contains("Tag")).OutputValue' --raw-output`
-export tag_value=`echo ${tag_value_arn##*:}`
-export instance_profile_name=`aws cloudformation describe-stacks \
-    --stack-name $stackname | jq -c '.Stacks[].Outputs[] | select(.OutputKey | contains("ProfileName")).OutputValue' --raw-output`
-export instance_id=`aws ec2 describe-instances \
- 	--filters "Name=tag-value, Values=$tag_value" \
- 	--query "Reservations[].Instances[].InstanceId" --output text`
-
-aws ec2 associate-iam-instance-profile --iam-instance-profile Name=$instance_profile_name --instance-id $instance_id
-
 export replay_jar_url=`aws cloudformation describe-stacks \
     --stack-name $stackname | jq -c '.Stacks[].Outputs[] | select(.OutputKey | contains("ReplayJarS3Url")).OutputValue' --raw-output`
 
