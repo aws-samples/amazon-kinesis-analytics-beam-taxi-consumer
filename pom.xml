@@ -36,7 +36,7 @@
         <beam.version>2.31.0</beam.version>
         <flink.version>1.11</flink.version>
         <kda.version>1.2.0</kda.version>
-        <log4j.version>2.14.1</log4j.version>
+        <log4j.version>2.15.0</log4j.version>
         <aws.java-sdk.version>2.16.104</aws.java-sdk.version>
         <jackson.version>2.12.1</jackson.version>
         <codeguru.profiler.java.agent.version>1.2.0</codeguru.profiler.java.agent.version>
