@@ -50,7 +50,7 @@ public class PartitionByBorough extends DoFn<TripEvent, KV<String, TripEvent>> {
   public void setup() {
     S3Client s3 = S3Client.builder().region(Region.US_EAST_1).build();
     GetObjectRequest request =
-        GetObjectRequest.builder().bucket("nyc-tlc").key("misc/taxi _zone_lookup.csv").build();
+        GetObjectRequest.builder().bucket("kda-on-beam").key("misc/taxi_zone_lookup.csv").build();
     InputStream stream = new BufferedInputStream(s3.getObject(request));
     Reader reader = new InputStreamReader(stream);
 
