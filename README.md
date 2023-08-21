@@ -1,4 +1,4 @@
-## Amazon Managed Service for Apache Flink - Beam Taxi Consumer
+## Amazon Managed Service for Apache Flink (formerly Amazon Kinesis Data Analytics) - Beam Taxi Consumer
 
 --------
 >  #### 🚨 August 30, 2023: Amazon Kinesis Data Analytics has been renamed to [Amazon Managed Service for Apache Flink](https://aws.amazon.com/managed-service-apache-flink).
