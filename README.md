@@ -1,8 +1,12 @@
-## Amazon Kinesis Analytics Beam Taxi Consumer
+## Amazon Managed Service for Apache Flink (formerly Amazon Kinesis Data Analytics) - Beam Taxi Consumer
+
+--------
+>  #### 🚨 August 30, 2023: Amazon Kinesis Data Analytics has been renamed to [Amazon Managed Service for Apache Flink](https://aws.amazon.com/managed-service-apache-flink).
+--------
 
 Sample Apache Beam pipeline that can be deployed to Kinesis Data Analytics for Java Applications. It reads taxi events from a Kinesis data stream, processes and aggregates them, and ingests the result to Amazon CloudWatch for visualization.
 
-![Architecture Diagramm](misc/architecture.png?raw=true)
+![Architecture Diagram](misc/architecture.png?raw=true)
 
 To see the sample Beam pipeline in action, simply execute [this](cdk/cdk.out/BeamTaxiCount-Complete.template.json) AWS CloudFormation template in your own AWS account. The template first builds the Beam pipeline that is analyzing the incoming taxi trips and then creates the infrastructure and deploys the Flink application to Kinesis Data Analytics for Java Applications.
 
