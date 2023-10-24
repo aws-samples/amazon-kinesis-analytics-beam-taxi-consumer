@@ -33,20 +33,23 @@
     </repositories>
 
     <properties>
-        <beam.version>2.31.0</beam.version>
-        <flink.version>1.13</flink.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <target.java.version>11</target.java.version>
+        <maven.compiler.source>${target.java.version}</maven.compiler.source>
+        <maven.compiler.target>${target.java.version}</maven.compiler.target>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-shade-plugin.version>3.1.1</maven-shade-plugin.version>
+
+        <beam.version>2.51.0</beam.version>
+        <flink.version>1.15</flink.version>
         <kda.version>1.2.0</kda.version>
         <log4j.version>2.17.1</log4j.version>
         <aws.java-sdk.version>2.16.104</aws.java-sdk.version>
         <jackson.version>2.12.1</jackson.version>
-        <codeguru.profiler.java.agent.version>1.2.0</codeguru.profiler.java.agent.version>
+        <codeguru.profiler.java.agent.version>1.2.2</codeguru.profiler.java.agent.version>
 
-        <java.version>1.8</java.version>
-        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-        <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
-        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
-        <maven-shade-plugin.version>3.1.0</maven-shade-plugin.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
 
@@ -163,8 +166,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>${target.java.version}</source>
+                    <target>${target.java.version}</target>
                 </configuration>
             </plugin>
 

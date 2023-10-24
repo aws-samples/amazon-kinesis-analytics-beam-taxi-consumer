@@ -1,2 +1,3 @@
 /.idea/
-/cdk/cdk.out/
+/target/
+/dependency-reduced-pom.xml
